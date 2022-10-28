@@ -5,11 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Package",
+            "name": "Launch Rosalia64",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${fileDirname}"
-        }
+            "program": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/build",
+            "output": "build/Rosalia64.exe"
+        },
     ]
 }

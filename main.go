@@ -2,6 +2,7 @@ package main
 
 import (
 	"Rosalia64/exe"
+	"Rosalia64/ia64"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -91,29 +92,31 @@ func main() {
 
 		asUint128 := uint128.FromBytes(bundle[:])
 
+		fmt.Print("whole: ")
 		fmt.Print(strconv.FormatUint(asUint128.Hi, 2))
 		fmt.Print(strconv.FormatUint(asUint128.Lo, 2))
 		fmt.Print("\n")
 
 		template := asUint128.Lo & 0b11111
 
-		fmt.Printf("Template: %d\n", template)
-
+		unitOrder := ia64.UnitTable[template]
 		slot0 := asUint128.Lo & 0b1111111111111111111111111111111111111111100000
 
-		fmt.Printf("%064b\n", slot0)
+		fmt.Printf("slot0: %064b\n", slot0)
 
-		DecodeInstructionSlot(slot0)
-
-		//fmt.Println(strconv.FormatUint(template, 2))
-		//fmt.Println(strconv.FormatUint(instruction1, 2))
+		DecodeInstructionSlot(slot0, unitOrder.Slot0)
 
 		break
 	}
 }
 
-func DecodeInstructionSlot(slot uint64) {
-	majorOpcode := (slot & 0b1111000000000000000000000000000000000000000000) >> 42
+func DecodeInstructionSlot(slot uint64, unit ia64.Unit) {
+	majorOpcode := slot & (0b1111 << 42) >> 42
 
-	fmt.Printf("Major Opcode: %d", majorOpcode)
+	fmt.Printf("Major Opcode: %d\n", majorOpcode)
+
+	switch unit {
+	case ia64.M_Unit:
+		ia64.M_UnitInstructionTable[majorOpcode](slot)
+	}
 }
