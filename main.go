@@ -97,12 +97,22 @@ func main() {
 		fmt.Print(strconv.FormatUint(asUint128.Lo, 2))
 		fmt.Print("\n")
 
+		fmt.Print("split: ")
+		fmt.Print(strconv.FormatUint(asUint128.Hi, 2))
+		fmt.Print("|")
+		fmt.Print(strconv.FormatUint(asUint128.Lo, 2))
+		fmt.Print("\n")
+
 		template := asUint128.Lo & 0b11111
 
 		unitOrder := ia64.UnitTable[template]
-		slot0 := asUint128.Lo & 0b1111111111111111111111111111111111111111100000
+		slot0 := (asUint128.Lo & 0b000000000001111111111111111111111111111111111111111100000)
+		slot1 :=
+			(asUint128.Lo&0b111111111110000000000000000000000000000000000000000000000)>>30 |
+				(asUint128.Hi&0b000000000000000000000000000111111111111111111111111111111)<<27
 
 		fmt.Printf("slot0: %064b\n", slot0)
+		fmt.Printf("slot1: %064b\n", slot1)
 
 		DecodeInstructionSlot(slot0, unitOrder.Slot0)
 
