@@ -2,6 +2,8 @@ package ia64
 
 type Unit uint8
 
+type UnitInstructionTable map[uint64]func(instructionBits uint64)
+
 const (
 	Invalid Unit = 0
 	I_Unit  Unit = 1

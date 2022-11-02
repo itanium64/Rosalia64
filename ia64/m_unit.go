@@ -1,6 +1,6 @@
 package ia64
 
-var M_UnitInstructionTable map[uint64]func(instructionBits uint64) = map[uint64]func(instructionBits uint64){
+var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
 	9: AddImmediate22,
 }
 
@@ -11,7 +11,7 @@ func AddImmediate22(instructionBits uint64) {
 	reg3_ := (instructionBits & (0b0000000000000000000110000000000000000000000000)) >> 25
 	imm7b := (instructionBits & (0b0000000000000000000001111111100000000000000000)) >> 18
 	reg1_ := (instructionBits & (0b0000000000000000000000000000011111110000000000)) >> 10
-	//	qp___ := (instructionBits & (0b0000000000000000000000000000000000001111110000)) >> 4
+	//qp___ := (instructionBits & (0b0000000000000000000000000000000000001111110000)) >> 4
 
 	immediate := Imm22(sign1, imm5c, imm9d, imm7b)
 

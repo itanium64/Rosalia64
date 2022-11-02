@@ -7,7 +7,6 @@ import (
 	"encoding/binary"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 
 	"lukechampine.com/uint128"
@@ -92,35 +91,31 @@ func main() {
 
 		asUint128 := uint128.FromBytes(bundle[:])
 
-		fmt.Print("whole: ")
-		fmt.Print(strconv.FormatUint(asUint128.Hi, 2))
-		fmt.Print(strconv.FormatUint(asUint128.Lo, 2))
-		fmt.Print("\n")
-
-		fmt.Print("split: ")
-		fmt.Print(strconv.FormatUint(asUint128.Hi, 2))
-		fmt.Print("|")
-		fmt.Print(strconv.FormatUint(asUint128.Lo, 2))
-		fmt.Print("\n")
+		fmt.Printf("whole: %064b%064b\n", asUint128.Hi, asUint128.Lo)
 
 		template := asUint128.Lo & 0b11111
 
 		unitOrder := ia64.UnitTable[template]
 		slot0 := (asUint128.Lo & 0b000000000001111111111111111111111111111111111111111100000)
-		slot1 :=
-			(asUint128.Lo&0b111111111110000000000000000000000000000000000000000000000)>>30 |
-				(asUint128.Hi&0b000000000000000000000000000111111111111111111111111111111)<<27
+		slot1 := (asUint128.Lo&0b111111111110000000000000000000000000000000000000000000000)>>41 |
+			(asUint128.Hi&0b000000000000000000000000000111111111111111111111111111111)<<23
 
-		fmt.Printf("slot0: %064b\n", slot0)
-		fmt.Printf("slot1: %064b\n", slot1)
+		slot2 := (asUint128.Hi & 0b1111111111111111111111111111111111111111100000000000000000000000)
 
-		DecodeInstructionSlot(slot0, unitOrder.Slot0)
+		fmt.Printf("high : %064b\n", asUint128.Hi)
+		fmt.Printf("low  :                                                                 %064b\n", asUint128.Lo)
+		fmt.Printf("slot0:                                                                                   %064b\n", slot0)
+		fmt.Printf("slot1:                                          %064b\n", slot1)
+		fmt.Printf("slot2: %064b\n", slot2)
+
+		DecodeInstructionSlot(slot0, slot1, unitOrder.Slot0)
+		DecodeInstructionSlot(slot1, slot2, unitOrder.Slot1)
 
 		break
 	}
 }
 
-func DecodeInstructionSlot(slot uint64, unit ia64.Unit) {
+func DecodeInstructionSlot(slot uint64, nextSlot uint64, unit ia64.Unit) {
 	majorOpcode := slot & (0b1111 << 42) >> 42
 
 	fmt.Printf("Major Opcode: %d\n", majorOpcode)
@@ -128,5 +123,7 @@ func DecodeInstructionSlot(slot uint64, unit ia64.Unit) {
 	switch unit {
 	case ia64.M_Unit:
 		ia64.M_UnitInstructionTable[majorOpcode](slot)
+	case ia64.I_Unit:
+		ia64.I_UnitInstructionTable[majorOpcode](slot)
 	}
 }
