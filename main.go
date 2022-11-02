@@ -91,8 +91,6 @@ func main() {
 
 		asUint128 := uint128.FromBytes(bundle[:])
 
-		fmt.Printf("whole: %064b%064b\n", asUint128.Hi, asUint128.Lo)
-
 		template := asUint128.Lo & 0b11111
 
 		unitOrder := ia64.UnitTable[template]
@@ -100,16 +98,18 @@ func main() {
 		slot1 := (asUint128.Lo&0b111111111110000000000000000000000000000000000000000000000)>>41 |
 			(asUint128.Hi&0b000000000000000000000000000111111111111111111111111111111)<<23
 
-		slot2 := (asUint128.Hi & 0b1111111111111111111111111111111111111111100000000000000000000000)
+		slot2 := (asUint128.Hi & 0b1111111111111111111111111111111111111111100000000000000000000000) >> 18
 
 		fmt.Printf("high : %064b\n", asUint128.Hi)
-		fmt.Printf("low  :                                                                 %064b\n", asUint128.Lo)
-		fmt.Printf("slot0:                                                                                   %064b\n", slot0)
-		fmt.Printf("slot1:                                          %064b\n", slot1)
+		fmt.Printf("low  :                                                                 %064b\n     :\n", asUint128.Lo)
+		fmt.Printf("whole: %064b%064b\n", asUint128.Hi, asUint128.Lo)
+		fmt.Printf("slot0:                                                                 %064b\n", slot0)
+		fmt.Printf("slot1:                        %064b\n", slot1)
 		fmt.Printf("slot2: %064b\n", slot2)
 
 		DecodeInstructionSlot(slot0, slot1, unitOrder.Slot0)
 		DecodeInstructionSlot(slot1, slot2, unitOrder.Slot1)
+		DecodeInstructionSlot(slot2, 0b000, unitOrder.Slot2)
 
 		break
 	}
@@ -118,12 +118,9 @@ func main() {
 func DecodeInstructionSlot(slot uint64, nextSlot uint64, unit ia64.Unit) {
 	majorOpcode := slot & (0b1111 << 42) >> 42
 
-	fmt.Printf("Major Opcode: %d\n", majorOpcode)
+	fmt.Printf("major: %064b\n", majorOpcode)
 
-	switch unit {
-	case ia64.M_Unit:
-		ia64.M_UnitInstructionTable[majorOpcode](slot)
-	case ia64.I_Unit:
-		ia64.I_UnitInstructionTable[majorOpcode](slot)
-	}
+	table := ia64.GetInstructionTable(unit)
+
+	table[majorOpcode](slot, nextSlot)
 }
