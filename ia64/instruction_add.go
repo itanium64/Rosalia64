@@ -9,21 +9,24 @@ func AddImmediate22(instructionBits uint64, nextSlot uint64) {
 	r3___ := (instructionBits & (0b0000000000000000000110000000000000000000000000)) >> 25
 	imm7b := (instructionBits & (0b0000000000000000000001111111100000000000000000)) >> 18
 	r1___ := (instructionBits & (0b0000000000000000000000000000011111110000000000)) >> 10
-	//qp___ := (instructionBits & (0b0000000000000000000000000000000000001111110000)) >> 4
+	qp___ := (instructionBits & (0b0000000000000000000000000000000000001111110000)) >> 4
 
 	immediate := Imm22(sign1, imm5c, imm9d, imm7b)
 
 	fmt.Printf("\nExecuting: addl r1 = imm22, r3\n")
+	fmt.Printf("sign     : %d\n", sign1)
 	fmt.Printf("r1       : %d\n", r1___)
 	fmt.Printf("r3       : %d\n", r3___)
 	fmt.Printf("imm14    : %d\n", immediate)
+	fmt.Printf("qp       : %d\n", qp___)
 
-	//TODO: if( PR[qp] )
+	if RetrievePredicateRegister(qp___) {
+		r1 := RetrieveGeneralRegister(r1___)
+		r3 := RetrieveGeneralRegister(r3___)
 
-	Processor.GeneralRegisters[r1___].Value = uint64(immediate) + Processor.GeneralRegisters[r3___].Value
-	Processor.GeneralRegisters[r1___].NotAThing = Processor.GeneralRegisters[r3___].NotAThing
-
-	//endif
+		r1.Value = uint64(immediate) + r3.Value
+		r1.NotAThing = r3.NotAThing
+	}
 }
 
 func AddImmediate14(instructionBits uint64, nextSlot uint64) {
@@ -32,19 +35,22 @@ func AddImmediate14(instructionBits uint64, nextSlot uint64) {
 	r3___ := (instructionBits & (0b0000000000000011111110000000000000000000000000)) >> 25
 	imm7b := (instructionBits & (0b0000000000000000000001111111000000000000000000)) >> 18
 	r1___ := (instructionBits & (0b0000000000000000000000000000111111100000000000)) >> 11
-	//qp___ := (instructionBits & (0b0000000000000000000000000000000000011111110000)) >> 4
-
-	//TODO: if( PR[qp] )
+	qp___ := (instructionBits & (0b0000000000000000000000000000000000011111110000)) >> 4
 
 	immediate := Imm14(sign_, imm6d, imm7b)
 
 	fmt.Printf("\nExecuting: adds r1 = imm14, r3\n")
+	fmt.Printf("sign     : %d\n", sign_)
 	fmt.Printf("r1       : %d\n", r1___)
 	fmt.Printf("r3       : %d\n", r3___)
 	fmt.Printf("imm14    : %d\n", immediate)
+	fmt.Printf("qp       : %d\n", qp___)
 
-	Processor.GeneralRegisters[r1___].Value = uint64(immediate) + Processor.GeneralRegisters[r3___].Value
-	Processor.GeneralRegisters[r1___].NotAThing = Processor.GeneralRegisters[r3___].NotAThing
+	if RetrievePredicateRegister(qp___) {
+		r1 := RetrieveGeneralRegister(r1___)
+		r3 := RetrieveGeneralRegister(r3___)
 
-	//endif
+		r1.Value = uint64(immediate) + r3.Value
+		r1.NotAThing = r3.NotAThing
+	}
 }
