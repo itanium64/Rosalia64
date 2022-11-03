@@ -1,7 +1,7 @@
 package ia64
 
 const (
-	MaxGeneralRegisterCount = 2048
+	MaxGeneralRegisterCount = 128
 )
 
 type Register struct {
