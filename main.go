@@ -113,7 +113,6 @@ func main() {
 		DecodeInstructionSlot(slot0, slot1, unitOrder.Slot0)
 		DecodeInstructionSlot(slot1, slot2, unitOrder.Slot1)
 		DecodeInstructionSlot(slot2, 0b000, unitOrder.Slot2)
-
 	}
 }
 

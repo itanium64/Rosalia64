@@ -15,10 +15,10 @@ type IAProcessorState struct {
 	PredicateRegisters [MaxPredicateRegisterCount]bool
 }
 
-var Processor IAProcessorState = IAProcessorState{}
+var processor IAProcessorState = IAProcessorState{}
 
 func RetrieveGeneralRegister(r uint64) *Register {
-	return &Processor.GeneralRegisters[r]
+	return &processor.GeneralRegisters[r]
 }
 
 func RetrievePredicateRegister(pr uint64) bool {
@@ -27,10 +27,10 @@ func RetrievePredicateRegister(pr uint64) bool {
 		return true
 	}
 
-	return Processor.PredicateRegisters[pr]
+	return processor.PredicateRegisters[pr]
 }
 
 func SetPredicateRegister(qp uint64, value bool) {
 	//We don't have to worry about PR0 because in the Retrieve it always return 1 is PR0 is retrieved.
-	Processor.PredicateRegisters[qp] = value
+	processor.PredicateRegisters[qp] = value
 }

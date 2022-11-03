@@ -25,6 +25,7 @@ var I_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
 }
 
 var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
+	4: IntegerLoadStoreSemaphoreFR,
 	9: AddImmediate22,
 }
 
