@@ -14,6 +14,7 @@ import (
 )
 
 func main() {
+
 	if len(os.Args) < 3 {
 		fmt.Printf("Less command-line arguments than expected!\n")
 		fmt.Printf("Arguments:\n\n")
@@ -32,6 +33,8 @@ func main() {
 	}
 
 	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.", exeFilepath, vmemSize)
+
+	ia64.InitializeMachine(uint64(vmemSize))
 
 	exeFile := exe.ReadExeFile("Rimukoro.exe")
 

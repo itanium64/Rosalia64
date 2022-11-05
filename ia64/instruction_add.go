@@ -16,6 +16,8 @@ func AddImmediate22(instructionBits uint64, nextSlot uint64) {
 	fmt.Printf("qp       : %d\n", a5.QP)
 
 	if RetrievePredicateRegister(a5.QP) {
+		//todo: check_target_register(r1)
+
 		r1 := RetrieveGeneralRegister(a5.R1)
 		r3 := RetrieveGeneralRegister(a5.R3)
 
@@ -35,6 +37,8 @@ func AddImmediate14(instructionBits uint64, nextSlot uint64) {
 	fmt.Printf("qp       : %d\n", a4.QP)
 
 	if RetrievePredicateRegister(a4.QP) {
+		//todo: check_target_register(r1)
+
 		r1 := RetrieveGeneralRegister(a4.R1)
 		r3 := RetrieveGeneralRegister(a4.R3)
 
