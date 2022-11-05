@@ -36,6 +36,10 @@ func ReadM1(instructionBits uint64, nextSlot uint64) M1_2_4 {
 	}
 }
 
-func ReadM2(insinstructionBits uint64, nextSlot uint64) M1_2_4 {
-	return ReadM1(insinstructionBits, nextSlot)
+func ReadM2(instructionBits uint64, nextSlot uint64) M1_2_4 {
+	return ReadM1(instructionBits, nextSlot)
+}
+
+func ReadM4(instructionBits uint64, nextSlot uint64) M1_2_4 {
+	return ReadM1(instructionBits, nextSlot)
 }
