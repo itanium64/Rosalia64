@@ -7,74 +7,42 @@ import (
 	"encoding/binary"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"lukechampine.com/uint128"
 )
 
 func main() {
-	data, err := os.ReadFile("Rimukoro.exe")
-
-	if err != nil {
-		panic(err)
+	if len(os.Args) < 3 {
+		fmt.Printf("Less command-line arguments than expected!\n")
+		fmt.Printf("Arguments:\n\n")
+		fmt.Printf("Rosalia64 <IA64 exe location> <RAM in Kilobytes>\n")
+		return
 	}
 
-	buffer := bytes.NewBuffer(data)
+	exeFilepath := os.Args[1]
+	vmemSizeArg := os.Args[2]
 
-	//Actual reading part
-	var dosHeader exe.DOSHeader
+	vmemSize, parseErr := strconv.ParseInt(vmemSizeArg, 10, 64)
 
-	binary.Read(buffer, binary.LittleEndian, &dosHeader)
-
-	peData := data[dosHeader.PEPointer:]
-	peBuffer := bytes.NewBuffer(peData)
-
-	var coffHeader exe.COFFHeader
-	var peHeaderBytes [4]byte
-
-	binary.Read(peBuffer, binary.LittleEndian, &peHeaderBytes)
-	binary.Read(peBuffer, binary.LittleEndian, &coffHeader)
-
-	var signature exe.Signature
-
-	binary.Read(peBuffer, binary.LittleEndian, &signature)
-
-	if signature == exe.SignatureExecutable32bit {
-		panic("IA64 isnt 32bit")
+	if parseErr != nil {
+		fmt.Errorf("Failed to parse Argument 2. Not a valid integer.")
+		return
 	}
 
-	var peOptHeader exe.COFFOptionalHeader64
+	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.", exeFilepath, vmemSize)
 
-	binary.Read(peBuffer, binary.LittleEndian, &peOptHeader)
-
-	var dataDirectories []exe.DataDirectory
-
-	for i := int32(0); i != peOptHeader.OptionalHeader.NumberOfRvaAndSizes; i++ {
-		var dataDirectory exe.DataDirectory
-
-		binary.Read(peBuffer, binary.LittleEndian, &dataDirectory)
-
-		dataDirectories = append(dataDirectories, dataDirectory)
-	}
-
-	var imageSections []exe.ImageSectionHeader
-
-	for i := int32(0); i != int32(coffHeader.NumberOfSections); i++ {
-		var imageSectionHeader exe.ImageSectionHeader
-
-		binary.Read(peBuffer, binary.LittleEndian, &imageSectionHeader)
-
-		imageSections = append(imageSections, imageSectionHeader)
-	}
+	exeFile := exe.ReadExeFile("Rimukoro.exe")
 
 	//TODO: don't do this wrong! you arent supposed to start from .text
 	var instructionData *bytes.Buffer
 
-	for _, image := range imageSections {
+	for _, image := range exeFile.ImageSections {
 		isText := strings.HasPrefix(string(image.Name[:]), ".text")
 
 		if isText {
-			rawData := data[image.PointerToRawData : image.PointerToRawData+image.SizeOfRawData]
+			rawData := exeFile.RawFileData[image.PointerToRawData : image.PointerToRawData+image.SizeOfRawData]
 			instructionData = bytes.NewBuffer(rawData)
 			break
 		}

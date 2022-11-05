@@ -11,7 +11,11 @@
             "mode": "auto",
             "program": "${workspaceFolder}",
             "cwd": "${workspaceFolder}/build",
-            "output": "build/Rosalia64.exe"
+            "output": "build/Rosalia64.exe",
+            "args": [
+                "Rimukoro.exe",
+                "524288"
+            ]
         },
     ]
 }
