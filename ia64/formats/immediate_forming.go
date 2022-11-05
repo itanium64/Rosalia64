@@ -1,4 +1,4 @@
-package ia64
+package formats
 
 func SignExt(i uint64, n uint32) int64 {
 	return (((int64)(i) << (64 - (n))) >> (64 - (n)))
