@@ -141,7 +141,7 @@ func IntegerLoadStore(instructionBits uint64, nextSlot uint64) {
 	m := formats.ReadM1(instructionBits, nextSlot)
 
 	if m.TableY >= 12 {
-		//store
+		IntegerStoreRegister(m)
 	} else {
 		IntegerLoad(m)
 	}

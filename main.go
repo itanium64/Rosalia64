@@ -13,8 +13,12 @@ import (
 	"lukechampine.com/uint128"
 )
 
-func main() {
+func DebugUI() {
 
+}
+
+func main() {
+	
 	if len(os.Args) < 3 {
 		fmt.Printf("Less command-line arguments than expected!\n")
 		fmt.Printf("Arguments:\n\n")
