@@ -3,6 +3,7 @@ package ia64
 import (
 	"Rosalia64/ia64/formats"
 	"encoding/binary"
+	"fmt"
 )
 
 func IntegerStoreRegister(m formats.M1_2_4) {
@@ -17,6 +18,8 @@ func IntegerStoreRegister(m formats.M1_2_4) {
 		countBytes := bitLengthTable[m.TableX]
 		regAsBytes := make([]byte, 8)
 
+		fmt.Printf("Executing: st%d [r%d] = r%d\n", countBytes, m.R3, m.R2)
+
 		//regAsBytes
 		if r3.NotAThing || r2.NotAThing {
 			//register_nat_consumption_fault(WRITE)
@@ -28,8 +31,6 @@ func IntegerStoreRegister(m formats.M1_2_4) {
 		paddr := r3.Value
 
 		//mem_write(GR[r2], paddr, size, UM.be, mattr, otype, sthint);
-		paddr = paddr
-		countBytes = countBytes
 
 		binary.LittleEndian.PutUint64(regAsBytes, r2.Value)
 

@@ -21,16 +21,19 @@ type UnitOrder struct {
 }
 
 var I_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
+	0: IntegerMisc,
 	8: IntegerALU,
 }
 
 var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
+	0: SystemMemoryManagment,
 	4: IntegerLoadStoreSemaphoreFR,
 	8: IntegerALU,
 	9: AddImmediate22,
 }
 
 var B_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
+	0: BranchIndirectMiscellaneous,
 	2: NopBranch,
 }
 

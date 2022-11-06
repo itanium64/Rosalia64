@@ -18,6 +18,8 @@ type IAProcessorState struct {
 var processor IAProcessorState = IAProcessorState{}
 var memory []byte
 
+var ContinueRunning bool
+
 func RetrieveGeneralRegister(r uint64) *Register {
 	return &processor.GeneralRegisters[r]
 }
@@ -39,4 +41,5 @@ func SetPredicateRegister(qp uint64, value bool) {
 func InitializeMachine(ram uint64) {
 	processor.GeneralRegisters[12].Value = ram - 8
 	memory = make([]byte, ram)
+	ContinueRunning = true
 }

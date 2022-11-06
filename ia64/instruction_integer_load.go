@@ -8,13 +8,13 @@ import (
 func IntegerLoadWithRegister(instructionBits uint64, nextSlot uint64) {
 	m := formats.ReadM1(instructionBits, nextSlot)
 
-	fmt.Printf("tabx : %d", m.TableX)
-	fmt.Printf("taby : %d", m.TableY)
-	fmt.Printf("hint : %d", m.Hint)
-	fmt.Printf("r1   : %d", m.R1)
-	fmt.Printf("r2   : %d", m.R2)
-	fmt.Printf("r3   : %d", m.R3)
-	fmt.Printf("qp   : %d", m.QP)
+	fmt.Printf("tabx      : %d\n", m.TableX)
+	fmt.Printf("taby      : %d\n", m.TableY)
+	fmt.Printf("hint      : %d\n", m.Hint)
+	fmt.Printf("r1        : %d\n", m.R1)
+	fmt.Printf("r2        : %d\n", m.R2)
+	fmt.Printf("r3        : %d\n", m.R3)
+	fmt.Printf("qp        : %d\n", m.QP)
 }
 
 func IntegerLoad(m formats.M1_2_4) {
@@ -47,6 +47,7 @@ func IntegerLoad(m formats.M1_2_4) {
 			_defer bool
 
 		switch m.TableY {
+		case 0:
 		case 1:
 			speculative = true
 		case 2:
@@ -69,8 +70,10 @@ func IntegerLoad(m formats.M1_2_4) {
 			checkClear = true
 			//acquire = true
 		default:
-			fmt.Printf("ld%d load extension not implemented! decimal %d", countBytes, m.TableY)
+			fmt.Printf("ld%d load extension not implemented! decimal %d\n", countBytes, m.TableY)
 		}
+
+		fmt.Printf("Executing: ld%d r%d = [r%d]\n", countBytes, m.R1, m.R3)
 
 		//check := checkClear || checkNoClear
 
@@ -146,10 +149,10 @@ func IntegerLoadStore(instructionBits uint64, nextSlot uint64) {
 		IntegerLoad(m)
 	}
 
-	fmt.Printf("tabx : %d\n", m.TableX)
-	fmt.Printf("taby : %d\n", m.TableY)
-	fmt.Printf("hint : %d\n", m.Hint)
-	fmt.Printf("r2   : %d\n", m.R2)
-	fmt.Printf("r3   : %d\n", m.R3)
-	fmt.Printf("qp   : %d\n", m.QP)
+	fmt.Printf("tabx     : %d\n", m.TableX)
+	fmt.Printf("taby     : %d\n", m.TableY)
+	fmt.Printf("hint     : %d\n", m.Hint)
+	fmt.Printf("r2       : %d\n", m.R2)
+	fmt.Printf("r3       : %d\n", m.R3)
+	fmt.Printf("qp       : %d\n", m.QP)
 }

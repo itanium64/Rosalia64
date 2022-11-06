@@ -18,7 +18,6 @@ func DebugUI() {
 }
 
 func main() {
-	
 	if len(os.Args) < 3 {
 		fmt.Printf("Less command-line arguments than expected!\n")
 		fmt.Printf("Arguments:\n\n")
@@ -32,7 +31,7 @@ func main() {
 	vmemSize, parseErr := strconv.ParseInt(vmemSizeArg, 10, 64)
 
 	if parseErr != nil {
-		fmt.Errorf("Failed to parse Argument 2. Not a valid integer.")
+		fmt.Printf("Failed to parse Argument 2. Not a valid integer.")
 		return
 	}
 
@@ -55,7 +54,7 @@ func main() {
 		}
 	}
 
-	for {
+	for ia64.ContinueRunning {
 		var bundle [16]byte
 
 		err := binary.Read(instructionData, binary.LittleEndian, &bundle)
@@ -76,19 +75,21 @@ func main() {
 
 		slot2 := (asUint128.Hi & 0b1111111111111111111111111111111111111111100000000000000000000000) >> 18
 
-		fmt.Printf("\n\n\nNEW BUNDLE: template (decimal): %d\n\n\n", template)
-
-		fmt.Printf("high : %064b\n", asUint128.Hi)
-		fmt.Printf("low  :                                                                 %064b\n     :\n", asUint128.Lo)
-		fmt.Printf("whole: %064b%064b\n", asUint128.Hi, asUint128.Lo)
-		fmt.Printf("slot0:                                                                 %064b\n", slot0)
-		fmt.Printf("slot1:                        %064b\n", slot1)
-		fmt.Printf("slot2: %064b\n", slot2<<18)
+		//fmt.Printf("\n\n\nNEW BUNDLE: template (decimal): %d\n\n\n", template)
+		//
+		//fmt.Printf("high : %064b\n", asUint128.Hi)
+		//fmt.Printf("low  :                                                                 %064b\n     :\n", asUint128.Lo)
+		//fmt.Printf("whole: %064b%064b\n", asUint128.Hi, asUint128.Lo)
+		//fmt.Printf("slot0:                                                                 %064b\n", slot0)
+		//fmt.Printf("slot1:                        %064b\n", slot1)
+		//fmt.Printf("slot2: %064b\n", slot2<<18)
 
 		DecodeInstructionSlot(slot0, slot1, unitOrder.Slot0)
 		DecodeInstructionSlot(slot1, slot2, unitOrder.Slot1)
 		DecodeInstructionSlot(slot2, 0b000, unitOrder.Slot2)
 	}
+
+	fmt.Printf("\nIA64 Final Status Code: %d\n", ia64.RetrieveGeneralRegister(8).Value)
 }
 
 func DecodeInstructionSlot(slot uint64, nextSlot uint64, unit ia64.Unit) {
