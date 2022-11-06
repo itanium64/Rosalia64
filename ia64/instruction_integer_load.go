@@ -38,11 +38,11 @@ func IntegerLoad(m formats.M1_2_4) {
 		var value uint64
 
 		var speculative, //Speculative execution is a technique to preload stuff before asked
-			advanced,
+			advanced, //adds the load to the ALAT table, also sets the target registers NAT to check for detect deferral of the load
 			checkClear,
 			checkNoClear,
 			//acquire, //Ordered read, seems to mean that the bytes are read in order, if false they can appear in any order?
-			//bias, //Can ignore, apperantly hints to the implementation to acquire exclusive ownership of the line containing addressed data.
+			//bias, //Can ignore, apperantly hints to the implementation to acquire exclusive ownership of the cache line containing addressed data.
 			fill,
 			_defer bool
 
@@ -76,6 +76,7 @@ func IntegerLoad(m formats.M1_2_4) {
 
 		if !speculative && r3.NotAThing {
 			//register_nat_consumption_fault(itype)
+			return
 		}
 
 		//TODO: figure out what PSR is, and what flags do

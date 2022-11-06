@@ -24,7 +24,7 @@ func RetrieveGeneralRegister(r uint64) *Register {
 
 func RetrievePredicateRegister(pr uint64) bool {
 	//PR0 is hardwired to return true
-	if pr == 1 {
+	if pr == 0 {
 		return true
 	}
 
@@ -37,5 +37,6 @@ func SetPredicateRegister(qp uint64, value bool) {
 }
 
 func InitializeMachine(ram uint64) {
+	processor.GeneralRegisters[12].Value = ram - 8
 	memory = make([]byte, ram)
 }
