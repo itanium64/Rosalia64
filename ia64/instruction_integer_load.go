@@ -35,8 +35,16 @@ func IntegerLoad(m formats.M1_2_4) {
 
 		countBytes := bitLengthTable[m.TableX]
 		var readBytes []byte
+		var value uint64
 
-		var speculative, advanced, checkClear, checkNoClear, acquire, bias, fill, _defer bool
+		var speculative, //Speculative execution is a technique to preload stuff before asked
+			advanced,
+			checkClear,
+			checkNoClear,
+			//acquire, //Ordered read, seems to mean that the bytes are read in order, if false they can appear in any order?
+			//bias, //Can ignore, apperantly hints to the implementation to acquire exclusive ownership of the line containing addressed data.
+			fill,
+			_defer bool
 
 		switch m.TableY {
 		case 1:
@@ -47,9 +55,9 @@ func IntegerLoad(m formats.M1_2_4) {
 			speculative = true
 			advanced = true
 		case 4:
-			bias = true
+			//bias = true
 		case 5:
-			acquire = true
+			//acquire = true
 		case 6:
 			countBytes = 8
 			fill = true
@@ -59,9 +67,9 @@ func IntegerLoad(m formats.M1_2_4) {
 			checkNoClear = true
 		case 10:
 			checkClear = true
-			acquire = true
+			//acquire = true
 		default:
-			fmt.Printf("ld%d load extension not implemented! decimal %d", m.TableY)
+			fmt.Printf("ld%d load extension not implemented! decimal %d", countBytes, m.TableY)
 		}
 
 		//check := checkClear || checkNoClear
@@ -76,18 +84,53 @@ func IntegerLoad(m formats.M1_2_4) {
 		//TODO: maybe look into speculative execution?
 
 		/*
+			//Checks a lookup table of preloaded addresses,
 			if check && alat_cmp(GENERAL, r1) {
 				if checkClear {
+					//clear the lookup table of that entry if requested
 					alat_invalidate_single_entry(GENERAL, r1)
 				}
 			} else ::::
 		*/
 
 		if !_defer {
+			//Translates a virtual address to a physical one
 			//paddr := tlb_translate(r3, countBytes, itype, PSR.cpl, &mattr, &defer)
+			paddr := r3.Value
 
 			if !_defer {
-				
+				//readBytes = mem_read(paddr, size, UM.be, mattr, otype, bias | *ldhint*)
+				readBytes = memory[paddr : paddr+uint64(countBytes)]
+				value = formats.BytesToUint64(readBytes, countBytes)
+			}
+		}
+
+		if checkClear || advanced {
+			//clear the lookup table of that entry if requested
+			//alat_invalidate_single_entry(GENERAL, r1)
+		}
+
+		if _defer {
+			if speculative {
+				//executes a speculative read request
+				//r1 = natd_gr_read(paddr, size, UM.be, mattr, otype, bias | *ldhint*)
+				//r1.NotAThing = true
+			} else {
+				//r1.Value = 0
+				//r1.NotAThing = false
+			}
+		} else {
+			if fill {
+				//bitPos := r3 bits 8 to 3
+				//r1.Value = readBytes as value
+				//r1.NotAThing = RetrieveApplicationRegister(UNAT, bitPos)
+			} else {
+				r1.Value = formats.ZeroExt(value, countBytes*8)
+				r1.NotAThing = false
+			}
+
+			if checkNoClear || advanced /* && ma_is_speculative */ {
+				//alat_write(GENERAL, r1, paddr, size)
 			}
 		}
 	}
