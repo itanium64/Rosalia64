@@ -30,8 +30,17 @@ if skipOpcode:
 
 requiredTotalBits = 46
 
+longestNameLength = 0
+
 for i in range(len(names)):
-    variableString = f"{names[i]} := (instructionBits & (0b"
+    length = len(names[i]) 
+
+    if length > longestNameLength:
+        longestNameLength = length
+
+for i in range(len(names)):
+    underscores = (longestNameLength - len(names[i])) * '_'
+    variableString = f"{underscores}{names[i]} := (instructionBits & (0b"
     bitString = zeroString
 
     length = int(lengths[i])
