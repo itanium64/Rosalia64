@@ -1,24 +1,27 @@
-package ia64
+package execution
 
 import (
 	"encoding/binary"
 	"fmt"
-	"rosalia64/core/ia64/formats"
+	"rosalia64/core/declarations"
 )
 
-func IntegerStoreRegister(m formats.M1_2_4) {
-	r2 := RetrieveGeneralRegister(m.R2)
-	r3 := RetrieveGeneralRegister(m.R3)
+func ExecuteIntegerStoreRegister(attributes declarations.InstructionAttributeMap) {
+	tx := attributes[declarations.ATTRIBUTE_TABX]
+	qp := attributes[declarations.ATTRIBUTE_QP]
 
-	if RetrievePredicateRegister(m.QP) {
+	r2 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R2])
+	r3 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R3])
+
+	if RetrievePredicateRegister(qp) {
 		bitLengthTable := []uint64{
 			1, 2, 4, 8,
 		}
 
-		countBytes := bitLengthTable[m.TableX]
+		countBytes := bitLengthTable[tx]
 		regAsBytes := make([]byte, 8)
 
-		fmt.Printf("Executing: st%d [r%d] = r%d\n", countBytes, m.R3, m.R2)
+		fmt.Printf("Executing: st%d [r%d] = r%d\n", countBytes, attributes[declarations.ATTRIBUTE_R3], attributes[declarations.ATTRIBUTE_R2])
 
 		//regAsBytes
 		if r3.NotAThing || r2.NotAThing {

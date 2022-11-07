@@ -1,4 +1,4 @@
-package formats
+package declarations
 
 type Attribute uint64
 

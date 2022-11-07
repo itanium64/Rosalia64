@@ -1,4 +1,4 @@
-package ia64
+package decoding
 
 type Unit uint8
 
@@ -20,27 +20,11 @@ type UnitOrder struct {
 	Slot2 Unit
 }
 
-var I_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
-	0: IntegerMisc,
-	8: IntegerALU,
-}
-
-var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
-	0: SystemMemoryManagment,
-	4: IntegerLoadStoreSemaphoreFR,
-	8: IntegerALU,
-	9: AddImmediate22,
-}
-
-var B_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
-	0: BranchIndirectMiscellaneous,
-	2: NopBranch,
-}
-
+var I_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
+var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
+var B_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
 var F_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
-
 var L_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
-
 var X_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
 
 func GetInstructionTable(unit Unit) UnitInstructionTable {

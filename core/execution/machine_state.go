@@ -1,4 +1,4 @@
-package ia64
+package execution
 
 const (
 	MaxGeneralRegisterCount   = 128
