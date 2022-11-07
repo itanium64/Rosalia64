@@ -1,12 +1,12 @@
 package main
 
 import (
-	"Rosalia64/exe"
-	"Rosalia64/ia64"
 	"bytes"
 	"encoding/binary"
 	"fmt"
 	"os"
+	"rosalia64-core/exe"
+	"rosalia64-core/ia64"
 	"strconv"
 	"strings"
 

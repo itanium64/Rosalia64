@@ -1,9 +1,9 @@
 package ia64
 
 import (
-	"Rosalia64/ia64/formats"
 	"encoding/binary"
 	"fmt"
+	"rosalia64-core/ia64/formats"
 )
 
 func IntegerStoreRegister(m formats.M1_2_4) {

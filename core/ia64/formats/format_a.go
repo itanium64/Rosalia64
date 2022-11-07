@@ -18,7 +18,7 @@ type A5 struct {
 	QP        uint64
 }
 
-func ReadA5(instructionBits uint64, nextSlot uint64) A5 {
+func ReadA5(instructionBits uint64, nextSlot uint64) A5 {	
 	sign1 := (instructionBits & (0b0000100000000000000000000000000000000000000000)) >> 41
 	imm9d := (instructionBits & (0b0000011111111100000000000000000000000000000000)) >> 32
 	imm5c := (instructionBits & (0b0000000000000011111000000000000000000000000000)) >> 27

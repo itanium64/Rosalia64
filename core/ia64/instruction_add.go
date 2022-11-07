@@ -1,8 +1,8 @@
 package ia64
 
 import (
-	"Rosalia64/ia64/formats"
 	"fmt"
+	"rosalia64-core/ia64/formats"
 )
 
 func AddImmediate22(instructionBits uint64, nextSlot uint64) {

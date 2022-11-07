@@ -106,3 +106,17 @@ type ImageSectionHeader struct {
 	NumberOfLineNumbers  int16
 	ImageCharacteristics ImageCharacteristics
 }
+
+type ImageExportDirectory struct {
+	Characteristics       int32
+	TimeDateStamp         int32
+	MajorVersion          int16
+	MinorVersion          int16
+	Name                  int32
+	Base                  int32
+	NumberOfFunctions     int32
+	NumberOfNames         int32
+	AddressOfFunctions    int32
+	AddressOfNames        int32
+	AddressOfNameOrdinals int32
+}

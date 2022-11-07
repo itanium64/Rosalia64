@@ -1,4 +1,4 @@
-module Rosalia64
+module rosalia64-core
 
 go 1.18
 

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"os"
+	"unsafe"
 )
 
 type EXEFile struct {
@@ -42,6 +43,12 @@ func ReadExeFile(path string) EXEFile {
 	var signature Signature
 
 	binary.Read(peBuffer, binary.LittleEndian, &signature)
+
+	exportImageDirectoryPointer := dosHeader.PEPointer + uint32(unsafe.Sizeof(coffHeader)) + 4 + 2 + 96
+
+	var entryExport ImageExportDirectory
+
+	binary.Read(bytes.NewBuffer(data[exportImageDirectoryPointer:]), binary.LittleEndian, &entryExport)
 
 	if signature == SignatureExecutable32bit {
 		panic("IA64 isnt 32bit")
