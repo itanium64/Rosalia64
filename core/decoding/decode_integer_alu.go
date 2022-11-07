@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"rosalia64/core/declarations"
 	"rosalia64/core/formats"
-	"rosalia64/core/misc"
 )
 
 func (decoder *DecoderContext) DecodeAddImmediate22(instructionBits uint64, nextSlot uint64) {

@@ -34,6 +34,8 @@ var memory []byte
 
 var ContinueRunning bool
 
+var CurrentExecutionContext ExecutionContext
+
 func RetrieveGeneralRegister(r uint64) *Register {
 	return &processor.GeneralRegisters[r]
 }
@@ -53,8 +55,9 @@ func SetPredicateRegister(qp uint64, value bool) {
 }
 
 func InitializeMachine(ram uint64) {
-	processor.GeneralRegisters[12].Value = ram - StackSizeBytes
-	memory = make([]byte, ram)
+	ramSize := ram * 1024
+
+	memory = make([]byte, ramSize)
 	ContinueRunning = true
 
 	for i := 0; i != MaxGeneralRegisterCount; i++ {
@@ -62,4 +65,6 @@ func InitializeMachine(ram uint64) {
 			RegisterID: RegisterID(i),
 		}
 	}
+
+	processor.GeneralRegisters[12].Value = ramSize - StackSizeBytes
 }

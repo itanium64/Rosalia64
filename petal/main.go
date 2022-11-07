@@ -51,6 +51,7 @@ func PetalMain() {
 		}
 	}
 
+	execution.InitializeFunctionDeclarations()
 	decoding.InitializeDecoderAndTables()
 
 	for {
@@ -70,6 +71,9 @@ func PetalMain() {
 	//}
 
 	execution.InitializeMachine(uint64(vmemSize))
+	execution.NewExecutionContext(decoding.DecodingContext.ExecutableInstructions, decoding.DecodingContext.InstructionStructs)
+
+	execution.CurrentExecutionContext.Run()
 
 	fmt.Printf("\nIA64 Final Status Code: %d\n", execution.RetrieveGeneralRegister(8).Value)
 }
