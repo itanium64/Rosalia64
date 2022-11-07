@@ -30,11 +30,11 @@ func PetalMain() {
 	vmemSize, parseErr := strconv.ParseInt(vmemSizeArg, 10, 64)
 
 	if parseErr != nil {
-		fmt.Printf("Failed to parse Argument 2. Not a valid integer.")
+		fmt.Printf("Failed to parse Argument 2. Not a valid integer.\n")
 		return
 	}
 
-	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.", exeFilepath, vmemSize)
+	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.\n", exeFilepath, vmemSize)
 
 	exeFile := exe.ReadExeFile("Rimukoro.exe")
 

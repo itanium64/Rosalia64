@@ -67,7 +67,7 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 			fmt.Printf("ld%d load extension not implemented! decimal %d\n", countBytes, tableY)
 		}
 
-		fmt.Printf("Executing: ld%d r%d = [r%d]\n", countBytes, attributes[declarations.ATTRIBUTE_R1], attributes[declarations.ATTRIBUTE_R3])
+		//fmt.Printf("Executing: ld%d r%d = [r%d]\n", countBytes, attributes[declarations.ATTRIBUTE_R1], attributes[declarations.ATTRIBUTE_R3])
 
 		//check := checkClear || checkNoClear
 

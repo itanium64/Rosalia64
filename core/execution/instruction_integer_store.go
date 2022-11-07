@@ -2,7 +2,6 @@ package execution
 
 import (
 	"encoding/binary"
-	"fmt"
 	"rosalia64/core/declarations"
 )
 
@@ -20,8 +19,6 @@ func ExecuteIntegerStoreRegister(attributes declarations.InstructionAttributeMap
 
 		countBytes := bitLengthTable[tx]
 		regAsBytes := make([]byte, 8)
-
-		fmt.Printf("Executing: st%d [r%d] = r%d\n", countBytes, attributes[declarations.ATTRIBUTE_R3], attributes[declarations.ATTRIBUTE_R2])
 
 		//regAsBytes
 		if r3.NotAThing || r2.NotAThing {
