@@ -214,3 +214,20 @@ var UnitTable map[uint64]UnitOrder = map[uint64]UnitOrder{
 
 	//0x1E and 0x1F don't seem to have any units
 }
+
+var DecodingContext *DecoderContext
+
+func InitializeDecoderAndTables() {
+	DecodingContext = &DecoderContext{}
+
+	B_UnitInstructionTable[0] = DecodingContext.BranchIndirectMiscellaneous
+	B_UnitInstructionTable[2] = DecodingContext.DecodeNopBranch
+
+	I_UnitInstructionTable[0] = DecodingContext.DecodeIntegerMisc3bit
+	I_UnitInstructionTable[8] = DecodingContext.DecodeIntegerALU
+
+	M_UnitInstructionTable[0] = DecodingContext.DecodeSystemMemoryManagment3bit
+	M_UnitInstructionTable[4] = DecodingContext.DecodeIntegerLoadStoreSemaphoreFR1bit
+	M_UnitInstructionTable[8] = DecodingContext.DecodeIntegerALU
+	M_UnitInstructionTable[9] = DecodingContext.DecodeAddImmediate22
+}
