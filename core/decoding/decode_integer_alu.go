@@ -3,29 +3,22 @@ package decoding
 import (
 	"fmt"
 	"rosalia64/core/declarations"
+	"rosalia64/core/formats"
 	"rosalia64/core/misc"
 )
 
 func (decoder *DecoderContext) DecodeAddImmediate22(instructionBits uint64, nextSlot uint64) {
-	sign1 := (instructionBits & (0b0000100000000000000000000000000000000000000000)) >> 41
-	imm9d := (instructionBits & (0b0000011111111100000000000000000000000000000000)) >> 32
-	imm5c := (instructionBits & (0b0000000000000011111000000000000000000000000000)) >> 27
-	r3___ := (instructionBits & (0b0000000000000000000110000000000000000000000000)) >> 25
-	imm7b := (instructionBits & (0b0000000000000000000001111111000000000000000000)) >> 18
-	r1___ := (instructionBits & (0b0000000000000000000000000000111111100000000000)) >> 11
-	qp___ := (instructionBits & (0b0000000000000000000000000000000000011111100000)) >> 5
-
-	immediate := misc.Imm22(sign1, imm5c, imm9d, imm7b)
+	a5 := formats.ReadA5(instructionBits, nextSlot)
 
 	instructionStruct := declarations.InstructionStruct{
 		Attributes: declarations.InstructionAttributeMap{
-			declarations.ATTRIBUTE_SIGN:      sign1,
-			declarations.ATTRIBUTE_IMMEDIATE: uint64(immediate),
-			declarations.ATTRIBUTE_R1:        r1___,
-			declarations.ATTRIBUTE_R3:        r3___,
-			declarations.ATTRIBUTE_QP:        qp___,
+			declarations.ATTRIBUTE_SIGN:      a5.Sign,
+			declarations.ATTRIBUTE_IMMEDIATE: a5.Immediate,
+			declarations.ATTRIBUTE_R1:        a5.R1,
+			declarations.ATTRIBUTE_R3:        a5.R3,
+			declarations.ATTRIBUTE_QP:        a5.QP,
 		},
-		Disassembly: fmt.Sprintf("addl r%d = %d, r%d", r1___, immediate, r3___),
+		Disassembly: fmt.Sprintf("addl r%d = %d, r%d", a5.R1, a5.Immediate, a5.R3),
 	}
 
 	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.AddlImm22)
@@ -33,28 +26,19 @@ func (decoder *DecoderContext) DecodeAddImmediate22(instructionBits uint64, next
 }
 
 func (decoder *DecoderContext) DecodeAddImmediate14(instructionBits uint64, nextSlot uint64) {
-	sign_ := (instructionBits & (0b0000100000000000000000000000000000000000000000)) >> 41
-	x2a__ := (instructionBits & (0b0000011000000000000000000000000000000000000000)) >> 39
-	ve___ := (instructionBits & (0b0000000100000000000000000000000000000000000000)) >> 38
-	imm6d := (instructionBits & (0b0000000011111100000000000000000000000000000000)) >> 32
-	r3___ := (instructionBits & (0b0000000000000011111110000000000000000000000000)) >> 25
-	imm7b := (instructionBits & (0b0000000000000000000001111111000000000000000000)) >> 18
-	r1___ := (instructionBits & (0b0000000000000000000000000000111111100000000000)) >> 11
-	qp___ := (instructionBits & (0b0000000000000000000000000000000000011111100000)) >> 5
-
-	immediate := misc.Imm14(sign_, imm6d, imm7b)
+	a4 := formats.ReadA4(instructionBits, nextSlot)
 
 	instructionStruct := declarations.InstructionStruct{
 		Attributes: declarations.InstructionAttributeMap{
-			declarations.ATTRIBUTE_SIGN:      sign_,
-			declarations.ATTRIBUTE_X2A:       x2a__,
-			declarations.ATTRIBUTE_VE:        ve___,
-			declarations.ATTRIBUTE_IMMEDIATE: uint64(immediate),
-			declarations.ATTRIBUTE_R1:        r1___,
-			declarations.ATTRIBUTE_R3:        r3___,
-			declarations.ATTRIBUTE_QP:        qp___,
+			declarations.ATTRIBUTE_SIGN:      a4.Sign,
+			declarations.ATTRIBUTE_X2A:       a4.X2A,
+			declarations.ATTRIBUTE_VE:        a4.VE,
+			declarations.ATTRIBUTE_IMMEDIATE: a4.Immediate,
+			declarations.ATTRIBUTE_R1:        a4.R1,
+			declarations.ATTRIBUTE_R3:        a4.R3,
+			declarations.ATTRIBUTE_QP:        a4.QP,
 		},
-		Disassembly: fmt.Sprintf("adds r%d = %d, r%d", r1___, immediate, r3___),
+		Disassembly: fmt.Sprintf("adds r%d = %d, r%d", a4.R1, a4.Immediate, a4.R3),
 	}
 
 	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.AddsImm14)
