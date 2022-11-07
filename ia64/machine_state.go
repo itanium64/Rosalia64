@@ -5,9 +5,23 @@ const (
 	MaxPredicateRegisterCount = 64
 )
 
+const (
+	SizeKB         = 1024
+	SizeMB         = 1024 * 1024
+	StackSizeBytes = SizeMB
+)
+
+type RegisterID uint64
+
+const (
+	RegisterEAX RegisterID = 8
+	RegisterSP  RegisterID = 12
+)
+
 type Register struct {
-	Value     uint64
-	NotAThing bool
+	RegisterID RegisterID
+	Value      uint64
+	NotAThing  bool
 }
 
 type IAProcessorState struct {
@@ -39,7 +53,13 @@ func SetPredicateRegister(qp uint64, value bool) {
 }
 
 func InitializeMachine(ram uint64) {
-	processor.GeneralRegisters[12].Value = ram - 8
+	processor.GeneralRegisters[12].Value = ram - StackSizeBytes
 	memory = make([]byte, ram)
 	ContinueRunning = true
+
+	for i := 0; i != MaxGeneralRegisterCount; i++ {
+		processor.GeneralRegisters[i] = Register{
+			RegisterID: RegisterID(i),
+		}
+	}
 }
