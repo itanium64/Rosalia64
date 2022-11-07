@@ -1,4 +1,4 @@
-package ia64
+package decoding
 
 type Unit uint8
 
@@ -20,27 +20,11 @@ type UnitOrder struct {
 	Slot2 Unit
 }
 
-var I_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
-	0: IntegerMisc,
-	8: IntegerALU,
-}
-
-var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
-	0: SystemMemoryManagment,
-	4: IntegerLoadStoreSemaphoreFR,
-	8: IntegerALU,
-	9: AddImmediate22,
-}
-
-var B_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{
-	0: BranchIndirectMiscellaneous,
-	2: NopBranch,
-}
-
+var I_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
+var M_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
+var B_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
 var F_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
-
 var L_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
-
 var X_UnitInstructionTable UnitInstructionTable = UnitInstructionTable{}
 
 func GetInstructionTable(unit Unit) UnitInstructionTable {
@@ -229,4 +213,21 @@ var UnitTable map[uint64]UnitOrder = map[uint64]UnitOrder{
 	},
 
 	//0x1E and 0x1F don't seem to have any units
+}
+
+var DecodingContext *DecoderContext
+
+func InitializeDecoderAndTables() {
+	DecodingContext = &DecoderContext{}
+
+	B_UnitInstructionTable[0] = DecodingContext.BranchIndirectMiscellaneous
+	B_UnitInstructionTable[2] = DecodingContext.DecodeNopBranch
+
+	I_UnitInstructionTable[0] = DecodingContext.DecodeIntegerMisc3bit
+	I_UnitInstructionTable[8] = DecodingContext.DecodeIntegerALU
+
+	M_UnitInstructionTable[0] = DecodingContext.DecodeSystemMemoryManagment3bit
+	M_UnitInstructionTable[4] = DecodingContext.DecodeIntegerLoadStoreSemaphoreFR1bit
+	M_UnitInstructionTable[8] = DecodingContext.DecodeIntegerALU
+	M_UnitInstructionTable[9] = DecodingContext.DecodeAddImmediate22
 }

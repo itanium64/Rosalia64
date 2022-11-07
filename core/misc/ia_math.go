@@ -1,4 +1,4 @@
-package formats
+package misc
 
 import "encoding/binary"
 

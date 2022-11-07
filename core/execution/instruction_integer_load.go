@@ -1,39 +1,33 @@
-package ia64
+package execution
 
 import (
 	"fmt"
-	"rosalia64/core/ia64/formats"
+	"rosalia64/core/declarations"
+	"rosalia64/core/misc"
 )
 
-func IntegerLoadWithRegister(instructionBits uint64, nextSlot uint64) {
-	m := formats.ReadM1(instructionBits, nextSlot)
+func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttributeMap) {
+	tableX := attributes[declarations.ATTRIBUTE_TABX]
+	tableY := attributes[declarations.ATTRIBUTE_TABY]
 
-	fmt.Printf("tabx      : %d\n", m.TableX)
-	fmt.Printf("taby      : %d\n", m.TableY)
-	fmt.Printf("hint      : %d\n", m.Hint)
-	fmt.Printf("r1        : %d\n", m.R1)
-	fmt.Printf("r2        : %d\n", m.R2)
-	fmt.Printf("r3        : %d\n", m.R3)
-	fmt.Printf("qp        : %d\n", m.QP)
-}
+	qp := attributes[declarations.ATTRIBUTE_QP]
 
-func IntegerLoad(m formats.M1_2_4) {
-	r1 := RetrieveGeneralRegister(m.R1)
-	r3 := RetrieveGeneralRegister(m.R3)
+	r1 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R1])
+	r3 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R3])
 
 	if r1.Value == r3.Value {
 		//Illegal operation fault
 		return
 	}
 
-	if RetrievePredicateRegister(m.QP) {
+	if RetrievePredicateRegister(qp) {
 		//TODO: check_target_register(r1)
 
 		bitLengthTable := []int{
 			1, 2, 4, 8,
 		}
 
-		countBytes := bitLengthTable[m.TableX]
+		countBytes := bitLengthTable[tableX]
 		var readBytes []byte
 		var value uint64
 
@@ -46,7 +40,7 @@ func IntegerLoad(m formats.M1_2_4) {
 			fill,
 			_defer bool
 
-		switch m.TableY {
+		switch tableY {
 		case 0:
 		case 1:
 			speculative = true
@@ -70,10 +64,10 @@ func IntegerLoad(m formats.M1_2_4) {
 			checkClear = true
 			//acquire = true
 		default:
-			fmt.Printf("ld%d load extension not implemented! decimal %d\n", countBytes, m.TableY)
+			fmt.Printf("ld%d load extension not implemented! decimal %d\n", countBytes, tableY)
 		}
 
-		fmt.Printf("Executing: ld%d r%d = [r%d]\n", countBytes, m.R1, m.R3)
+		//fmt.Printf("Executing: ld%d r%d = [r%d]\n", countBytes, attributes[declarations.ATTRIBUTE_R1], attributes[declarations.ATTRIBUTE_R3])
 
 		//check := checkClear || checkNoClear
 
@@ -105,7 +99,7 @@ func IntegerLoad(m formats.M1_2_4) {
 			if !_defer {
 				//readBytes = mem_read(paddr, size, UM.be, mattr, otype, bias | *ldhint*)
 				readBytes = memory[paddr : paddr+uint64(countBytes)]
-				value = formats.BytesToUint64(readBytes, countBytes)
+				value = misc.BytesToUint64(readBytes, countBytes)
 			}
 		}
 
@@ -129,7 +123,7 @@ func IntegerLoad(m formats.M1_2_4) {
 				//r1.Value = readBytes as value
 				//r1.NotAThing = RetrieveApplicationRegister(UNAT, bitPos)
 			} else {
-				r1.Value = formats.ZeroExt(value, countBytes*8)
+				r1.Value = misc.ZeroExt(value, countBytes*8)
 				r1.NotAThing = false
 			}
 
@@ -138,21 +132,4 @@ func IntegerLoad(m formats.M1_2_4) {
 			}
 		}
 	}
-}
-
-func IntegerLoadStore(instructionBits uint64, nextSlot uint64) {
-	m := formats.ReadM1(instructionBits, nextSlot)
-
-	if m.TableY >= 12 {
-		IntegerStoreRegister(m)
-	} else {
-		IntegerLoad(m)
-	}
-
-	fmt.Printf("tabx     : %d\n", m.TableX)
-	fmt.Printf("taby     : %d\n", m.TableY)
-	fmt.Printf("hint     : %d\n", m.Hint)
-	fmt.Printf("r2       : %d\n", m.R2)
-	fmt.Printf("r3       : %d\n", m.R3)
-	fmt.Printf("qp       : %d\n", m.QP)
 }
