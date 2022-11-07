@@ -2,7 +2,7 @@ package ia64
 
 import (
 	"fmt"
-	"rosalia64-core/ia64/formats"
+	"rosalia64/core/ia64/formats"
 )
 
 func BranchIndirectReturn(instructionBits uint64, nextSlot uint64) {

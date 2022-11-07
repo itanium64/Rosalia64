@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Rosalia64",
+            "name": "Launch PetalVM",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}",
             "cwd": "${workspaceFolder}/build",
-            "output": "build/Rosalia64.exe",
+            "output": "build/petal-vm.exe",
             "args": [
                 "Rimukoro.exe",
                 "524288"

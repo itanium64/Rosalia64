@@ -1,12 +1,12 @@
-package main
+package petal
 
 import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
 	"os"
-	"rosalia64-core/exe"
-	"rosalia64-core/ia64"
+	"rosalia64/core/exe"
+	"rosalia64/core/ia64"
 	"strconv"
 	"strings"
 
@@ -17,7 +17,7 @@ func DebugUI() {
 
 }
 
-func main() {
+func PetalMain() {
 	if len(os.Args) < 3 {
 		fmt.Printf("Less command-line arguments than expected!\n")
 		fmt.Printf("Arguments:\n\n")
