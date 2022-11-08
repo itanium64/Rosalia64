@@ -99,15 +99,13 @@ generateVariableDecoders(names, lengths, True)
 print(f"\n\treturn {formatName.upper()}" + " {")
 
 for name in names:
-    if name != "_":
-        continue
-
     if name.lower().startswith("imm"):
         if immediateCreated == True:
             print(f"\t\tImmediate: immediate,")
             immediateCreated = False
         
         continue
+
     if name != "_":
         print(f"\t\t{name}: {underscoredNameDict[name]},")
 
