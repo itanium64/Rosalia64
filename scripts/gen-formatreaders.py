@@ -23,6 +23,8 @@ for arg in sys.argv:
 names = namesArg.split(",")
 lengths = lengthsArg.split(",")
 
+underscoredNameDict = {}
+
 def generateVariableDecoders(names, lengths, tab):
     if len(names) != len(lengths):
         print("There have to be an equal amount of names and lengths!")
@@ -49,9 +51,12 @@ def generateVariableDecoders(names, lengths, tab):
             longestNameLength = length
 
     for i in range(len(names)):
+
         underscores = (longestNameLength - len(names[i])) * '_'
         variableString = f"{stringTab}{underscores}{names[i]} := (instructionBits & (0b"
         bitString = zeroString
+
+        underscoredNameDict[names[i]] = f"{underscores}{names[i]}"
 
         length = int(lengths[i])
 
@@ -65,7 +70,8 @@ def generateVariableDecoders(names, lengths, tab):
 
         variableString += f")) >> {remainingZeroes}"
 
-        print(variableString)
+        if names[i] != "_":
+            print(variableString)
 
 # Generation Starts Here
 
@@ -81,12 +87,30 @@ for name in names:
         
         continue
     
-    print(f"\t{name.capitalize()} uint64")
+    if name != "_":
+        print(f"\t{name.capitalize()} uint64")
 
 print("}\n")
 
 print(f"func Read{formatName.upper()}(instructionBits uint64, nextSlot uint64) {formatName.upper()} " + "{")
 
 generateVariableDecoders(names, lengths, True)
+
+print(f"\n\treturn {formatName.upper()}" + " {")
+
+for name in names:
+    if name != "_":
+        continue
+
+    if name.lower().startswith("imm"):
+        if immediateCreated == True:
+            print(f"\t\tImmediate: immediate,")
+            immediateCreated = False
+        
+        continue
+    if name != "_":
+        print(f"\t\t{name}: {underscoredNameDict[name]},")
+
+print("\t}")
 
 print("}")
