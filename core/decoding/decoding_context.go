@@ -8,11 +8,13 @@ import (
 )
 
 type DecoderContext struct {
-	ExecutableInstructions []declarations.ExecutableInstruction
-	InstructionStructs     []declarations.InstructionStruct
+	ExecutableInstructions    []declarations.ExecutableInstruction
+	InstructionStructs        []declarations.InstructionStruct
+	InstructionIndex          uint64
+	AddressToInstructionIndex map[uint64]uint64
 }
 
-func (decoder *DecoderContext) NextBundle(bundle [16]byte) {
+func (decoder *DecoderContext) NextBundle(bundle [16]byte, addressBase uint64) {
 	asUint128 := uint128.FromBytes(bundle[:])
 
 	if asUint128.Hi == 0 && asUint128.Lo == 0 {
@@ -37,9 +39,13 @@ func (decoder *DecoderContext) NextBundle(bundle [16]byte) {
 	//fmt.Printf("slot1:                        %064b\n", slot1)
 	//fmt.Printf("slot2: %064b\n", slot2<<18)
 
+	decoder.AddressToInstructionIndex[addressBase] = decoder.InstructionIndex
+
 	decoder.decodeInstructionSlot(slot0, slot1, unitOrder.Slot0)
 	decoder.decodeInstructionSlot(slot1, slot2, unitOrder.Slot1)
 	decoder.decodeInstructionSlot(slot2, 0b000, unitOrder.Slot2)
+
+	decoder.InstructionIndex += 3
 }
 
 func (decoder *DecoderContext) decodeInstructionSlot(slot uint64, nextSlot uint64, unit Unit) {
@@ -52,7 +58,7 @@ func (decoder *DecoderContext) decodeInstructionSlot(slot uint64, nextSlot uint6
 	if !exists {
 		fmt.Printf("\nUNIMPLEMENTED!!!: \n")
 		fmt.Printf("unit : %s\n", UnitToString(unit))
-		fmt.Printf("major: %d\n", majorOpcode)
+		fmt.Printf("major: %d\n\n", majorOpcode)
 
 		return
 	}

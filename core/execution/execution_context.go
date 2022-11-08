@@ -9,9 +9,9 @@ type ExecutionContext struct {
 	InstructionStructs     []declarations.InstructionStruct
 }
 
-func NewExecutionContext(instructions []declarations.ExecutableInstruction, instructionStructs []declarations.InstructionStruct) {
+func NewExecutionContext(instructions []declarations.ExecutableInstruction, instructionStructs []declarations.InstructionStruct, instructionIndex uint64) {
 	CurrentExecutionContext = ExecutionContext{
-		InstructionIndex:       0,
+		InstructionIndex:       instructionIndex,
 		Paused:                 false,
 		ExecutableInstructions: instructions,
 		InstructionStructs:     instructionStructs,

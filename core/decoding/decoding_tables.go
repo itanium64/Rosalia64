@@ -218,7 +218,9 @@ var UnitTable map[uint64]UnitOrder = map[uint64]UnitOrder{
 var DecodingContext *DecoderContext
 
 func InitializeDecoderAndTables() {
-	DecodingContext = &DecoderContext{}
+	DecodingContext = &DecoderContext{
+		AddressToInstructionIndex: make(map[uint64]uint64),
+	}
 
 	B_UnitInstructionTable[0] = DecodingContext.BranchIndirectMiscellaneous
 	B_UnitInstructionTable[2] = DecodingContext.DecodeNopBranch

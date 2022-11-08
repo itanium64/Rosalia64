@@ -52,6 +52,11 @@ func (decoder *DecoderContext) DecodeIntegerALU(instructionBits uint64, nextSlot
 	case 2:
 		if ve__ == 0 {
 			decoder.DecodeAddImmediate14(instructionBits, nextSlot)
+		} else {
+			fmt.Printf("UNIMPLEMENTED!!!: DecodeIntegerALU\nx2a: %d\nve: %d\n\n", x2a_, ve__)
+
 		}
+	default:
+		fmt.Printf("UNIMPLEMENTED!!!: DecodeIntegerALU\nx2a: %d\nve: %d\n\n", x2a_, ve__)
 	}
 }

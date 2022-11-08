@@ -70,9 +70,11 @@ func (decoder *DecoderContext) DecodeIntegerLoadStoreSemaphoreFR1bit(instruction
 		}
 
 		//Integer Load +Reg Opcode Extensions
+		fmt.Printf("UNIMPLEMENTED!!! DecodeIntegerLoadStoreSemaphoreFR1bit\nm: 1\nx: 0\n\n")
 	} else {
 		if x == 1 {
 			//Semaphore/get FR
+			fmt.Printf("UNIMPLEMENTED!!! DecodeIntegerLoadStoreSemaphoreFR1bit\nm: 0\nx: 0\n\n")
 			return
 		}
 

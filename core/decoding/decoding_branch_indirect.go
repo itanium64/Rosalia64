@@ -37,5 +37,11 @@ func (decoder *DecoderContext) BranchIndirectMiscellaneous(instructionBits uint6
 		//this table still goes on
 	}
 
-	subinstructionTable[tableY][tableX](instructionBits, nextSlot)
+	tableResult := subinstructionTable[tableY][tableX]
+
+	if tableResult != nil {
+		tableResult(instructionBits, nextSlot)
+	} else {
+		fmt.Printf("UNIMPLEMENTED!!!: BranchIndirectMiscellaneous\nTableX: %d\nTableY: %d\n\n", tableX, tableY)
+	}
 }

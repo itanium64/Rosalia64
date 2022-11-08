@@ -36,23 +36,39 @@ func PetalMain() {
 
 	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.\n", exeFilepath, vmemSize)
 
-	exeFile := exe.ReadExeFile("Rimukoro.exe")
+	exeFile := exe.ReadExeFile(exeFilepath)
 
-	//TODO: don't do this wrong! you arent supposed to start from .text
 	var instructionData *bytes.Buffer
+	var rdata *bytes.Buffer
+
+	var textAddress int32
+	//var rdataAddress int32
 
 	for _, image := range exeFile.ImageSections {
 		isText := strings.HasPrefix(string(image.Name[:]), ".text")
+		isRdata := strings.HasPrefix(string(image.Name[:]), ".rdata")
 
 		if isText {
 			rawData := exeFile.RawFileData[image.PointerToRawData : image.PointerToRawData+image.SizeOfRawData]
+			textAddress = image.VirtualAddress
 			instructionData = bytes.NewBuffer(rawData)
-			break
+		}
+
+		if isRdata {
+			rawData := exeFile.RawFileData[image.PointerToRawData : image.PointerToRawData+image.SizeOfRawData]
+			rdata = bytes.NewBuffer(rawData)
+			//rdataAddress = image.VirtualAddress
 		}
 	}
 
+	var entryPoint uint64
+
+	binary.Read(rdata, binary.LittleEndian, &entryPoint)
+
 	execution.InitializeFunctionDeclarations()
 	decoding.InitializeDecoderAndTables()
+
+	currentAddress := exeFile.COFFOptionalHeader.OptionalHeader.ImageBase + int64(textAddress)
 
 	for {
 		var bundle [16]byte
@@ -63,15 +79,13 @@ func PetalMain() {
 			break
 		}
 
-		decoding.DecodingContext.NextBundle(bundle)
+		decoding.DecodingContext.NextBundle(bundle, uint64(currentAddress))
+
+		currentAddress += 16
 	}
 
-	//for execution.ContinueRunning {
-
-	//}
-
 	execution.InitializeMachine(uint64(vmemSize))
-	execution.NewExecutionContext(decoding.DecodingContext.ExecutableInstructions, decoding.DecodingContext.InstructionStructs)
+	execution.NewExecutionContext(decoding.DecodingContext.ExecutableInstructions, decoding.DecodingContext.InstructionStructs, decoding.DecodingContext.AddressToInstructionIndex[entryPoint])
 
 	execution.CurrentExecutionContext.Run()
 

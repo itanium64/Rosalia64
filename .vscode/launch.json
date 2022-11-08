@@ -13,7 +13,7 @@
             "cwd": "${workspaceFolder}/build",
             "output": "build/petal-vm.exe",
             "args": [
-                "Rimukoro.exe",
+                "TestCases/SimpleFunction.exe",
                 "524288"
             ],   
         },
