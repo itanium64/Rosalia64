@@ -38,7 +38,13 @@ var ContinueRunning bool
 var CurrentExecutionContext ExecutionContext
 
 func RetrieveGeneralRegister(r uint64) *Register {
-	return &processor.GeneralRegisters[r]
+	if r < 32 {
+		return &processor.GeneralRegisters[r]
+	} else {
+		register := (r - 32) + processor.RegisterStackEngine.CurrentFrame().RegisterBase
+
+		return &processor.GeneralRegisters[register]
+	}
 }
 
 func RetrievePredicateRegister(pr uint64) bool {

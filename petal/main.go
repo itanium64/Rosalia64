@@ -8,7 +8,6 @@ import (
 	"rosalia64/core/decoding"
 	"rosalia64/core/exe"
 	"rosalia64/core/execution"
-	"rosalia64/core/structures"
 	"strconv"
 	"strings"
 )
@@ -18,43 +17,6 @@ func DebugUI() {
 }
 
 func PetalMain() {
-	//Stack test
-	stack := structures.Stack[int]{}
-
-	stack.Push(123)
-	stack.Push(89)
-	stack.Push(1111)
-
-	popped := stack.Pop()
-	popped = popped
-
-	top := stack.Top()
-	top = top
-
-	stack.Push(9231)
-
-	top2 := stack.Top()
-	top2 = top2
-
-	popped2 := stack.Pop()
-	popped2 = popped2
-
-	popped3 := stack.Pop()
-	popped3 = popped3
-
-	stack.Push(69420)
-
-	popped4 := stack.Pop()
-	popped4 = popped4
-
-	popped5 := stack.Pop()
-	popped5 = popped5
-
-	top123 := stack.Pop()
-	top123 = top123
-
-	//End of stack test
-
 	if len(os.Args) < 3 {
 		fmt.Printf("Less command-line arguments than expected!\n")
 		fmt.Printf("Arguments:\n\n")
