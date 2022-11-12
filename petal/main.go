@@ -50,6 +50,9 @@ func PetalMain() {
 	popped5 := stack.Pop()
 	popped5 = popped5
 
+	top123 := stack.Pop()
+	top123 = top123
+
 	//End of stack test
 
 	if len(os.Args) < 3 {

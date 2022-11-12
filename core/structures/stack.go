@@ -17,14 +17,22 @@ func (stack *Stack[T]) Push(value T) {
 	stack.index++
 }
 
-func (stack *Stack[T]) Pop() T {
+func (stack *Stack[T]) Pop() *T {
+	if stack.index == 0 {
+		return nil
+	}
+
 	stack.index--
 
 	top := stack.values[stack.index]
 
-	return top
+	return &top
 }
 
-func (stack *Stack[T]) Top() T {
-	return stack.values[stack.index-1]
+func (stack *Stack[T]) Top() *T {
+	if stack.index == 0 {
+		return nil
+	}
+
+	return &stack.values[stack.index-1]
 }
