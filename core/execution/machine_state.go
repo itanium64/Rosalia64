@@ -25,8 +25,9 @@ type Register struct {
 }
 
 type IAProcessorState struct {
-	GeneralRegisters   [MaxGeneralRegisterCount]Register
-	PredicateRegisters [MaxPredicateRegisterCount]bool
+	GeneralRegisters    [MaxGeneralRegisterCount]Register
+	PredicateRegisters  [MaxPredicateRegisterCount]bool
+	RegisterStackEngine RegisterStackEngine
 }
 
 var processor IAProcessorState = IAProcessorState{}
