@@ -24,6 +24,7 @@ func PetalMain() {
 		return
 	}
 
+	//Get command line arguments
 	exeFilepath := os.Args[1]
 	vmemSizeArg := os.Args[2]
 
@@ -36,14 +37,15 @@ func PetalMain() {
 
 	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.\n", exeFilepath, vmemSize)
 
+	//Read exe file
 	exeFile := exe.ReadExeFile(exeFilepath)
 
 	var instructionData *bytes.Buffer
 	var rdata *bytes.Buffer
 
 	var textAddress int32
-	//var rdataAddress int32
 
+	//find .text for code and .rdata for the entrypoint
 	for _, image := range exeFile.ImageSections {
 		isText := strings.HasPrefix(string(image.Name[:]), ".text")
 		isRdata := strings.HasPrefix(string(image.Name[:]), ".rdata")
@@ -57,17 +59,20 @@ func PetalMain() {
 		if isRdata {
 			rawData := exeFile.RawFileData[image.PointerToRawData : image.PointerToRawData+image.SizeOfRawData]
 			rdata = bytes.NewBuffer(rawData)
-			//rdataAddress = image.VirtualAddress
 		}
 	}
 
 	var entryPoint uint64
 
+	//read entrypoint
 	binary.Read(rdata, binary.LittleEndian, &entryPoint)
 
+	//initialize decoder
 	execution.InitializeFunctionDeclarations()
 	decoding.InitializeDecoderAndTables()
 
+	//Store current address, this is so the decoder can store which instructions live where
+	//this is used to know exactly to which instruction to jump to when branching
 	currentAddress := exeFile.COFFOptionalHeader.OptionalHeader.ImageBase + int64(textAddress)
 
 	for {
@@ -84,9 +89,11 @@ func PetalMain() {
 		currentAddress += 16
 	}
 
+	//Initialize VM
 	execution.InitializeMachine(uint64(vmemSize))
 	execution.NewExecutionContext(decoding.DecodingContext.ExecutableInstructions, decoding.DecodingContext.InstructionStructs, decoding.DecodingContext.AddressToInstructionIndex[entryPoint])
 
+	//Let it run free
 	execution.CurrentExecutionContext.Run()
 
 	fmt.Printf("\nIA64 Final Status Code: %d\n", execution.RetrieveGeneralRegister(8).Value)

@@ -49,12 +49,17 @@ func (decoder *DecoderContext) NextBundle(bundle [16]byte, addressBase uint64) {
 }
 
 func (decoder *DecoderContext) decodeInstructionSlot(slot uint64, nextSlot uint64, unit Unit) {
+	//determine major opcode
 	majorOpcode := slot & (0b1111 << 42) >> 42
 
+	//retrieve which instruction table to use (given a unit)
+	//because major opcodes are dependent on the unit, not
+	//major opcodes dont always execute the same instruction
 	table := GetInstructionTable(unit)
 
 	instruction, exists := table[majorOpcode]
 
+	//Unimplemented warning
 	if !exists {
 		fmt.Printf("\nUNIMPLEMENTED!!!: \n")
 		fmt.Printf("unit : %s\n", UnitToString(unit))
@@ -63,5 +68,6 @@ func (decoder *DecoderContext) decodeInstructionSlot(slot uint64, nextSlot uint6
 		return
 	}
 
+	//execute decoding
 	instruction(slot, nextSlot)
 }
