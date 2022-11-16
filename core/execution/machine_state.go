@@ -46,6 +46,14 @@ var ContinueRunning bool
 var CurrentExecutionContext ExecutionContext
 
 func RetrieveGeneralRegister(r uint64) *Register {
+	if r == 0 {
+		return &Register{
+			Value:      0,
+			NotAThing:  false,
+			RegisterID: RegisterID(r),
+		}
+	}
+
 	if r < 32 {
 		return &processor.GeneralRegisters[r]
 	} else {
@@ -64,18 +72,23 @@ func RetrievePredicateRegister(pr uint64) bool {
 	return processor.PredicateRegisters[pr]
 }
 
-func RetrieveFloatingPointRegisterValue(fr uint64) float64 {
-	return processor.FloatingRegisters[fr].Value
-}
-
-func SetFloatingPointRegisterValue(fr uint64, value float64) bool {
-	if fr == 0 || fr == 1 {
-		return false
+func RetrieveFloatingPointRegister(fr uint64) *FloatingRegister {
+	switch fr {
+	case 0:
+		return &FloatingRegister{
+			Value:      0,
+			NotAThing:  false,
+			RegisterID: RegisterID(fr),
+		}
+	case 1:
+		return &FloatingRegister{
+			Value:      1,
+			NotAThing:  false,
+			RegisterID: RegisterID(fr),
+		}
+	default:
+		return &processor.FloatingRegisters[fr]
 	}
-
-	processor.FloatingRegisters[fr].Value = value
-
-	return true
 }
 
 func SetPredicateRegister(qp uint64, value bool) {
