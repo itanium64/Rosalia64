@@ -10,7 +10,7 @@ func ExecuteAddlImm22(attributes declarations.InstructionAttributeMap) {
 	immd := attributes[declarations.ATTRIBUTE_IMMEDIATE]
 	__qp := attributes[declarations.ATTRIBUTE_QP]
 
-	if RetrievePredicateRegister(__qp) {
+	if *RetrievePredicateRegister(__qp) {
 		//todo: check_target_register(r1)
 
 		r1 := RetrieveGeneralRegister(reg1)
@@ -27,7 +27,7 @@ func ExecuteAddsImm14(attributes declarations.InstructionAttributeMap) {
 	immd := attributes[declarations.ATTRIBUTE_IMMEDIATE]
 	__qp := attributes[declarations.ATTRIBUTE_QP]
 
-	if RetrievePredicateRegister(__qp) {
+	if *RetrievePredicateRegister(__qp) {
 		//todo: check_target_register(r1)
 
 		r1 := RetrieveGeneralRegister(reg1)

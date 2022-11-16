@@ -12,7 +12,7 @@ func ExecuteIntegerStoreRegister(attributes declarations.InstructionAttributeMap
 	r2 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R2])
 	r3 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R3])
 
-	if RetrievePredicateRegister(qp) {
+	if *RetrievePredicateRegister(qp) {
 		bitLengthTable := []uint64{
 			1, 2, 4, 8,
 		}

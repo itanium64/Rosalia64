@@ -20,7 +20,7 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 		return
 	}
 
-	if RetrievePredicateRegister(qp) {
+	if *RetrievePredicateRegister(qp) {
 		//TODO: check_target_register(r1)
 
 		bitLengthTable := []int{
