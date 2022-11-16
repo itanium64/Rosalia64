@@ -1,8 +1,9 @@
 package execution
 
 const (
-	MaxGeneralRegisterCount   = 128
-	MaxPredicateRegisterCount = 64
+	MaxGeneralRegisterCount       = 128
+	MaxFloatingPointRegisterCount = 128
+	MaxPredicateRegisterCount     = 64
 )
 
 const (
@@ -24,9 +25,16 @@ type Register struct {
 	NotAThing  bool
 }
 
+type FloatingRegister struct {
+	RegisterID RegisterID
+	Value      float64
+	NotAThing  bool
+}
+
 type IAProcessorState struct {
 	GeneralRegisters    [MaxGeneralRegisterCount]Register
 	PredicateRegisters  [MaxPredicateRegisterCount]bool
+	FloatingRegisters   [MaxFloatingPointRegisterCount]FloatingRegister
 	RegisterStackEngine RegisterStackEngine
 }
 
@@ -56,6 +64,20 @@ func RetrievePredicateRegister(pr uint64) bool {
 	return processor.PredicateRegisters[pr]
 }
 
+func RetrieveFloatingPointRegisterValue(fr uint64) float64 {
+	return processor.FloatingRegisters[fr].Value
+}
+
+func SetFloatingPointRegisterValue(fr uint64, value float64) bool {
+	if fr == 0 || fr == 1 {
+		return false
+	}
+
+	processor.FloatingRegisters[fr].Value = value
+
+	return true
+}
+
 func SetPredicateRegister(qp uint64, value bool) {
 	//We don't have to worry about PR0 because in the Retrieve it always return 1 is PR0 is retrieved.
 	processor.PredicateRegisters[qp] = value
@@ -74,4 +96,7 @@ func InitializeMachine(ram uint64) {
 	}
 
 	processor.GeneralRegisters[12].Value = ramSize - StackSizeBytes
+
+	processor.FloatingRegisters[0].Value = 0
+	processor.FloatingRegisters[1].Value = 1
 }
