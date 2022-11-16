@@ -63,13 +63,15 @@ func RetrieveGeneralRegister(r uint64) *Register {
 	}
 }
 
-func RetrievePredicateRegister(pr uint64) bool {
+func RetrievePredicateRegister(pr uint64) *bool {
+	trueValue := true
+
 	//PR0 is hardwired to return true
 	if pr == 0 {
-		return true
+		return &trueValue
 	}
 
-	return processor.PredicateRegisters[pr]
+	return &processor.PredicateRegisters[pr]
 }
 
 func RetrieveFloatingPointRegister(fr uint64) *FloatingRegister {
@@ -91,11 +93,6 @@ func RetrieveFloatingPointRegister(fr uint64) *FloatingRegister {
 	}
 }
 
-func SetPredicateRegister(qp uint64, value bool) {
-	//We don't have to worry about PR0 because in the Retrieve it always return 1 is PR0 is retrieved.
-	processor.PredicateRegisters[qp] = value
-}
-
 func InitializeMachine(ram uint64) {
 	ramSize := ram * 1024
 
@@ -108,7 +105,7 @@ func InitializeMachine(ram uint64) {
 		}
 	}
 
-	processor.GeneralRegisters[12].Value = ramSize - StackSizeBytes
+	processor.GeneralRegisters[RegisterSP].Value = ramSize - StackSizeBytes
 
 	processor.FloatingRegisters[0].Value = 0
 	processor.FloatingRegisters[1].Value = 1
