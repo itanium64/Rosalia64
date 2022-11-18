@@ -8,6 +8,8 @@ import (
 	"rosalia64/core/decoding"
 	"rosalia64/core/exe"
 	"rosalia64/core/execution"
+	"rosalia64/wiewiur"
+	"rosalia64/wiewiur/extractor"
 	"strconv"
 	"strings"
 )
@@ -24,15 +26,63 @@ func PetalMain() {
 		return
 	}
 
-	//Get command line arguments
-	exeFilepath := os.Args[1]
-	vmemSizeArg := os.Args[2]
+	var vmemSize int64
+	var exeFilepath string
+	var launchWiewiur bool
+	var wiewiurExt bool
+	var wiewiurIso string
+	var wiewiurVersion wiewiur.SystemVersion
 
-	vmemSize, parseErr := strconv.ParseInt(vmemSizeArg, 10, 64)
+	for i := 1; i != len(os.Args); i++ {
+		split := strings.Split(os.Args[i], "=")
 
-	if parseErr != nil {
-		fmt.Printf("Failed to parse Argument 2. Not a valid integer.\n")
-		return
+		if len(split) == 0 {
+			continue
+		}
+
+		var key, val string
+
+		key = split[0]
+
+		if len(split) == 2 {
+			val = split[1]
+		}
+
+		switch key {
+		case "-vmemsize":
+			memSize, parseErr := strconv.ParseInt(val, 10, 64)
+
+			if parseErr != nil {
+				fmt.Printf("Failed to parse Argument 2. Not a valid integer.\n")
+				return
+			}
+
+			vmemSize = memSize
+		case "-exe":
+			exeFilepath = val
+		case "-wiewiur":
+			launchWiewiur = true
+		case "-wiewiur-extract":
+			wiewiurExt = true
+		case "-wiewiur-iso":
+			wiewiurIso = val
+		case "-wiewiur-sys":
+			switch val {
+			case "win2003":
+				wiewiurVersion = wiewiur.WindowsServer2003
+			}
+		}
+	}
+
+	if launchWiewiur {
+		if wiewiurExt {
+			switch wiewiurVersion {
+			case wiewiur.WindowsServer2003:
+				extractor := extractor.CreateWindows2003Extractor()
+				extractor.AssignDiskImage(wiewiurIso)
+				extractor.ExtractFiles("iawow")
+			}
+		}
 	}
 
 	fmt.Printf("Starting Execution of `%s` with %d Kilobytes of Memory.\n", exeFilepath, vmemSize)

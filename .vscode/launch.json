@@ -13,8 +13,23 @@
             "cwd": "${workspaceFolder}/build",
             "output": "build/petal-vm.exe",
             "args": [
-                "TestCases/SimpleFunction.exe",
-                "524288"
+                "-exe=TestCases/SimpleFunction.exe",
+                "-vmemsize=524288"
+            ],   
+        },
+        {
+            "name": "Launch Wiewiur Extractor",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/build",
+            "output": "build/petal-vm.exe",
+            "args": [
+                "-wiewiur",
+                "-wiewiur-extract",
+                "-wiewiur-sys=win2003",
+                "-wiewiur-iso=en_windows_server_2003_with_sp1_enterprise_ia64_dvd.iso"
             ],   
         },
     ]
