@@ -32,12 +32,12 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 		var value uint64
 
 		var speculative, //Speculative execution is a technique to preload stuff before asked
-			advanced, //adds the load to the ALAT table, also sets the target registers NAT to check for detect deferral of the load
-			checkClear,
-			checkNoClear,
+			//advanced, //adds the load to the ALAT table, also sets the target registers NAT to check for detect deferral of the load
+			//checkClear,
+			//checkNoClear,
 			//acquire, //Ordered read, seems to mean that the bytes are read in order, if false they can appear in any order?
 			//bias, //Can ignore, apperantly hints to the implementation to acquire exclusive ownership of the cache line containing addressed data.
-			fill,
+			//fill,
 			_defer bool
 
 		switch tableY {
@@ -45,23 +45,23 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 		case 1:
 			speculative = true
 		case 2:
-			advanced = true
+			//advanced = true
 		case 3:
 			speculative = true
-			advanced = true
+			//advanced = true
 		case 4:
 			//bias = true
 		case 5:
 			//acquire = true
 		case 6:
 			countBytes = 8
-			fill = true
+			//fill = true
 		case 8:
-			checkClear = true
+			//checkClear = true
 		case 9:
-			checkNoClear = true
+			//checkNoClear = true
 		case 10:
-			checkClear = true
+			//checkClear = true
 			//acquire = true
 		default:
 			fmt.Printf("ld%d load extension not implemented! decimal %d\n", countBytes, tableY)
@@ -103,12 +103,12 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 			}
 		}
 
-		if checkClear || advanced {
+		/*if checkClear || advanced {
 			//clear the lookup table of that entry if requested
 			//alat_invalidate_single_entry(GENERAL, r1)
-		}
+		}*/
 
-		if _defer {
+		/*if _defer {
 			if speculative {
 				//executes a speculative read request
 				//r1 = natd_gr_read(paddr, size, UM.be, mattr, otype, bias | *ldhint*)
@@ -117,19 +117,19 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 				//r1.Value = 0
 				//r1.NotAThing = false
 			}
-		} else {
-			if fill {
+		} else {*/
+		/*	if fill {
 				//bitPos := r3 bits 8 to 3
 				//r1.Value = readBytes as value
 				//r1.NotAThing = RetrieveApplicationRegister(UNAT, bitPos)
-			} else {
-				r1.Value = misc.ZeroExt(value, countBytes*8)
-				r1.NotAThing = false
-			}
+		/*	} else {*/
 
-			if checkNoClear || advanced /* && ma_is_speculative */ {
+		r1.Value = misc.ZeroExt(value, countBytes*8)
+		r1.NotAThing = false
+
+		/*if checkNoClear || advanced /* && ma_is_speculative */ /*{
 				//alat_write(GENERAL, r1, paddr, size)
 			}
-		}
+		}*/
 	}
 }
