@@ -81,6 +81,8 @@ func PetalMain() {
 				extractor := win2003.CreateWindows2003Extractor()
 				extractor.AssignDiskImage(wiewiurIso)
 				extractor.ExtractFiles("iawin")
+
+				return
 			}
 		}
 	}

@@ -45,7 +45,7 @@ func (sifFile *SIFFile) Extract(location string) {
 			continue
 		}
 
-		newLocation := location + "/Windows"
+		newLocation := location + "/drive_c/Windows"
 		newLocation += "/" + sifFile.DirectoryTable[file.TargetSubdirectory]
 
 		newLocation = strings.ReplaceAll(newLocation, "\\", "/")
@@ -90,9 +90,11 @@ func (sifFile *SIFFile) Extract(location string) {
 		if cabbedExists {
 			switch runtime.GOOS {
 			case "windows":
+				expand := exec.Command("C:\\Windows\\System32\\expand.exe", cabbedFilename, newLocation+newFilename)
+				expand.Output()
 			case "linux":
-				what := exec.Command("cabextract", "-d", newLocation, "./"+cabbedFilename)
-				what.Output()
+				cabextract := exec.Command("cabextract", "-d", newLocation, "./"+cabbedFilename)
+				cabextract.Output()
 			}
 		}
 

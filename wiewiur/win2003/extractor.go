@@ -2,6 +2,7 @@ package win2003
 
 import (
 	"os"
+	//isoUtil "github.com/kdomanski/iso9660/util"
 )
 
 type WindowsServer2003Extractor struct {
@@ -12,13 +13,13 @@ func (extractor *WindowsServer2003Extractor) AssignDiskImage(location string) {
 	extractor.isoFile = location
 
 	//isoFile, err := os.Open(location)
-
+	//
 	//if err != nil {
 	//	panic("Failed to open .iso file!")
 	//}
-
+	//
 	//if err = isoUtil.ExtractImageToDirectory(isoFile, "_ext_temp"); err != nil {
-	//panic("failed to extract to a temporary directory")
+	//	panic("failed to extract to a temporary directory")
 	//}
 }
 
@@ -30,12 +31,13 @@ func (extractor *WindowsServer2003Extractor) ExtractFiles(location string) bool 
 	}
 
 	os.Mkdir(location, os.ModePerm)
-	os.Mkdir(location+"/Windows", os.ModePerm)
-	os.Mkdir(location+"/Windows/Driver Cache", os.ModePerm)
-	os.Mkdir(location+"/Windows/Driver Cache/ia64", os.ModePerm)
-	os.Mkdir(location+"/Windows/system32", os.ModePerm)
-	os.Mkdir(location+"/Windows/system32/drivers", os.ModePerm)
-	os.Mkdir(location+"/Windows/system32/drivers/etc", os.ModePerm)
+	os.Mkdir(location+"/drive_c", os.ModePerm)
+	os.Mkdir(location+"/drive_c/Windows", os.ModePerm)
+	os.Mkdir(location+"/drive_c/Windows/Driver Cache", os.ModePerm)
+	os.Mkdir(location+"/drive_c/Windows/Driver Cache/ia64", os.ModePerm)
+	os.Mkdir(location+"/drive_c/Windows/system32", os.ModePerm)
+	os.Mkdir(location+"/drive_c/Windows/system32/drivers", os.ModePerm)
+	os.Mkdir(location+"/drive_c/Windows/system32/drivers/etc", os.ModePerm)
 
 	txtSetupSif := ParseSIFFile(txtSetup)
 	txtSetupSif.Extract(location)
