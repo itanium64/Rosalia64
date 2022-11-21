@@ -1,4 +1,4 @@
-package extractor
+package win2003
 
 import (
 	"os"
@@ -29,8 +29,16 @@ func (extractor *WindowsServer2003Extractor) ExtractFiles(location string) bool 
 		return false
 	}
 
+	os.Mkdir(location, os.ModePerm)
+	os.Mkdir(location+"/Windows", os.ModePerm)
+	os.Mkdir(location+"/Windows/Driver Cache", os.ModePerm)
+	os.Mkdir(location+"/Windows/Driver Cache/ia64", os.ModePerm)
+	os.Mkdir(location+"/Windows/system32", os.ModePerm)
+	os.Mkdir(location+"/Windows/system32/drivers", os.ModePerm)
+	os.Mkdir(location+"/Windows/system32/drivers/etc", os.ModePerm)
+
 	txtSetupSif := ParseSIFFile(txtSetup)
-	txtSetupSif = txtSetupSif
+	txtSetupSif.Extract(location)
 
 	//os.RemoveAll("_ext_temp")
 
@@ -41,6 +49,6 @@ func (extractor *WindowsServer2003Extractor) ExtractRegistryData() string {
 	return ""
 }
 
-func CreateWindows2003Extractor() WindowsInstallExtractor {
+func CreateWindows2003Extractor() *WindowsServer2003Extractor {
 	return &WindowsServer2003Extractor{}
 }

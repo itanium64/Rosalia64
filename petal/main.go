@@ -9,7 +9,7 @@ import (
 	"rosalia64/core/exe"
 	"rosalia64/core/execution"
 	"rosalia64/wiewiur"
-	"rosalia64/wiewiur/extractor"
+	"rosalia64/wiewiur/win2003"
 	"strconv"
 	"strings"
 )
@@ -78,9 +78,9 @@ func PetalMain() {
 		if wiewiurExt {
 			switch wiewiurVersion {
 			case wiewiur.WindowsServer2003:
-				extractor := extractor.CreateWindows2003Extractor()
+				extractor := win2003.CreateWindows2003Extractor()
 				extractor.AssignDiskImage(wiewiurIso)
-				extractor.ExtractFiles("iawow")
+				extractor.ExtractFiles("iawin")
 			}
 		}
 	}

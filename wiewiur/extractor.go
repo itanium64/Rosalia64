@@ -1,4 +1,4 @@
-package extractor
+package wiewiur
 
 type WindowsInstallExtractor interface {
 	AssignDiskImage(location string)
