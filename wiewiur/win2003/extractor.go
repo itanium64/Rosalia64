@@ -31,6 +31,7 @@ func (extractor *WindowsServer2003Extractor) ExtractFiles(location string) bool 
 	}
 
 	os.Mkdir(location, os.ModePerm)
+	os.Mkdir(location+"/drive_0", os.ModePerm)
 	os.Mkdir(location+"/drive_c", os.ModePerm)
 	os.Mkdir(location+"/drive_c/Windows", os.ModePerm)
 	os.Mkdir(location+"/drive_c/Windows/Driver Cache", os.ModePerm)
@@ -45,10 +46,6 @@ func (extractor *WindowsServer2003Extractor) ExtractFiles(location string) bool 
 	//os.RemoveAll("_ext_temp")
 
 	return true
-}
-
-func (extractor *WindowsServer2003Extractor) ExtractRegistryData() string {
-	return ""
 }
 
 func CreateWindows2003Extractor() *WindowsServer2003Extractor {

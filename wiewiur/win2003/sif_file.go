@@ -17,12 +17,14 @@ const (
 	SourceDisksFiles     SIFSection = 4
 	SourceDisksFilesIA64 SIFSection = 5
 	Strings              SIFSection = 6
+	HiveInfsFresh        SIFSection = 7
 )
 
 type SIFFile struct {
 	DirectoryTable  map[string]string
 	CdTable         map[string]string
 	Strings         map[string]string
+	HiveFiles       []HiveFile
 	SourceDiskFiles []SourceDiskFile
 	currentSection  SIFSection
 }
@@ -34,6 +36,19 @@ type SourceDiskFile struct {
 	TargetSubdirectory string
 	TargetFilename     string
 	NewInstallCode     int64
+}
+
+type HiveType uint8
+
+const (
+	AddReg HiveType = 1
+	DelReg HiveType = 2
+)
+
+type HiveFile struct {
+	HiveType HiveType
+	File     string
+	Section  string
 }
 
 func (sourceDiskFile *SourceDiskFile) ExpandString(key string, value string) {
@@ -50,6 +65,7 @@ func ParseSIFFile(contents []byte) SIFFile {
 		DirectoryTable: make(map[string]string),
 		CdTable:        make(map[string]string),
 		Strings:        make(map[string]string),
+		HiveFiles:      []HiveFile{},
 	}
 
 	lines := bytes.Split(contents, []byte{'\r', '\n'})
@@ -127,6 +143,9 @@ func (sifFile *SIFFile) NextLine(line string) {
 		case "[Strings]":
 			sifFile.currentSection = Strings
 			return
+		case "[HiveInfs.Fresh]":
+			sifFile.currentSection = HiveInfsFresh
+			return
 		default:
 			sifFile.currentSection = NotImportant
 			fmt.Printf("Unimplemented Section: %s\n", line)
@@ -145,6 +164,8 @@ func (sifFile *SIFFile) NextLine(line string) {
 		sifFile.NextStringsLine(line)
 	case SourceDisksFiles:
 		sifFile.NextSourceDisksFilesLine(line)
+	case HiveInfsFresh:
+
 	}
 }
 
@@ -279,4 +300,28 @@ func (sifFile *SIFFile) NextStringsLine(line string) {
 	TrimAll(equalsSplit)
 
 	sifFile.Strings[equalsSplit[0]] = strings.ReplaceAll(equalsSplit[1], "\"", "")
+}
+
+func (sifFile *SIFFile) NextHiveInfsLine(line string) {
+	equalsSplit := strings.Split(line, "=")
+	TrimAll(equalsSplit)
+
+	infoSplit := strings.Split(equalsSplit[1], ",")
+	TrimAll(infoSplit)
+
+	var hiveType HiveType
+
+	if equalsSplit[0] == "AddReg" {
+		hiveType = AddReg
+	}
+
+	if equalsSplit[0] == "DelReg" {
+		hiveType = DelReg
+	}
+
+	sifFile.HiveFiles = append(sifFile.HiveFiles, HiveFile{
+		HiveType: hiveType,
+		File:     infoSplit[0],
+		Section:  infoSplit[1],
+	})
 }
