@@ -104,4 +104,9 @@ func (sifFile *SIFFile) Extract(location string) {
 
 		//fmt.Printf("%d : Copied file %s...\n", index, newLocation+newFilename)
 	}
+
+	//Extract registry
+	for _, hiveFile := range sifFile.HiveFiles {
+
+	}
 }
