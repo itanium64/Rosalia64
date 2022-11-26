@@ -23,13 +23,13 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 	if *RetrievePredicateRegister(qp) {
 		//TODO: check_target_register(r1)
 
-		bitLengthTable := []int{
+		bitLengthTable := []int64{
 			1, 2, 4, 8,
 		}
 
 		countBytes := bitLengthTable[tableX]
 		var readBytes []byte
-		var value uint64
+		var value int64
 
 		var speculative, //Speculative execution is a technique to preload stuff before asked
 			//advanced, //adds the load to the ALAT table, also sets the target registers NAT to check for detect deferral of the load
@@ -98,8 +98,8 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 
 			if !_defer {
 				//readBytes = mem_read(paddr, size, UM.be, mattr, otype, bias | *ldhint*)
-				readBytes = memory[paddr : paddr+uint64(countBytes)]
-				value = misc.BytesToUint64(readBytes, countBytes)
+				readBytes = memory[paddr : paddr+countBytes]
+				value = misc.BytesToInt64(readBytes, countBytes)
 			}
 		}
 

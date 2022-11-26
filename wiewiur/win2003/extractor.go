@@ -2,7 +2,8 @@ package win2003
 
 import (
 	"os"
-	//isoUtil "github.com/kdomanski/iso9660/util"
+
+	isoUtil "github.com/kdomanski/iso9660/util"
 )
 
 type WindowsServer2003Extractor struct {
@@ -12,15 +13,15 @@ type WindowsServer2003Extractor struct {
 func (extractor *WindowsServer2003Extractor) AssignDiskImage(location string) {
 	extractor.isoFile = location
 
-	//isoFile, err := os.Open(location)
-	//
-	//if err != nil {
-	//	panic("Failed to open .iso file!")
-	//}
-	//
-	//if err = isoUtil.ExtractImageToDirectory(isoFile, "_ext_temp"); err != nil {
-	//	panic("failed to extract to a temporary directory")
-	//}
+	isoFile, err := os.Open(location)
+
+	if err != nil {
+		panic("Failed to open .iso file!")
+	}
+
+	if err = isoUtil.ExtractImageToDirectory(isoFile, "_ext_temp"); err != nil {
+		panic("failed to extract to a temporary directory")
+	}
 }
 
 func (extractor *WindowsServer2003Extractor) ExtractFiles(location string) bool {

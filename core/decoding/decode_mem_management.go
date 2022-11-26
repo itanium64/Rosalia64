@@ -7,8 +7,8 @@ func (decoder *DecoderContext) DecodeSystemMemoryManagment4Plus2bit(instructionB
 	tableY := (instructionBits & (0b0000000000111100000000000000000000000000000000)) >> 32
 
 	subinstructionTable := [][]func(instructionBits uint64, nextSlot uint64){
-		{func(instructionBits, nextSlot uint64) { /* break.m */ }, decoder.DecodeNopMemory, nil, nil},
-		{nil, nil, nil, nil},
+		{func(instructionBits, nextSlot uint64) { /* break.m */ }, nil, nil, nil},
+		{decoder.DecodeNopMemory, nil, nil, nil},
 		{nil, nil, nil, nil},
 		{nil, nil, nil, nil},
 		{nil, nil, nil, nil},

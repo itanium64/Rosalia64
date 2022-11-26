@@ -13,7 +13,7 @@ func ExecuteIntegerStoreRegister(attributes declarations.InstructionAttributeMap
 	r3 := RetrieveGeneralRegister(attributes[declarations.ATTRIBUTE_R3])
 
 	if *RetrievePredicateRegister(qp) {
-		bitLengthTable := []uint64{
+		bitLengthTable := []int64{
 			1, 2, 4, 8,
 		}
 
@@ -32,7 +32,7 @@ func ExecuteIntegerStoreRegister(attributes declarations.InstructionAttributeMap
 
 		//mem_write(GR[r2], paddr, size, UM.be, mattr, otype, sthint);
 
-		binary.LittleEndian.PutUint64(regAsBytes, r2.Value)
+		binary.LittleEndian.PutUint64(regAsBytes, uint64(r2.Value))
 
 		for i := paddr; i != paddr+countBytes; i++ {
 			memory[i] = regAsBytes[i-paddr]

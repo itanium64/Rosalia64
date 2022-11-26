@@ -14,7 +14,7 @@ func Imm14(sign uint64, imm6d uint64, imm7b uint64) int64 {
 	return SignExt(sign<<13|imm6d<<7|imm7b, 14)
 }
 
-func IntPow(x uint64, n int) uint64 {
+func IntPow(x int64, n int64) int64 {
 	if n == 0 {
 		return 1
 	}
@@ -31,22 +31,22 @@ func IntPow(x uint64, n int) uint64 {
 	return x * y * y
 }
 
-func ZeroExt(value uint64, pos int) uint64 {
+func ZeroExt(value int64, pos int64) int64 {
 	and := IntPow(2, pos) - 1
 
 	return value & and
 }
 
-func BytesToUint64(bytes []byte, count int) uint64 {
+func BytesToInt64(bytes []byte, count int64) int64 {
 	switch count {
 	case 1:
-		return uint64(bytes[0])
+		return int64(bytes[0])
 	case 2:
-		return uint64(binary.LittleEndian.Uint16(bytes))
+		return int64(binary.LittleEndian.Uint16(bytes))
 	case 4:
-		return uint64(binary.LittleEndian.Uint32(bytes))
+		return int64(binary.LittleEndian.Uint32(bytes))
 	case 8:
-		return uint64(binary.LittleEndian.Uint64(bytes))
+		return int64(binary.LittleEndian.Uint64(bytes))
 	}
 
 	return 0

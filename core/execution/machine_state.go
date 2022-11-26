@@ -15,24 +15,22 @@ const (
 type RegisterID uint64
 
 const (
-	RegisterEAX RegisterID = 8
-	RegisterSP  RegisterID = 12
+	RegisterSP RegisterID = 12
 )
 
-type Register struct {
+type GeneralRegister struct {
 	RegisterID RegisterID
-	Value      uint64
+	Value      int64
 	NotAThing  bool
 }
 
 type FloatingRegister struct {
 	RegisterID RegisterID
 	Value      float64
-	NotAThing  bool
 }
 
 type IAProcessorState struct {
-	GeneralRegisters    [MaxGeneralRegisterCount]Register
+	GeneralRegisters    [MaxGeneralRegisterCount]GeneralRegister
 	PredicateRegisters  [MaxPredicateRegisterCount]bool
 	FloatingRegisters   [MaxFloatingPointRegisterCount]FloatingRegister
 	RegisterStackEngine RegisterStackEngine
@@ -45,9 +43,9 @@ var ContinueRunning bool
 
 var CurrentExecutionContext ExecutionContext
 
-func RetrieveGeneralRegister(r uint64) *Register {
+func RetrieveGeneralRegister(r uint64) *GeneralRegister {
 	if r == 0 {
-		return &Register{
+		return &GeneralRegister{
 			Value:      0,
 			NotAThing:  false,
 			RegisterID: RegisterID(r),
@@ -79,13 +77,11 @@ func RetrieveFloatingPointRegister(fr uint64) *FloatingRegister {
 	case 0:
 		return &FloatingRegister{
 			Value:      0,
-			NotAThing:  false,
 			RegisterID: RegisterID(fr),
 		}
 	case 1:
 		return &FloatingRegister{
 			Value:      1,
-			NotAThing:  false,
 			RegisterID: RegisterID(fr),
 		}
 	default:
@@ -93,14 +89,14 @@ func RetrieveFloatingPointRegister(fr uint64) *FloatingRegister {
 	}
 }
 
-func InitializeMachine(ram uint64) {
+func InitializeMachine(ram int64) {
 	ramSize := ram * 1024
 
 	memory = make([]byte, ramSize)
 	ContinueRunning = true
 
 	for i := 0; i != MaxGeneralRegisterCount; i++ {
-		processor.GeneralRegisters[i] = Register{
+		processor.GeneralRegisters[i] = GeneralRegister{
 			RegisterID: RegisterID(i),
 		}
 	}
