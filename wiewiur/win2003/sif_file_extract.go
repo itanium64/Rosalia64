@@ -106,7 +106,7 @@ func (sifFile *SIFFile) Extract(location string) {
 	}
 
 	//Extract registry
-	for _, hiveFile := range sifFile.HiveFiles {
+	//for _, hiveFile := range sifFile.HiveFiles {
 
-	}
+	//}
 }

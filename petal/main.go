@@ -142,7 +142,7 @@ func PetalMain() {
 	}
 
 	//Initialize VM
-	execution.InitializeMachine(uint64(vmemSize))
+	execution.InitializeMachine(vmemSize)
 	execution.NewExecutionContext(decoding.DecodingContext.ExecutableInstructions, decoding.DecodingContext.InstructionStructs, decoding.DecodingContext.AddressToInstructionIndex[entryPoint])
 
 	//Let it run free
