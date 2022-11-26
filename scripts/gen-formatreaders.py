@@ -107,7 +107,7 @@ for name in names:
         continue
 
     if name != "_":
-        print(f"\t\t{name}: {underscoredNameDict[name]},")
+        print(f"\t\t{name.capitalize()}: {underscoredNameDict[name]},")
 
 print("\t}")
 

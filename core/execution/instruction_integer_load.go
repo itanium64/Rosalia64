@@ -3,7 +3,7 @@ package execution
 import (
 	"fmt"
 	"rosalia64/core/declarations"
-	"rosalia64/core/misc"
+	"rosalia64/core/ia_math"
 )
 
 func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttributeMap) {
@@ -99,7 +99,7 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 			if !_defer {
 				//readBytes = mem_read(paddr, size, UM.be, mattr, otype, bias | *ldhint*)
 				readBytes = memory[paddr : paddr+countBytes]
-				value = misc.BytesToInt64(readBytes, countBytes)
+				value = ia_math.BytesToInt64(readBytes, countBytes)
 			}
 		}
 
@@ -124,7 +124,7 @@ func ExecuteIntegerLoadNoBaseUpdateForm(attributes declarations.InstructionAttri
 				//r1.NotAThing = RetrieveApplicationRegister(UNAT, bitPos)
 		/*	} else {*/
 
-		r1.Value = misc.ZeroExt(value, countBytes*8)
+		r1.Value = ia_math.ZeroExt(value, countBytes*8)
 		r1.NotAThing = false
 
 		/*if checkNoClear || advanced /* && ma_is_speculative */ /*{
