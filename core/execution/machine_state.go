@@ -4,6 +4,7 @@ const (
 	MaxGeneralRegisterCount       = 128
 	MaxFloatingPointRegisterCount = 128
 	MaxPredicateRegisterCount     = 64
+	MaxBranchRegisterCount        = 8
 )
 
 const (
@@ -33,6 +34,7 @@ type IAProcessorState struct {
 	GeneralRegisters    [MaxGeneralRegisterCount]GeneralRegister
 	PredicateRegisters  [MaxPredicateRegisterCount]bool
 	FloatingRegisters   [MaxFloatingPointRegisterCount]FloatingRegister
+	BranchRegisters     [MaxBranchRegisterCount]int64
 	RegisterStackEngine RegisterStackEngine
 }
 
@@ -70,6 +72,10 @@ func RetrievePredicateRegister(pr uint64) *bool {
 	}
 
 	return &processor.PredicateRegisters[pr]
+}
+
+func RetrieveBranchRegister(br uint64) *int64 {
+	return &processor.BranchRegisters[br]
 }
 
 func RetrieveFloatingPointRegister(fr uint64) *FloatingRegister {

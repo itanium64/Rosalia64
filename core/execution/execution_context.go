@@ -3,13 +3,13 @@ package execution
 import "rosalia64/core/declarations"
 
 type ExecutionContext struct {
-	InstructionIndex       uint64
+	InstructionIndex       int64
 	Paused                 bool
 	ExecutableInstructions []declarations.ExecutableInstruction
 	InstructionStructs     []declarations.InstructionStruct
 }
 
-func NewExecutionContext(instructions []declarations.ExecutableInstruction, instructionStructs []declarations.InstructionStruct, instructionIndex uint64) {
+func NewExecutionContext(instructions []declarations.ExecutableInstruction, instructionStructs []declarations.InstructionStruct, instructionIndex int64) {
 	CurrentExecutionContext = ExecutionContext{
 		InstructionIndex:       instructionIndex,
 		Paused:                 false,

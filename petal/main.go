@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"os"
+	"rosalia64/core/declarations"
 	"rosalia64/core/decoding"
 	"rosalia64/core/exe"
 	"rosalia64/core/execution"
@@ -122,6 +123,8 @@ func PetalMain() {
 	//initialize decoder
 	execution.InitializeFunctionDeclarations()
 	decoding.InitializeDecoderAndTables()
+
+	declarations.AddressToInstructionIndex = decoding.DecodingContext
 
 	//Store current address, this is so the decoder can store which instructions live where
 	//this is used to know exactly to which instruction to jump to when branching

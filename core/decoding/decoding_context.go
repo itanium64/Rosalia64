@@ -10,8 +10,17 @@ import (
 type DecoderContext struct {
 	ExecutableInstructions    []declarations.ExecutableInstruction
 	InstructionStructs        []declarations.InstructionStruct
-	InstructionIndex          uint64
-	AddressToInstructionIndex map[uint64]uint64
+	InstructionIndex          int64
+	AddressToInstructionIndex map[uint64]int64
+	InstructionIndexToAddress map[int64]uint64
+}
+
+func (decoder *DecoderContext) GetAddressFromInstructionIndex(instructionIndex uint64) int64 {
+	return DecodingContext.AddressToInstructionIndex[instructionIndex]
+}
+
+func (decoder *DecoderContext) GetInstructionIndexFromAddress(address int64) uint64 {
+	return DecodingContext.InstructionIndexToAddress[address]
 }
 
 func (decoder *DecoderContext) NextBundle(bundle [16]byte, addressBase uint64) {
@@ -40,6 +49,7 @@ func (decoder *DecoderContext) NextBundle(bundle [16]byte, addressBase uint64) {
 	//fmt.Printf("slot2: %064b\n", slot2<<18)
 
 	decoder.AddressToInstructionIndex[addressBase] = decoder.InstructionIndex
+	decoder.InstructionIndexToAddress[decoder.InstructionIndex] = addressBase
 
 	decoder.decodeInstructionSlot(slot0, slot1, unitOrder.Slot0)
 	decoder.decodeInstructionSlot(slot1, slot2, unitOrder.Slot1)
