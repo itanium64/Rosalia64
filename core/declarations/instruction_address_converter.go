@@ -2,7 +2,7 @@ package declarations
 
 type InstructionAddressConverter interface {
 	GetAddressFromInstructionIndex(address uint64) int64
-	GetInstructionIndexFromAddress(address int64) uint64
+	GetInstructionIndexFromAddress(address int64) int64
 }
 
-var AddressToInstructionIndex InstructionAddressConverter
+var InstructionConverter InstructionAddressConverter

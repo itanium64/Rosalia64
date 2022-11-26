@@ -27,9 +27,17 @@ func ExecuteBranchIndirectReturn(attributes declarations.InstructionAttributeMap
 
 	if *RetrievePredicateRegister(___qp) {
 		//TODO: register stack frames
+
+		addrToJump := *RetrieveBranchRegister(b2___)
+
 		//TODO: see if this is correct
-		if *RetrieveBranchRegister(b2___) == 0 {
+		if addrToJump == 0 {
 			ContinueRunning = false
+			return
 		}
+
+		addrToII := declarations.InstructionConverter.GetInstructionIndexFromAddress(addrToJump)
+
+		CurrentExecutionContext.InstructionIndex = addrToII
 	}
 }

@@ -124,7 +124,7 @@ func PetalMain() {
 	execution.InitializeFunctionDeclarations()
 	decoding.InitializeDecoderAndTables()
 
-	declarations.AddressToInstructionIndex = decoding.DecodingContext
+	declarations.InstructionConverter = decoding.DecodingContext
 
 	//Store current address, this is so the decoder can store which instructions live where
 	//this is used to know exactly to which instruction to jump to when branching
