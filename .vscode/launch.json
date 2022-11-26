@@ -13,8 +13,7 @@
             "cwd": "${workspaceFolder}/build",
             "output": "build/petal-vm.exe",
             "args": [
-                //"-exe=TestCases/SimpleFunction.exe",
-                "-exe=Rimukoro.exe",
+                "-exe=TestCases/IfStatement.exe",
                 "-vmemsize=524288"
             ],   
         },

@@ -220,6 +220,7 @@ var DecodingContext *DecoderContext
 func InitializeDecoderAndTables() {
 	DecodingContext = &DecoderContext{
 		AddressToInstructionIndex: make(map[uint64]int64),
+		InstructionIndexToAddress: make(map[int64]int64),
 	}
 
 	B_UnitInstructionTable[0] = DecodingContext.BranchIndirectMiscellaneous
