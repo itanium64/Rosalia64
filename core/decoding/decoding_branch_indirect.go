@@ -9,6 +9,12 @@ import (
 func (decoder *DecoderContext) DecodeBranchIndirectReturn(instructionBits uint64, nextSlot uint64) {
 	b4 := formats.ReadB4(instructionBits, nextSlot)
 
+	disassembly := ""
+
+	if b4.BType == 4 {
+		disassembly = "br.ret b%d"
+	}
+
 	instructionStruct := declarations.InstructionStruct{
 		Attributes: declarations.InstructionAttributeMap{
 			declarations.ATTRIBUTE_D:           b4.D,
@@ -20,7 +26,7 @@ func (decoder *DecoderContext) DecodeBranchIndirectReturn(instructionBits uint64
 			declarations.ATTRIBUTE_BRANCH_TYPE: b4.BType,
 			declarations.ATTRIBUTE_QP:          b4.QP,
 		},
-		Disassembly: fmt.Sprintf("br b%d", b4.B2),
+		Disassembly: fmt.Sprintf(disassembly, b4.B2),
 	}
 
 	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.BranchIndirectReturn)

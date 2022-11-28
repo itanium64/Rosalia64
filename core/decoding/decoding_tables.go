@@ -233,4 +233,5 @@ func InitializeDecoderAndTables() {
 	M_UnitInstructionTable[4] = DecodingContext.DecodeIntegerLoadStoreSemaphoreFR1bit
 	M_UnitInstructionTable[8] = DecodingContext.DecodeIntegerALU
 	M_UnitInstructionTable[9] = DecodingContext.DecodeAddImmediate22
+	M_UnitInstructionTable[12] = DecodingContext.DecodeIntegerCompareOpcodeC
 }
