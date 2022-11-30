@@ -10,15 +10,15 @@ type DisassemblyWithInstructionTable struct {
 	Instruction declarations.ExecutableInstruction
 }
 
-var opCodeCInstructionTable map[uint64]DisassemblyWithInstructionTable = map[uint64]DisassemblyWithInstructionTable{
-	0: {Instruction: declarations.IntegerCompareRegisterFormLT, Disassembly: ".lt"},
-	1: {Instruction: declarations.IntegerCompareRegisterFormLT, Disassembly: ".lt"},
-	2: {Instruction: declarations.IntegerCompareRegisterFormEQ, Disassembly: ".eq"},
-	3: {Instruction: declarations.IntegerCompareRegisterFormNE, Disassembly: ".ne"},
-	4: {Instruction: declarations.IntegerCompareRegisterFormGT, Disassembly: ".gt"},
-	5: {Instruction: declarations.IntegerCompareRegisterFormLE, Disassembly: ".le"},
-	6: {Instruction: declarations.IntegerCompareRegisterFormGE, Disassembly: ".ge"},
-	7: {Instruction: declarations.IntegerCompareRegisterFormLT, Disassembly: ".lt"},
+var opCodeCdismTable map[declarations.ComparisonTypeTbTaC]string = map[declarations.ComparisonTypeTbTaC]string{
+	declarations.TB_TA_C_LT_NONE: ".lt",
+	declarations.TB_TA_C_LT_UNC:  ".lt",
+	declarations.TB_TA_C_EQ:      ".eq",
+	declarations.TB_TA_C_NE:      ".ne",
+	declarations.TB_TA_C_GT:      ".gt",
+	declarations.TB_TA_C_LE:      ".le",
+	declarations.TB_TA_C_GE:      ".ge",
+	declarations.TB_TA_C_LT:      ".lt",
 }
 
 func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint64, nextSlot uint64) {
@@ -40,9 +40,9 @@ func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint6
 		disassembly += "4"
 	}
 
-	instruction := opCodeCInstructionTable[tbTaC]
+	comparisonDisassembly := opCodeCdismTable[declarations.ComparisonTypeTbTaC(tbTaC)]
 
-	disassembly += instruction.Disassembly
+	disassembly += comparisonDisassembly
 
 	switch tbTaC {
 	case 0:
@@ -69,6 +69,6 @@ func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint6
 		Disassembly: disassembly,
 	}
 
-	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, instruction.Instruction)
+	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.IntegerCompareRegisterForm)
 	decoder.InstructionStructs = append(decoder.InstructionStructs, instructionStruct)
 }

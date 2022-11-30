@@ -25,6 +25,7 @@ const (
 	ATTRIBUTE_PR1          Attribute = 20
 	ATTRIBUTE_PR2          Attribute = 21
 	ATTRIBUTE_CM4          Attribute = 22
+	ATTRIBUTE_COND         Attribute = 23
 )
 
 type InstructionAttributeMap map[Attribute]uint64

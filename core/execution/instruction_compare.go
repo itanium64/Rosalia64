@@ -44,31 +44,66 @@ var compareRegisterCompleters map[declarations.CompareRegisterCompleter]func(pr1
 	declarations.PR_COMPLETER_UNC:       CompareRegisterCompleterUncNone,
 }
 
-func ExecuteIntegerCompareRegisterFormLT(attributes declarations.InstructionAttributeMap) {
-	_qp := attributes[declarations.ATTRIBUTE_QP]
-	_r2 := attributes[declarations.ATTRIBUTE_R2]
-	_r3 := attributes[declarations.ATTRIBUTE_R3]
-	pr1 := attributes[declarations.ATTRIBUTE_PR1]
-	pr2 := attributes[declarations.ATTRIBUTE_PR2]
-	prc := attributes[declarations.ATTRIBUTE_PR_COMPLETER]
-	cm4 := attributes[declarations.ATTRIBUTE_CM4]
+func ExecuteIntegerCompareRegisterForm(attributes declarations.InstructionAttributeMap) {
+	__qp := attributes[declarations.ATTRIBUTE_QP]
+	__r2 := attributes[declarations.ATTRIBUTE_R2]
+	__r3 := attributes[declarations.ATTRIBUTE_R3]
+	_pr1 := attributes[declarations.ATTRIBUTE_PR1]
+	_pr2 := attributes[declarations.ATTRIBUTE_PR2]
+	_prc := attributes[declarations.ATTRIBUTE_PR_COMPLETER]
+	cmp4 := attributes[declarations.ATTRIBUTE_CM4]
+	cond := attributes[declarations.ATTRIBUTE_COND]
 
-	if *RetrievePredicateRegister(_qp) {
-		r2 := RetrieveGeneralRegister(_r2)
-		r3 := RetrieveGeneralRegister(_r3)
+	if *RetrievePredicateRegister(__qp) {
+		if _pr1 == _pr2 {
+			//illegal operation fault
+			return
+		}
+
+		r2 := RetrieveGeneralRegister(__r2)
+		r3 := RetrieveGeneralRegister(__r3)
 
 		nat := r2.NotAThing || r3.NotAThing
 
 		valR2 := r2.Value
 		valR3 := r3.Value
 
-		if cm4 == 1 {
+		if cmp4 == 1 {
 			valR2 = valR2 ^ ((1 << 31) - 1)
 			valR3 = valR3 ^ ((1 << 31) - 1)
 		}
 
-		result := valR2 < valR3
+		result := false
 
-		compareRegisterCompleters[declarations.CompareRegisterCompleter(prc)](pr1, pr2, result, nat)
+		switch declarations.ComparisonTypeTbTaC(cond) {
+		case declarations.TB_TA_C_LT:
+			result = valR2 < valR3
+		case declarations.TB_TA_C_LT_NONE:
+			result = valR2 < valR3
+		case declarations.TB_TA_C_LT_UNC:
+			result = valR2 < valR3
+		case declarations.TB_TA_C_EQ:
+			result = valR2 == valR3
+		case declarations.TB_TA_C_NE:
+			result = valR2 != valR3
+		case declarations.TB_TA_C_GT:
+			result = valR2 > valR3
+		case declarations.TB_TA_C_LE:
+			result = valR2 <= valR3
+		case declarations.TB_TA_C_GE:
+			result = valR2 >= valR3
+		}
+
+		compareRegisterCompleters[declarations.CompareRegisterCompleter(_prc)](_pr1, _pr2, result, nat)
+	} else {
+		if _prc == uint64(declarations.PR_COMPLETER_UNC) {
+			if _pr1 == _pr2 {
+				//illegal operation fault
+				return
+			}
+
+			*RetrievePredicateRegister(_pr1) = false
+			*RetrievePredicateRegister(_pr2) = false
+		}
 	}
 }

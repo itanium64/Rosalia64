@@ -11,4 +11,5 @@ func InitializeFunctionDeclarations() {
 	declarations.BranchIndirectReturn = ExecuteBranchIndirectReturn
 	declarations.AddlImm22 = ExecuteAddlImm22
 	declarations.AddsImm14 = ExecuteAddsImm14
+	declarations.IntegerCompareRegisterForm = ExecuteIntegerCompareRegisterForm
 }
