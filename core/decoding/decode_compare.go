@@ -15,41 +15,11 @@ func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint6
 	//result is exactly the same, we just turn it into an integer
 	as5bit := (tb) | (x2 << 1) | (ta << 3) | (_c << 4)
 
-	switch as5bit {
-	case 0b0_0000:
-		//cmp.lt
-	case 0b0_0001:
-		//cmp.lt.unc
-	case 0b0_0010:
-		//cmp.eq.and
-	case 0b0_0011:
-		//cmp.ne.eq
-	case 0b0_0100:
-		//cmp.gt.and
-	case 0b_0101:
-		//cmp.le.and
-	case 0b0_0110:
-		//cmp.ge.and
-	case 0b0_0111:
-		//cmp.lt.and
+	//if tb ta c together are higher than 2 = .and
 
-	// x2 = 1
-
-	case 0b0_1000:
-		//cmp4.lt
-	case 0b0_1001:
-		//cmp4.lt.unc
-	case 0b0_1010:
-		//cmp4.eq.and
-	case 0b0_1011:
-		//cmp4.ne.eq
-	case 0b0_1100:
-		//cmp4.gt.and
-	case 0b0_1101:
-		//cmp4.le.and
-	case 0b0_1110:
-		//cmp4.ge.and
-	case 0b0_1111:
-		//cmp4.lt.and
+	
+	
+	if x2 == 1 {
+		//cmp4
 	}
 }
