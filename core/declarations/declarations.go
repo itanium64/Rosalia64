@@ -9,3 +9,9 @@ var BranchIndirectReturn ExecutableInstruction
 var AddlImm22 ExecutableInstruction
 var AddsImm14 ExecutableInstruction
 
+var IntegerCompareRegisterFormLT ExecutableInstruction
+var IntegerCompareRegisterFormEQ ExecutableInstruction
+var IntegerCompareRegisterFormNE ExecutableInstruction
+var IntegerCompareRegisterFormGT ExecutableInstruction
+var IntegerCompareRegisterFormLE ExecutableInstruction
+var IntegerCompareRegisterFormGE ExecutableInstruction

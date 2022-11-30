@@ -1,25 +1,74 @@
 package decoding
 
+import (
+	"rosalia64/core/declarations"
+	"rosalia64/core/formats"
+)
+
+type DisassemblyWithInstructionTable struct {
+	Disassembly string
+	Instruction declarations.ExecutableInstruction
+}
+
+var opCodeCInstructionTable map[uint64]DisassemblyWithInstructionTable = map[uint64]DisassemblyWithInstructionTable{
+	0: {Instruction: declarations.IntegerCompareRegisterFormLT, Disassembly: ".lt"},
+	1: {Instruction: declarations.IntegerCompareRegisterFormLT, Disassembly: ".lt"},
+	2: {Instruction: declarations.IntegerCompareRegisterFormEQ, Disassembly: ".eq"},
+	3: {Instruction: declarations.IntegerCompareRegisterFormNE, Disassembly: ".ne"},
+	4: {Instruction: declarations.IntegerCompareRegisterFormGT, Disassembly: ".gt"},
+	5: {Instruction: declarations.IntegerCompareRegisterFormLE, Disassembly: ".le"},
+	6: {Instruction: declarations.IntegerCompareRegisterFormGE, Disassembly: ".ge"},
+	7: {Instruction: declarations.IntegerCompareRegisterFormLT, Disassembly: ".lt"},
+}
+
 func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint64, nextSlot uint64) {
-	//tb := (instructionBits & (0b0000100000000000000000000000000000000000000000)) >> 41
-	//x2 := (instructionBits & (0b0000011000000000000000000000000000000000000000)) >> 39
-	//ta := (instructionBits & (0b0000000100000000000000000000000000000000000000)) >> 38
-	//_c := (instructionBits & (0b0000000000000000000000000000100000000000000000)) >> 17
+	a6 := formats.ReadA6(instructionBits, nextSlot)
 
-	tb := uint64(1)
-	x2 := uint64(3)
-	ta := uint64(1)
-	_c := uint64(1)
+	tbTaC := (a6.Tb) | (a6.Ta << 1) | (a6.C << 2)
 
-	//doing this instead of a endless if/else tree, way more readable
-	//result is exactly the same, we just turn it into an integer
-	as5bit := (tb) | (x2 << 1) | (ta << 3) | (_c << 4)
+	prRegCompleter := declarations.PR_COMPLETER_NONE
 
-	//if tb ta c together are higher than 2 = .and
+	disassembly := "cmp"
 
-	
-	
-	if x2 == 1 {
+	//0 = full 64bit compare, 1 = 32bit compare
+	cm4 := 0
+
+	if a6.X2 == 1 {
 		//cmp4
+		cm4 = 1
+
+		disassembly += "4"
 	}
+
+	instruction := opCodeCInstructionTable[tbTaC]
+
+	disassembly += instruction.Disassembly
+
+	switch tbTaC {
+	case 0:
+		prRegCompleter = declarations.PR_COMPLETER_NONE
+	case 1:
+		prRegCompleter = declarations.PR_COMPLETER_UNC
+		disassembly += ".unc"
+	default:
+		//if tb ta c together are higher than 2 = .and
+		prRegCompleter = declarations.PR_COMPLETER_AND
+		disassembly += ".and"
+	}
+
+	instructionStruct := declarations.InstructionStruct{
+		Attributes: declarations.InstructionAttributeMap{
+			declarations.ATTRIBUTE_QP:           a6.Qp,
+			declarations.ATTRIBUTE_R2:           a6.R2,
+			declarations.ATTRIBUTE_R3:           a6.R3,
+			declarations.ATTRIBUTE_PR1:          a6.P1,
+			declarations.ATTRIBUTE_PR2:          a6.P2,
+			declarations.ATTRIBUTE_PR_COMPLETER: uint64(prRegCompleter),
+			declarations.ATTRIBUTE_CM4:          uint64(cm4),
+		},
+		Disassembly: disassembly,
+	}
+
+	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, instruction.Instruction)
+	decoder.InstructionStructs = append(decoder.InstructionStructs, instructionStruct)
 }

@@ -22,6 +22,9 @@ const (
 	ATTRIBUTE_HINT         Attribute = 17
 	ATTRIBUTE_X            Attribute = 18
 	ATTRIBUTE_PR_COMPLETER Attribute = 19
+	ATTRIBUTE_PR1          Attribute = 20
+	ATTRIBUTE_PR2          Attribute = 21
+	ATTRIBUTE_CM4          Attribute = 22
 )
 
 type InstructionAttributeMap map[Attribute]uint64
