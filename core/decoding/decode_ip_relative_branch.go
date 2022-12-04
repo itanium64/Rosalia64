@@ -59,7 +59,7 @@ func (decoder *DecoderContext) DecodeIPRelativeBranch(instructionBits uint64, ne
 
 		target := decoder.InstructionIndexToAddress[decoder.InstructionIndex] + int64(b1.Immediate)
 
-		instructionStruct.Disassembly = fmt.Sprintf("%s%s loc_%x", disassembly, trailingDisassembly, target)
+		instructionStruct.Disassembly = fmt.Sprintf("%s%s loc_%08x", disassembly, trailingDisassembly, target)
 
 		decoder.InstructionStructs = append(decoder.InstructionStructs, instructionStruct)
 		decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.ExecuteIPRelativeBranchCond)
