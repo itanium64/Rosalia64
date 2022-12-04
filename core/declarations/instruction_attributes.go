@@ -11,12 +11,12 @@ const (
 	ATTRIBUTE_R2           Attribute = 6
 	ATTRIBUTE_R3           Attribute = 7
 	ATTRIBUTE_QP           Attribute = 8
-	ATTRIBUTE_D            Attribute = 9
-	ATTRIBUTE_WH           Attribute = 10
+	ATTRIBUTE_BRANCH_CACHE Attribute = 9
+	ATTRIBUTE_SPECULATION  Attribute = 10
 	ATTRIBUTE_TABX         Attribute = 11
 	ATTRIBUTE_TABY         Attribute = 12
 	ATTRIBUTE_B2           Attribute = 13
-	ATTRIBUTE_P            Attribute = 14
+	ATTRIBUTE_PREFETCH     Attribute = 14
 	ATTRIBUTE_BRANCH_TYPE  Attribute = 15
 	ATTRIBUTE_M            Attribute = 16
 	ATTRIBUTE_HINT         Attribute = 17

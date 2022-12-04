@@ -17,14 +17,14 @@ func (decoder *DecoderContext) DecodeBranchIndirectReturn(instructionBits uint64
 
 	instructionStruct := declarations.InstructionStruct{
 		Attributes: declarations.InstructionAttributeMap{
-			declarations.ATTRIBUTE_D:           b4.D,
-			declarations.ATTRIBUTE_WH:          b4.WH,
-			declarations.ATTRIBUTE_TABX:        b4.TableX,
-			declarations.ATTRIBUTE_TABY:        b4.TableY,
-			declarations.ATTRIBUTE_B2:          b4.B2,
-			declarations.ATTRIBUTE_P:           b4.P,
-			declarations.ATTRIBUTE_BRANCH_TYPE: b4.BType,
-			declarations.ATTRIBUTE_QP:          b4.QP,
+			declarations.ATTRIBUTE_BRANCH_CACHE: b4.D,
+			declarations.ATTRIBUTE_SPECULATION:  b4.WH,
+			declarations.ATTRIBUTE_TABX:         b4.TableX,
+			declarations.ATTRIBUTE_TABY:         b4.TableY,
+			declarations.ATTRIBUTE_B2:           b4.B2,
+			declarations.ATTRIBUTE_PREFETCH:     b4.P,
+			declarations.ATTRIBUTE_BRANCH_TYPE:  b4.BType,
+			declarations.ATTRIBUTE_QP:           b4.QP,
 		},
 		Disassembly: fmt.Sprintf(disassembly, b4.B2),
 	}

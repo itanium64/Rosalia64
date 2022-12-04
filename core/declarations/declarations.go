@@ -8,5 +8,5 @@ var IntegerLoadNoBaseUpdateForm ExecutableInstruction
 var BranchIndirectReturn ExecutableInstruction
 var AddlImm22 ExecutableInstruction
 var AddsImm14 ExecutableInstruction
-
 var IntegerCompareRegisterForm ExecutableInstruction
+var ExecuteIPRelativeBranchCond ExecutableInstruction
