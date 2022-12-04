@@ -1,6 +1,7 @@
 package decoding
 
 import (
+	"fmt"
 	"rosalia64/core/declarations"
 	"rosalia64/core/formats"
 	"strings"
@@ -47,11 +48,18 @@ func (decoder *DecoderContext) DecodeIPRelativeBranch(instructionBits uint64, ne
 		trailingDisassembly = strings.TrimSuffix(trailingDisassembly, ".")
 	}
 
+	//.cond and none do the same thing
+	if b1.Btype == 0 {
+		b1.Btype = 2
+	}
+
 	switch declarations.IPRelativeBranchType(b1.Btype) {
 	case declarations.IPREL_BRANCH_TYPE_COND:
 		disassembly += "cond."
 
-		instructionStruct.Disassembly = disassembly + trailingDisassembly
+		target := decoder.InstructionIndexToAddress[decoder.InstructionIndex] + int64(b1.Immediate)
+
+		instructionStruct.Disassembly = fmt.Sprintf("%s%s loc_%x", disassembly, trailingDisassembly, target)
 
 		decoder.InstructionStructs = append(decoder.InstructionStructs, instructionStruct)
 		decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.ExecuteIPRelativeBranchCond)

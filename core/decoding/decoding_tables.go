@@ -225,6 +225,7 @@ func InitializeDecoderAndTables() {
 
 	B_UnitInstructionTable[0] = DecodingContext.BranchIndirectMiscellaneous
 	B_UnitInstructionTable[2] = DecodingContext.DecodeNopBranch
+	B_UnitInstructionTable[4] = DecodingContext.DecodeIPRelativeBranch
 
 	I_UnitInstructionTable[0] = DecodingContext.DecodeIntegerMisc3bit
 	I_UnitInstructionTable[8] = DecodingContext.DecodeIntegerALU

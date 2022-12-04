@@ -144,6 +144,12 @@ func PetalMain() {
 		currentAddress += 16
 	}
 
+	//List disassembly
+
+	for _, instructionStruct := range decoding.DecodingContext.InstructionStructs {
+		fmt.Printf("%s\n", instructionStruct.Disassembly)
+	}
+
 	//Initialize VM
 	execution.InitializeMachine(vmemSize)
 	execution.NewExecutionContext(decoding.DecodingContext.ExecutableInstructions, decoding.DecodingContext.InstructionStructs, decoding.DecodingContext.AddressToInstructionIndex[entryPoint])
