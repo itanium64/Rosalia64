@@ -1,6 +1,7 @@
 package decoding
 
 import (
+	"fmt"
 	"rosalia64/core/declarations"
 	"rosalia64/core/formats"
 )
@@ -66,7 +67,7 @@ func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint6
 			declarations.ATTRIBUTE_PR_COMPLETER: uint64(prRegCompleter),
 			declarations.ATTRIBUTE_CM4:          uint64(cm4),
 		},
-		Disassembly: disassembly,
+		Disassembly: fmt.Sprintf("%s p%d, p%d", disassembly, a6.P1, a6.P2),
 	}
 
 	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.IntegerCompareRegisterForm)
