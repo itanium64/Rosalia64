@@ -22,10 +22,14 @@ var opCodeCdismTable map[declarations.ComparisonTypeTbTaC]string = map[declarati
 	declarations.TB_TA_C_LT:      ".lt",
 }
 
-func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint64, nextSlot uint64) {
-	a6 := formats.ReadA6(instructionBits, nextSlot)
+func (decoder *DecoderContext) DecodeIntegerCompareOpcodeCRegisterForm(instructionBits uint64, nextSlot uint64) {
 
-	tbTaC := (a6.Tb) | (a6.Ta << 1) | (a6.C << 2)
+}
+
+func (decoder *DecoderContext) DecodeIntegerCompareOpcodeCImmediate(instructionBits uint64, nextSlot uint64) {
+	a8 := formats.ReadA8(instructionBits, nextSlot)
+
+	TaC := (a8.Ta) | (a8.C << 1)
 
 	prRegCompleter := declarations.PR_COMPLETER_NONE
 
@@ -34,18 +38,18 @@ func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint6
 	//0 = full 64bit compare, 1 = 32bit compare
 	cm4 := 0
 
-	if a6.X2 == 1 {
+	if a8.X2 == 3 {
 		//cmp4
 		cm4 = 1
 
 		disassembly += "4"
 	}
 
-	comparisonDisassembly := opCodeCdismTable[declarations.ComparisonTypeTbTaC(tbTaC)]
+	comparisonDisassembly := opCodeCdismTable[declarations.ComparisonTypeTbTaC(TaC)]
 
 	disassembly += comparisonDisassembly
 
-	switch tbTaC {
+	switch TaC {
 	case 0:
 		prRegCompleter = declarations.PR_COMPLETER_NONE
 	case 1:
@@ -59,17 +63,27 @@ func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint6
 
 	instructionStruct := declarations.InstructionStruct{
 		Attributes: declarations.InstructionAttributeMap{
-			declarations.ATTRIBUTE_QP:           a6.Qp,
-			declarations.ATTRIBUTE_R2:           a6.R2,
-			declarations.ATTRIBUTE_R3:           a6.R3,
-			declarations.ATTRIBUTE_PR1:          a6.P1,
-			declarations.ATTRIBUTE_PR2:          a6.P2,
+			declarations.ATTRIBUTE_QP:           a8.Qp,
+			declarations.ATTRIBUTE_IMMEDIATE:    a8.Immediate,
+			declarations.ATTRIBUTE_R3:           a8.R3,
+			declarations.ATTRIBUTE_PR1:          a8.P1,
+			declarations.ATTRIBUTE_PR2:          a8.P2,
 			declarations.ATTRIBUTE_PR_COMPLETER: uint64(prRegCompleter),
 			declarations.ATTRIBUTE_CM4:          uint64(cm4),
 		},
-		Disassembly: fmt.Sprintf("%s p%d, p%d", disassembly, a6.P1, a6.P2),
+		Disassembly: fmt.Sprintf("%s p%d, p%d = %d, r%d", disassembly, a8.P1, a8.P2, a8.Immediate, a8.R3),
 	}
 
 	decoder.ExecutableInstructions = append(decoder.ExecutableInstructions, declarations.IntegerCompareRegisterForm)
 	decoder.InstructionStructs = append(decoder.InstructionStructs, instructionStruct)
+}
+
+func (decoder *DecoderContext) DecodeIntegerCompareOpcodeC(instructionBits uint64, nextSlot uint64) {
+	x2 := (instructionBits & (0b0000011000000000000000000000000000000000000000)) >> 39
+
+	if x2 <= 1 {
+		decoder.DecodeIntegerCompareOpcodeCRegisterForm(instructionBits, nextSlot)
+	} else {
+		decoder.DecodeIntegerCompareOpcodeCImmediate(instructionBits, nextSlot)
+	}
 }

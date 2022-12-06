@@ -1,6 +1,7 @@
 package formats
 
 import (
+	"fmt"
 	"rosalia64/core/ia_math"
 )
 
@@ -98,5 +99,46 @@ func ReadA6(instructionBits uint64, nextSlot uint64) A6 {
 		C:  _c,
 		P1: p1,
 		Qp: qp,
+	}
+}
+
+type A8 struct {
+	Sign      uint64
+	X2        uint64
+	Ta        uint64
+	P2        uint64
+	R3        uint64
+	Immediate uint64
+	C         uint64
+	P1        uint64
+	Qp        uint64
+}
+
+func ReadA8(instructionBits uint64, nextSlot uint64) A8 {
+	_sign := (instructionBits & (0b0000100000000000000000000000000000000000000000)) >> 41
+	___x2 := (instructionBits & (0b0000011000000000000000000000000000000000000000)) >> 39
+	___ta := (instructionBits & (0b0000000100000000000000000000000000000000000000)) >> 38
+	___p2 := (instructionBits & (0b0000000011111100000000000000000000000000000000)) >> 32
+	___r3 := (instructionBits & (0b0000000000000011111110000000000000000000000000)) >> 25
+	imm7b := (instructionBits & (0b0000000000000000000001111111000000000000000000)) >> 18
+	____c := (instructionBits & (0b0000000000000000000000000000100000000000000000)) >> 17
+	___p1 := (instructionBits & (0b0000000000000000000000000000011111100000000000)) >> 11
+	___qp := (instructionBits & (0b0000000000000000000000000000000000011111100000)) >> 5
+
+	fmt.Printf("%064b\n", instructionBits)
+	fmt.Printf("%02b\n", ___x2)
+
+	immediate := ia_math.SignExt(_sign<<7|imm7b, 8)
+
+	return A8{
+		Sign:      _sign,
+		X2:        ___x2,
+		Ta:        ___ta,
+		P2:        ___p2,
+		R3:        ___r3,
+		Immediate: uint64(immediate),
+		C:         ____c,
+		P1:        ___p1,
+		Qp:        ___qp,
 	}
 }
