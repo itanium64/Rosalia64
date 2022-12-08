@@ -2,8 +2,9 @@ mod instruction_bundle;
 mod decoding_context;
 mod instruction_attributes;
 mod decoding_slot_orders;
+mod instruction_decoding;
 
 pub use instruction_bundle::{InstructionBundle};
 pub use decoding_context::{DecodingContext};
 pub use instruction_attributes::{Attribute, InstructionAttributeMap};
-pub use decoding_slot_orders::{InstructionOrStop, SLOT_ORDERS};
+pub use decoding_slot_orders::{UnitOrStop, SLOT_ORDERS};

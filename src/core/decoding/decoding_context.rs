@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::core::execution;
 
-use super::{InstructionBundle, SLOT_ORDERS};
+use super::{InstructionBundle, SLOT_ORDERS, UnitOrStop};
 
 pub struct DecodingContext {
     current_address: u64,
@@ -53,5 +53,46 @@ impl DecodingContext {
         
         self.current_address += 16;  //Bundle is 16 bytes
         self.instruction_index += 3; //Bundle has 3 instructions
+
+        let mut unit_slot0: Option<UnitOrStop> = None;
+        let mut unit_slot1: Option<UnitOrStop> = None;
+        let mut unit_slot2: Option<UnitOrStop> = None;
+
+        let mut pipeline_index: usize = 0;
+
+        while unit_slot0.is_none() || unit_slot1.is_none() || unit_slot2.is_none() {
+            let current_item = bundle_pipeline[pipeline_index].clone();
+
+            if current_item == UnitOrStop::None {
+                continue;
+            } else if current_item == UnitOrStop::End {
+                break;
+            }
+
+            if unit_slot0.is_none() {
+                unit_slot0 = Some(current_item);
+                continue;
+            }
+
+            if unit_slot1.is_none() {
+                unit_slot1 = Some(current_item);
+                continue;
+            }
+
+            if unit_slot2.is_none() {
+                unit_slot2 = Some(current_item);
+                continue;
+            }
+
+            pipeline_index += 1;
+        }
+
+        self.decode_instruction_slot(instruction_bundle.slot0, instruction_bundle.slot1, unit_slot0.unwrap());
+        self.decode_instruction_slot(instruction_bundle.slot1, instruction_bundle.slot2, unit_slot1.unwrap());
+        self.decode_instruction_slot(instruction_bundle.slot2, 0b0000000000000000000000, unit_slot2.unwrap());
+    }
+
+    fn decode_instruction_slot(&mut self, slot: u64, next_slot: u64, unit: UnitOrStop) {
+
     }
 }

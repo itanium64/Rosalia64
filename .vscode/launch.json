@@ -21,7 +21,7 @@
                 }
             },
             "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}/build"
         },
         {
             "type": "lldb",
@@ -38,8 +38,10 @@
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "args": [
+                "Rimukoro.exe"
+            ],
+            "cwd": "${workspaceFolder}/build"
         },
         {
             "type": "lldb",
@@ -58,7 +60,7 @@
                 }
             },
             "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}/build"
         }
     ]
 }
