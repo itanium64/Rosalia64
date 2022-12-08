@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::core::execution;
+use crate::{core::execution, decoding::instruction_decoding};
 
 use super::{InstructionBundle, SLOT_ORDERS, UnitOrStop};
 
@@ -103,6 +103,7 @@ impl DecodingContext<'_> {
     fn decode_instruction_slot(&mut self, slot: u64, next_slot: u64, unit: UnitOrStop) {
         let mask = (0b1111 << 37);
         let major_opcode = (slot & mask) >> 37;
+        self.decode_addl_imm22_form(slot, next_slot);
 
         println!("{}", major_opcode);
     }

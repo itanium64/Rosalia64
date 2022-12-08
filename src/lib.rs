@@ -1,3 +1,3 @@
 mod core;
 
-pub use crate::core::{decoding, execution, executables};
+pub use crate::core::{decoding, execution};
