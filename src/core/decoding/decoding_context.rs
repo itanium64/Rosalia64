@@ -4,26 +4,34 @@ use crate::core::execution;
 
 use super::{InstructionBundle, SLOT_ORDERS, UnitOrStop};
 
-pub struct DecodingContext {
+pub struct DecodingContext<'a> {
     current_address: u64,
-    text_section: Vec<u8>,
+    text_section: &'a [u8],
     text_section_index: usize,
+    text_section_size: usize,
     executable_instructions: Vec<execution::ExecutableInstruction>,
     instruction_index: u64,
     address_to_instruction_index: HashMap<u64, u64>,
     instruction_index_to_address: HashMap<u64, u64>,
 }
 
-impl DecodingContext {
-    pub fn new(text_section: &Vec<u8>, address_base: u64) -> DecodingContext {
+impl DecodingContext<'_> {
+    pub fn new<'byteref>(text_section: &'byteref [u8], text_section_size: usize, address_base: u64) -> DecodingContext {
         DecodingContext { 
             current_address: address_base,
             text_section: text_section.clone(),
             text_section_index: 0, 
+            text_section_size: text_section_size,
             executable_instructions: Vec::new(), 
             instruction_index: 0, 
             address_to_instruction_index: HashMap::new(), 
             instruction_index_to_address: HashMap::new()
+        }
+    }
+
+    pub fn decode_all(&mut self) {
+        while self.instruction_index * 16 != self.text_section_size as u64 {
+            self.next_bundle()
         }
     }
 
@@ -63,6 +71,8 @@ impl DecodingContext {
         while unit_slot0.is_none() || unit_slot1.is_none() || unit_slot2.is_none() {
             let current_item = bundle_pipeline[pipeline_index].clone();
 
+            pipeline_index += 1;
+
             if current_item == UnitOrStop::None {
                 continue;
             } else if current_item == UnitOrStop::End {
@@ -82,9 +92,7 @@ impl DecodingContext {
             if unit_slot2.is_none() {
                 unit_slot2 = Some(current_item);
                 continue;
-            }
-
-            pipeline_index += 1;
+            }          
         }
 
         self.decode_instruction_slot(instruction_bundle.slot0, instruction_bundle.slot1, unit_slot0.unwrap());
@@ -93,6 +101,9 @@ impl DecodingContext {
     }
 
     fn decode_instruction_slot(&mut self, slot: u64, next_slot: u64, unit: UnitOrStop) {
+        let mask = (0b1111 << 37);
+        let major_opcode = (slot & mask) >> 37;
 
+        println!("{}", major_opcode);
     }
 }
