@@ -50,6 +50,8 @@ pub static SLOT_ORDERS: phf::Map<u32, BundlePipeline> = phf_map! {
     0x13u32 => [UnitOrStop::Memory,  UnitOrStop::Branch,   UnitOrStop::Branch,   UnitOrStop::Stop,    UnitOrStop::End,  UnitOrStop::None],
     0x16u32 => [UnitOrStop::Branch,  UnitOrStop::Branch,   UnitOrStop::Branch,   UnitOrStop::End,     UnitOrStop::None, UnitOrStop::None],
     0x17u32 => [UnitOrStop::Branch,  UnitOrStop::Branch,   UnitOrStop::Branch,   UnitOrStop::Stop,    UnitOrStop::End,  UnitOrStop::None],
+    0x18u32 => [UnitOrStop::Memory,  UnitOrStop::Memory,   UnitOrStop::Branch,   UnitOrStop::End,     UnitOrStop::None, UnitOrStop::None],
+    0x19u32 => [UnitOrStop::Memory,  UnitOrStop::Memory,   UnitOrStop::Branch,   UnitOrStop::Stop,    UnitOrStop::End,  UnitOrStop::None],
     0x1Cu32 => [UnitOrStop::Memory,  UnitOrStop::Float,    UnitOrStop::Branch,   UnitOrStop::End,     UnitOrStop::None, UnitOrStop::None],
     0x1Du32 => [UnitOrStop::Memory,  UnitOrStop::Float,    UnitOrStop::Branch,   UnitOrStop::Stop,    UnitOrStop::End,  UnitOrStop::None],
 };

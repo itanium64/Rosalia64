@@ -60,6 +60,7 @@ impl DecodingContext<'_> {
         self.instruction_index_to_address.insert(self.instruction_index, self.current_address);
         
         self.current_address += 16;  //Bundle is 16 bytes
+        self.text_section_index += 16;
         self.instruction_index += 3; //Bundle has 3 instructions
 
         let mut unit_slot0: Option<UnitOrStop> = None;
@@ -73,7 +74,7 @@ impl DecodingContext<'_> {
 
             pipeline_index += 1;
 
-            if current_item == UnitOrStop::None {
+            if current_item == UnitOrStop::None || current_item == UnitOrStop::Stop {
                 continue;
             } else if current_item == UnitOrStop::End {
                 break;
@@ -110,7 +111,7 @@ impl DecodingContext<'_> {
         match retrieved {
             Some(decoder) => decoder(self, slot, next_slot),
             None => {
-                println!("Major Opcode {} unimplemented for {} unit", major_opcode, unit)
+                println!("decode_instruction_slot: Major Opcode {} unimplemented for {} unit", major_opcode, unit)
             }
         }
     }
