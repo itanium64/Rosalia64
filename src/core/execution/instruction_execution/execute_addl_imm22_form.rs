@@ -1,6 +1,4 @@
-use crate::decoding::{InstructionAttributeMap, InstructionAttribute};
-
-use super::processor::{ItaniumProcessor, ProcessorFault};
+use crate::{decoding::{InstructionAttributeMap, InstructionAttribute}, execution::{ItaniumProcessor, processor::ProcessorFault}};
 
 pub fn execute_addl_imm22_form(processor: &mut ItaniumProcessor, attributes: InstructionAttributeMap) -> Result<(), ProcessorFault> {
     let reg1 = attributes[&InstructionAttribute::R1];

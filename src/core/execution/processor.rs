@@ -1,3 +1,5 @@
+use super::register_stack_engine::RegisterStackEngine;
+
 pub enum ProcessorFault {
     IllegalOperation
 }
@@ -39,11 +41,13 @@ impl GeneralRegister {
     }
 }
 
+#[derive()]
 pub struct ItaniumProcessor {
     general_registers: [GeneralRegister; 128],
     floating_registers: [f64; 128],
     predicate_registers: [bool; 64],
     branch_registers: [u64; 8],
+    register_stack_engine: RegisterStackEngine,
 }
 
 impl ItaniumProcessor {
