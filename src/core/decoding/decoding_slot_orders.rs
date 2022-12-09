@@ -1,7 +1,5 @@
 use phf::phf_map;
 
-use crate::core::execution;
-
 #[derive(Clone, PartialEq, Eq)]
 pub enum UnitOrStop {
     None,

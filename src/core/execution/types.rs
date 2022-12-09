@@ -1,7 +1,7 @@
 use crate::core::decoding;
 
 pub struct ExecutableInstruction {
-    execution_function: fn(decoding::InstructionAttributeMap),
-    attributes: decoding::InstructionAttributeMap,
-    disassembly: String
+    pub execution_function: fn(decoding::InstructionAttributeMap),
+    pub attributes: decoding::InstructionAttributeMap,
+    pub disassembly: String
 }

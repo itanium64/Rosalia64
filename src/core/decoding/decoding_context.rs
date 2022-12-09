@@ -9,10 +9,10 @@ pub struct DecodingContext<'a> {
     text_section: &'a [u8],
     text_section_index: usize,
     text_section_size: usize,
-    executable_instructions: Vec<execution::ExecutableInstruction>,
+    pub executable_instructions: Vec<execution::ExecutableInstruction>,
     instruction_index: u64,
-    address_to_instruction_index: HashMap<u64, u64>,
-    instruction_index_to_address: HashMap<u64, u64>,
+    pub address_to_instruction_index: HashMap<u64, u64>,
+    pub instruction_index_to_address: HashMap<u64, u64>,
 }
 
 impl DecodingContext<'_> {
