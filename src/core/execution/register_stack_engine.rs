@@ -17,8 +17,16 @@ impl RegisterStackEngine {
         RegisterStackEngine { stack_windows: Vec::new() }
     }
 
-    pub fn current_frame(&self) -> &mut StackWindow {
-        return &mut self.stack_windows[self.stack_windows.len() - 1];
+    pub fn current_frame_mut(&mut self) -> &mut StackWindow {
+        let index = self.stack_windows.len() - 1;
+
+        return &mut self.stack_windows[index];
+    }
+
+    pub fn current_frame(&self) -> &StackWindow {
+        let index = self.stack_windows.len() - 1;
+
+        return &self.stack_windows[index];
     }
 
     //Creates a new frame after a function call
@@ -37,7 +45,7 @@ impl RegisterStackEngine {
 
     //Allocates more registers if necessary
     pub fn allocate(&mut self, local_registers: u64, output_registers: u64) {
-        let current_frame = self.current_frame();
+        let current_frame = self.current_frame_mut();
 
         current_frame.count_local_registers = local_registers;
         current_frame.count_output_registers = output_registers;

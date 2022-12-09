@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{decoding::{DecodingContext, instruction_formats::{A5}, InstructionAttribute}, execution::{self}};
+use crate::{decoding::{DecodingContext, instruction_formats::{A5}, InstructionAttribute}, execution::{self, instruction_execution}};
 
 use super::disassembly_helpers::format_qualifying_predicate;
 
@@ -19,7 +19,7 @@ pub fn decode_addl_imm22_form(context: &mut DecodingContext, slot: u64, next_slo
     ]);
 
     let executable_instruction = execution::ExecutableInstruction {
-        execution_function: execution::execute_addl_imm22_form,
+        execution_function: instruction_execution::execute_addl_imm22_form,
         attributes: attributes,
         disassembly: disassembly
     };
