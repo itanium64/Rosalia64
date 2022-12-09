@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{core::execution};
+use crate::{core::execution, decoding::{instruction_decoding, get_unit_instruction_table}};
 
 use super::{InstructionBundle, SLOT_ORDERS, UnitOrStop};
 
@@ -100,11 +100,18 @@ impl DecodingContext<'_> {
         self.decode_instruction_slot(instruction_bundle.slot2, 0b0000000000000000000000, unit_slot2.unwrap());
     }
 
-    fn decode_instruction_slot(&mut self, slot: u64, next_slot: u64, _unit: UnitOrStop) {
+    fn decode_instruction_slot(&mut self, slot: u64, next_slot: u64, unit: UnitOrStop) {
         let mask = 0b1111 << 37;
-        let major_opcode = (slot & mask) >> 37;
-        self.decode_addl_imm22_form(slot, next_slot);
+        let major_opcode = ((slot & mask) >> 37) as u32;
 
-        println!("{}", major_opcode);
+        let unit_table = get_unit_instruction_table(&unit);
+        let retrieved = unit_table.get(&major_opcode);
+
+        match retrieved {
+            Some(decoder) => decoder(self, slot, next_slot),
+            None => {
+                println!("Major Opcode {} unimplemented for {} unit", major_opcode, unit)
+            }
+        }
     }
 }

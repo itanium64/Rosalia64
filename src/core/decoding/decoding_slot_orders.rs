@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use phf::phf_map;
 
 #[derive(Clone, PartialEq, Eq)]
@@ -10,6 +12,19 @@ pub enum UnitOrStop {
     Extended,
     Stop,
     End,
+}
+
+impl Display for UnitOrStop {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            UnitOrStop::Integer => write!(f, "Integer"),
+            UnitOrStop::Memory => write!(f, "Memory"),
+            UnitOrStop::Float => write!(f, "Float"),
+            UnitOrStop::Branch => write!(f, "Branch"),
+            UnitOrStop::Extended => write!(f, "Extended"),
+            _ => panic!("Invalid unit!")
+        }
+    }
 }
 
 type BundlePipeline = [UnitOrStop; 6];
