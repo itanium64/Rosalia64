@@ -1,4 +1,6 @@
-use crate::{decoding::{DecodingContext, instruction_formats::{A5}}, execution::{self, ExecutableInstruction}};
+use std::collections::HashMap;
+
+use crate::{decoding::{DecodingContext, instruction_formats::{A5}, InstructionAttribute}, execution::{self}};
 
 use super::disassembly_helpers::format_qualifying_predicate;
 
@@ -10,7 +12,20 @@ impl DecodingContext<'_> {
 
         let disassembly = format!("{} addl r{} = {}, r{}", format_qualifying_predicate(a5.qp), a5.r1, a5.immediate, a5.r3);
 
-        //self.executable_instructions.push(executable_instruction);
+        let attributes: HashMap<InstructionAttribute, u64> = HashMap::from([
+            (InstructionAttribute::R1, a5.r1),
+            (InstructionAttribute::R3, a5.r3),
+            (InstructionAttribute::QualifyingPredicate, a5.qp),
+            (InstructionAttribute::Immediate, a5.immediate),
+        ]);
+
+        let executable_instruction = execution::ExecutableInstruction {
+            execution_function: execution::execute_addl_imm22_form,
+            attributes: attributes,
+            disassembly: disassembly
+        };
+
+        self.executable_instructions.push(executable_instruction);
 
         println!("{}", a5.immediate)
     }

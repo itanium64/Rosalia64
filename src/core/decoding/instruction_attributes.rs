@@ -1,7 +1,12 @@
 use std::collections::HashMap;
 
-pub enum Attribute {
-
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum InstructionAttribute {
+    R1,
+    R2,
+    R3,
+    Immediate,
+    QualifyingPredicate,
 }
 
-pub type InstructionAttributeMap = HashMap<Attribute, u64>;
+pub type InstructionAttributeMap = HashMap<InstructionAttribute, u64>;
