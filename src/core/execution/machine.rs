@@ -2,7 +2,8 @@ use super::ItaniumProcessor;
 
 pub struct ItaniumMachine {
     pub processor: ItaniumProcessor,
-    pub memory: Vec<u8>
+    pub memory: Vec<u8>,
+    pub continue_running: bool
 } 
 
 impl ItaniumMachine {
@@ -12,7 +13,8 @@ impl ItaniumMachine {
 
         ItaniumMachine { 
             processor: processor, 
-            memory: memory 
+            memory: memory,
+            continue_running: true,
         }
     }
 }

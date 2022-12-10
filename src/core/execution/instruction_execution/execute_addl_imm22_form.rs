@@ -1,6 +1,6 @@
 use crate::{decoding::{InstructionAttributeMap, InstructionAttribute}, execution::{processor::ProcessorFault, machine::ItaniumMachine}};
 
-pub fn execute_addl_imm22_form(machine: &mut ItaniumMachine, attributes: InstructionAttributeMap) -> Result<(), ProcessorFault> {
+pub fn execute_addl_imm22_form(machine: &mut ItaniumMachine, attributes: &InstructionAttributeMap) -> Result<(), ProcessorFault> {
     let processor = &mut machine.processor;
 
     let reg1 = attributes[&InstructionAttribute::R1];
@@ -23,6 +23,8 @@ pub fn execute_addl_imm22_form(machine: &mut ItaniumMachine, attributes: Instruc
             return nat_err;
         }
     }
+
+    return Err(ProcessorFault::IllegalOperation);
 
     return Ok(())
 }

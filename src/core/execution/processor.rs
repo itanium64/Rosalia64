@@ -1,7 +1,16 @@
+use std::fmt::Display;
+
 use super::{register_stack_engine::RegisterStackEngine, GeneralRegister, register_types::{PredicateRegister, FloatingRegister}};
 
+#[derive(Debug)]
 pub enum ProcessorFault {
     IllegalOperation
+}
+
+impl Display for ProcessorFault {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 pub struct ItaniumProcessor {

@@ -1,7 +1,7 @@
 use std::env;
 
 use exe::{VecPE, PE, ImageFileMachine};
-use rosalia_core::decoding::DecodingContext;
+use rosalia_core::{decoding::DecodingContext, execution::{ItaniumMachine, ExecutionContext}};
 
 extern crate rosalia_core;
 
@@ -36,4 +36,9 @@ fn main() {
 
     
     decoding_context.decode_all();
+
+    let mut machine = ItaniumMachine::new(512 * 1024 * 1024);
+    let mut execution_context = ExecutionContext::new(decoding_context, &mut machine);
+
+    execution_context.run();
 }
