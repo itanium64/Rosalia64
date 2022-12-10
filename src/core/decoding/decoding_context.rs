@@ -30,7 +30,7 @@ impl DecodingContext<'_> {
     }
 
     pub fn decode_all(&mut self) {
-        while self.instruction_index * 16 < self.text_section_size as u64 {
+        while (self.instruction_index / 3) * 16 < self.text_section_size as u64 {
             self.next_bundle()
         }
     }

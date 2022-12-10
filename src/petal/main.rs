@@ -29,8 +29,8 @@ fn main() {
 
     let mut decoding_context = 
         DecodingContext::new(
-            text_data, 
-            text_data.len(),
+            &text_data[0..entrypoint.virtual_size as usize], 
+            entrypoint.virtual_size as usize,
             opt_header.optional_header.image_base + entrypoint.virtual_address.0 as u64
         );
 
