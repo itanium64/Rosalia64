@@ -93,7 +93,7 @@ for name in names:
 print("}\n")
 
 print(f"impl {formatName.capitalize()} {{")
-print(f"    pub fn from_slots(slot: u64, next_slot: u64) -> {formatName.upper()} " + "{")
+print(f"    pub fn from_slots(slot: u64, _next_slot: u64) -> {formatName.upper()} " + "{")
 
 generateVariableDecoders(names, lengths, True)
 

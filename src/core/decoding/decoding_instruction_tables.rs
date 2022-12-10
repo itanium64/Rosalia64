@@ -8,7 +8,7 @@ pub static INSTRUCTION_TABLE_INTEGER: phf::Map<u32, fn(&mut DecodingContext, slo
 };
 
 pub static INSTRUCTION_TABLE_MEMORY: phf::Map<u32, fn(&mut DecodingContext, slot: u64, next_slot: u64)> = phf_map! {
-    9u32 => instruction_decoding::decode_addl_imm22_form
+    9u32 => instruction_decoding::decode_addl_imm22_form,
 };
 
 pub static INSTRUCTION_TABLE_FLOAT: phf::Map<u32, fn(&mut DecodingContext, slot: u64, next_slot: u64)> = phf_map! {
@@ -16,7 +16,7 @@ pub static INSTRUCTION_TABLE_FLOAT: phf::Map<u32, fn(&mut DecodingContext, slot:
 };
 
 pub static INSTRUCTION_TABLE_BRANCH: phf::Map<u32, fn(&mut DecodingContext, slot: u64, next_slot: u64)> = phf_map! {
-    
+    2u32 => instruction_decoding::decode_nop_branch,
 };
 
 pub static INSTRUCTION_TABLE_EXTENDED: phf::Map<u32, fn(&mut DecodingContext, slot: u64, next_slot: u64)> = phf_map! {

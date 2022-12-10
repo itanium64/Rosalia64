@@ -7,3 +7,4 @@ mod decode_adds_imm14_form;
 pub use decode_addl_imm22_form::decode_addl_imm22_form;
 pub use decode_part_integer_alu::decode_part_integer_alu;
 pub use decode_adds_imm14_form::decode_adds_imm14_form;
+pub use decode_nops::{decode_nop_branch,decode_nop_float,decode_nop_integer,decode_nop_memory};
