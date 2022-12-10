@@ -30,7 +30,7 @@ impl DecodingContext<'_> {
     }
 
     pub fn decode_all(&mut self) {
-        while self.instruction_index * 16 != self.text_section_size as u64 {
+        while self.instruction_index * 16 < self.text_section_size as u64 {
             self.next_bundle()
         }
     }
@@ -42,12 +42,7 @@ impl DecodingContext<'_> {
                 byte_slice
                     .try_into()
                     .expect("failed to read bundle!")
-            );
-
-        if byte_bundle == 0 {
-            //I'm like 99% sure the whole bundle being empty means there's nothing there
-            return
-        }
+            );     
         
         let instruction_bundle = InstructionBundle::decode(byte_bundle);
         let bundle_pipeline = SLOT_ORDERS[&instruction_bundle.template].clone();
@@ -62,6 +57,11 @@ impl DecodingContext<'_> {
         self.current_address += 16;  //Bundle is 16 bytes
         self.text_section_index += 16;
         self.instruction_index += 3; //Bundle has 3 instructions
+
+        if byte_bundle == 0 {
+            //I'm like 99% sure the whole bundle being empty means there's nothing there
+            return
+        }
 
         let mut unit_slot0: Option<UnitOrStop> = None;
         let mut unit_slot1: Option<UnitOrStop> = None;

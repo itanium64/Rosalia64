@@ -25,6 +25,4 @@ pub fn decode_addl_imm22_form(context: &mut DecodingContext, slot: u64, next_slo
     };
 
     context.executable_instructions.push(executable_instruction);
-
-    println!("{}", a5.immediate)
 }
