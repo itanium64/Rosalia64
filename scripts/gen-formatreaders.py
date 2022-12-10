@@ -82,13 +82,13 @@ print(f"pub struct {formatName.upper()}" + " {")
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == False:
-            print("    immediate: u64,")
+            print("    pub immediate: u64,")
             immediateCreated = True
         
         continue
     
     if name != "_":
-        print(f"    {name}: u64,")
+        print(f"    pub {name}: u64,")
 
 print("}\n")
 
