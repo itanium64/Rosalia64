@@ -8,10 +8,10 @@ fn decode_nop(context: &mut DecodingContext, disassembly: String, imm20a: u64, q
     let marker_disassembly: String;
 
     let immediate = i << 20 | imm20a;
-
-    match imm20a {
+    
+    match immediate {
         0 => marker_disassembly = String::from(""),
-        _ => marker_disassembly = String::from(immediate.to_string())
+        _ => marker_disassembly = format!("// marker: {}", immediate)
     }
 
     let attributes: HashMap<InstructionAttribute, u64> = HashMap::from([
