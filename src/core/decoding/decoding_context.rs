@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{core::execution, decoding::{instruction_decoding, get_unit_instruction_table}};
+use crate::{core::execution, decoding::{get_unit_instruction_table}};
 
 use super::{InstructionBundle, SLOT_ORDERS, UnitOrStop};
 

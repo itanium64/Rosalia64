@@ -1,13 +1,15 @@
+#[derive(Clone, Copy, Debug)]
 pub struct StackWindow {
-    register_base: u64,
-    size_of_frame: u64,
+    pub register_base: u64,
+    pub size_of_frame: u64,
 
-    count_input_registers: u64,
-    count_local_registers: u64,
-    count_output_registers: u64,
-    count_rotating_registers: u64,
+    pub count_input_registers: u64,
+    pub count_local_registers: u64,
+    pub count_output_registers: u64,
+    pub count_rotating_registers: u64,
 }
 
+#[derive(Clone, Debug)]
 pub struct RegisterStackEngine {
     stack_windows: Vec<StackWindow>
 }
