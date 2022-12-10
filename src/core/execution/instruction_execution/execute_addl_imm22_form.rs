@@ -12,7 +12,10 @@ pub fn execute_addl_imm22_form(machine: &mut ItaniumMachine, attributes: &Instru
         let mut r1 = *processor.retrieve_general_register_mut(reg1).unwrap();
         let r3 = *processor.retrieve_general_register(reg3).unwrap();
 
-        let val_err = r1.write(immd + r3.read());
+        let r3val = r3.read() as i64;
+        let imval = immd as i64;
+
+        let val_err = r1.write( (imval + r3val) as u64);
         let nat_err = r1.write_nat(r3.read_nat());
 
         if val_err.is_err() {
@@ -23,8 +26,6 @@ pub fn execute_addl_imm22_form(machine: &mut ItaniumMachine, attributes: &Instru
             return nat_err;
         }
     }
-
-    return Err(ProcessorFault::IllegalOperation);
 
     return Ok(())
 }
