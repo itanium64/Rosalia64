@@ -34,7 +34,6 @@ fn main() {
             opt_header.optional_header.image_base + entrypoint.virtual_address.0 as u64
         );
 
-    
     decoding_context.decode_all();
 
     let mut machine = ItaniumMachine::new(512 * 1024 * 1024);
