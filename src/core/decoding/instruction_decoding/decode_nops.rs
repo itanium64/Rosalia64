@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{decoding::{DecodingContext, InstructionAttribute}, execution::{instruction_execution, self}, core::ia_math};
+use crate::{decoding::{DecodingContext, InstructionAttribute}, execution::{instruction_execution, self}};
 
 use super::disassembly_helpers::format_qualifying_predicate;
 

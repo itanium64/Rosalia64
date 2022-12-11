@@ -13,11 +13,11 @@ pub fn decode_part_integer_alu(context: &mut DecodingContext, slot: u64, next_sl
             if _ve == 0 {
                 decode_adds_imm14_form(context, slot, next_slot);
             } else {
-                println!("decode_part_integer_alu: Unimplemented _ve warning!\nx2a: {}\n ve: {}", x2a, _ve)
+                println!("decode_part_integer_alu: Unimplemented _ve warning!\nx2a: {}\nve: {}", x2a, _ve)
             }
         },
         _ => {
-            println!("decode_part_integer_alu: Unimplemented x2a warning!\nx2a: {}\n ve: {}", x2a, _ve)
+            println!("decode_part_integer_alu: Unimplemented x2a warning!\nx2a: {}\nve: {}", x2a, _ve)
         }
     }
 }

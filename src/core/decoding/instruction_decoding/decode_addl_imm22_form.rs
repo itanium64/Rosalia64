@@ -19,7 +19,7 @@ pub fn decode_addl_imm22_form(context: &mut DecodingContext, slot: u64, next_slo
     ]);
 
     let executable_instruction = execution::ExecutableInstruction {
-        execution_function: instruction_execution::execute_addl_imm22_form,
+        execution_function: instruction_execution::execute_add_imm_form,
         attributes: attributes,
         disassembly: disassembly
     };

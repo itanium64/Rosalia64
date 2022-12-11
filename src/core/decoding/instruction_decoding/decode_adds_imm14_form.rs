@@ -4,6 +4,8 @@ use crate::{decoding::{DecodingContext, instruction_formats::A4, InstructionAttr
 
 use super::disassembly_helpers::format_qualifying_predicate;
 
+// Tags for easier searching:
+// Add Immediate 14 imm14_form adds Imm
 pub fn decode_adds_imm14_form(context: &mut DecodingContext, slot: u64, next_slot: u64) {
     let a4 = A4::from_slots(slot, next_slot);
 
@@ -17,7 +19,7 @@ pub fn decode_adds_imm14_form(context: &mut DecodingContext, slot: u64, next_slo
     ]); 
 
     let executable_instruction = execution::ExecutableInstruction {
-        execution_function: instruction_execution::execute_adds_imm14_form,
+        execution_function: instruction_execution::execute_add_imm_form,
         attributes: attributes,
         disassembly: disassembly
     };

@@ -8,6 +8,7 @@ pub static INSTRUCTION_TABLE_INTEGER: phf::Map<u32, fn(&mut DecodingContext, slo
 };
 
 pub static INSTRUCTION_TABLE_MEMORY: phf::Map<u32, fn(&mut DecodingContext, slot: u64, next_slot: u64)> = phf_map! {
+    4u32 => instruction_decoding::decode_part_int_load_store,
     9u32 => instruction_decoding::decode_addl_imm22_form,
 };
 

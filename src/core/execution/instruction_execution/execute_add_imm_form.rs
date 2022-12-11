@@ -1,6 +1,6 @@
-use crate::{execution::{ItaniumMachine, processor::ProcessorFault}, decoding::{InstructionAttributeMap, InstructionAttribute}};
+use crate::{decoding::{InstructionAttributeMap, InstructionAttribute}, execution::{processor::ProcessorFault, machine::ItaniumMachine}};
 
-pub fn execute_adds_imm14_form(machine: &mut ItaniumMachine, attributes: &InstructionAttributeMap) -> Result<(), ProcessorFault> {
+pub fn execute_add_imm_form(machine: &mut ItaniumMachine, attributes: &InstructionAttributeMap) -> Result<(), ProcessorFault> {
     let processor = &mut machine.processor;
 
     let reg1 = attributes[&InstructionAttribute::R1];
