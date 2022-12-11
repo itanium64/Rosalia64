@@ -4,7 +4,9 @@ use super::{register_stack_engine::RegisterStackEngine, GeneralRegister, registe
 
 #[derive(Debug)]
 pub enum ProcessorFault {
-    IllegalOperation
+    IllegalOperation,
+    NATConsumptionFault,
+    
 }
 
 impl Display for ProcessorFault {

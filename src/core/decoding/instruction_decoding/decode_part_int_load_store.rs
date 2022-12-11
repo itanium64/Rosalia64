@@ -40,8 +40,6 @@ pub fn decode_part_int_load_store_extensions(context: &mut DecodingContext, slot
 pub fn decode_integer_load(context: &mut DecodingContext, slot: u64, next_slot: u64) {
     let m = M1_2_4::from_slots(slot, next_slot);
 
-    let m = M1_2_4::from_slots(slot, next_slot);
-
     let bit_length_table: [u64; 4] = [1, 2, 4, 8];
 
     let hint_table = [
@@ -85,7 +83,9 @@ pub fn decode_integer_load(context: &mut DecodingContext, slot: u64, next_slot: 
     context.executable_instructions.push(executable_instruction);
 }
 
-
+//normal form no_base_update_form
 pub fn decode_integer_store(context: &mut DecodingContext, slot: u64, next_slot: u64) {
+    let m = M1_2_4::from_slots(slot, next_slot);
 
+    let bit_length_table: [u64; 4] = [1, 2, 4, 8];
 }
