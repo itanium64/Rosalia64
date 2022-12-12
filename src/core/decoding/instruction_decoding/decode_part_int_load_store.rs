@@ -43,17 +43,17 @@ pub fn decode_integer_load(context: &mut DecodingContext, slot: u64, next_slot: 
     let bit_length_table: [u64; 4] = [1, 2, 4, 8];
 
     let hint_table = [
-        "",
-        ".s",
-        ".a",
-        ".sa",
-        ".bias",
-        ".acq",
-        ".fill",
-        "",
-        ".c.clr",
-        ".c.nc",
-        ".c.clr.acq",
+        /* 0b0000 */ "",
+        /* 0b0001 */ ".s",
+        /* 0b0010 */ ".a",
+        /* 0b0011 */ ".sa",
+        /* 0b0100 */ ".bias",
+        /* 0b0101 */ ".acq",
+        /* 0b0110 */ ".fill",
+        /* 0b0111 */ "",
+        /* 0b1000 */ ".c.clr",
+        /* 0b1001 */ ".c.nc",
+        /* 0b1010 */ ".c.clr.acq",
     ];
 
     let locality_hint_table = [
@@ -88,4 +88,32 @@ pub fn decode_integer_store(context: &mut DecodingContext, slot: u64, next_slot:
     let m = M1_2_4::from_slots(slot, next_slot);
 
     let bit_length_table: [u64; 4] = [1, 2, 4, 8];
+
+    //TODO: worry about .spill later
+
+    //let ordered_store= if m.tab_y == 0xD { 1 } else { 0 };
+
+    let locality_hint_table = [
+        "",
+        ".nt1",
+        ".nt2",
+        ".nta"
+    ];
+
+    let disassembly = format!("{} st{}{} [r{}] = r{}", format_qualifying_predicate(m.qp), bit_length_table[m.tab_x as usize], locality_hint_table[m.hint as usize], m.r3, m.r2);
+
+    let attributes: HashMap<InstructionAttribute, u64> = HashMap::from([
+        (InstructionAttribute::R1, m.r1),
+        (InstructionAttribute::R2, m.r2),
+        (InstructionAttribute::Hint, m.hint),
+        (InstructionAttribute::TableX, m.tab_x),
+        (InstructionAttribute::TableY, m.tab_y),
+        (InstructionAttribute::QualifyingPredicate, m.qp),
+    ]);
+
+    let executable_instruction = execution::ExecutableInstruction {
+        execution_function: instruction_execution::execute_int_store_no_base_update_form,
+        attributes: attributes,
+        disassembly: disassembly,
+    };
 }
