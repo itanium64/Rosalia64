@@ -42,13 +42,15 @@ impl ExecutionContext<'_, '_> {
             
             println!("{}", written_out.red());
 
-            if self.instruction_index + 1 > self.decoding_context.executable_instructions.len() {
+            if (self.instruction_index + 1) < self.decoding_context.executable_instructions.len() {
                 let next_instruction = &self.decoding_context.executable_instructions.get(self.instruction_index + 1);
 
                 if next_instruction.is_some() {
                     let next = next_instruction.unwrap();
 
-                    println!("0x{:08x}: {}", self.decoding_context.instruction_index_to_address[&((self.instruction_index + 1) as u64)], next.disassembly);
+                    let index = (self.instruction_index + 1) as u64;
+
+                    println!("0x{:08x}: {}", self.decoding_context.instruction_index_to_address[&index], next.disassembly);
                 }
             }
 
@@ -57,9 +59,11 @@ impl ExecutionContext<'_, '_> {
             println!("\nFault: {}", fault);
 
             if fault != ProcessorFault::SoftFault {
-                return;
+                //return;
             }
         }
+
+        self.instruction_index += 1;
     }
 
     pub fn pause(&mut self) {

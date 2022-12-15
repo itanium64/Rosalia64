@@ -51,8 +51,15 @@ impl DecodingContext<'_> {
         //cuz this is used to know where to go to on branch instructions
         //and you cant branch to go inbetween 2 instructions in a bundle
         //you can only go to the beginning of one
+
+        //also, TODO: don't insert 3 times
         self.address_to_instruction_index.insert(self.current_address, self.instruction_index);
+        self.address_to_instruction_index.insert(self.current_address + 1, self.instruction_index);
+        self.address_to_instruction_index.insert(self.current_address + 2, self.instruction_index);
+
         self.instruction_index_to_address.insert(self.instruction_index, self.current_address);
+        self.instruction_index_to_address.insert(self.instruction_index + 1, self.current_address);
+        self.instruction_index_to_address.insert(self.instruction_index + 2, self.current_address);
         
         self.current_address += 16;  //Bundle is 16 bytes
         self.text_section_index += 16;

@@ -41,6 +41,5 @@ pub fn execute_int_store_no_base_update_form(machine: &mut ItaniumMachine, attri
         return execution_result;
     }
     
-    
     return Ok(())
 }
