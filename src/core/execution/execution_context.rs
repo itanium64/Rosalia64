@@ -1,4 +1,4 @@
-use crate::decoding::DecodingContext;
+use crate::{decoding::DecodingContext, execution::processor::ProcessorFault};
 
 use super::machine::ItaniumMachine;
 
@@ -52,7 +52,13 @@ impl ExecutionContext<'_, '_> {
                 }
             }
 
-            println!("\nFault: {}", execution_result.err().unwrap())
+            let fault = execution_result.err().unwrap();
+
+            println!("\nFault: {}", fault);
+
+            if fault != ProcessorFault::SoftFault {
+                return;
+            }
         }
     }
 

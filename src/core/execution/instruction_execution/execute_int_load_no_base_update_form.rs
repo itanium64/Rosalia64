@@ -65,7 +65,5 @@ pub fn execute_int_load_no_base_update_form(machine: &mut ItaniumMachine, attrib
 
     let defer_exception = speculative && (r3.not_a_thing /* || PSR.ed (Processor Status Register; Exception Deferral) */);
     
-    
-
     return Ok(())
 }
