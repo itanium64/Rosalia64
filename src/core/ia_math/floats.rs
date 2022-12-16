@@ -28,5 +28,9 @@ pub fn convert_mantissa(mantissa: i64) -> f64 {
 }
 
 pub fn load_float_82bit(sign: u64, exponent: u64, mantissa: u64) -> f64 {
-    return f64::powf(-1 as f64, sign as f64) * f64::powf(2.0f64, (exponent - 65535) as f64) * convert_mantissa(mantissa as i64)
+    if exponent == 0 {
+        return f64::powf(-1 as f64, sign as f64) * f64::powi(2.0f64, -16382) * convert_mantissa(mantissa as i64);
+    } else {
+        return f64::powf(-1 as f64, sign as f64) * f64::powf(2.0f64, (exponent - 65535) as f64) * convert_mantissa(mantissa as i64);
+    }
 }
