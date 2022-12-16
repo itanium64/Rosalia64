@@ -1,4 +1,4 @@
-use crate::decoding::DecodingContext;
+use crate::{decoding::DecodingContext, execution::processor::ProcessorFault};
 
 use super::machine::ItaniumMachine;
 
@@ -42,18 +42,28 @@ impl ExecutionContext<'_, '_> {
             
             println!("{}", written_out.red());
 
-            if self.instruction_index + 1 > self.decoding_context.executable_instructions.len() {
+            if (self.instruction_index + 1) < self.decoding_context.executable_instructions.len() {
                 let next_instruction = &self.decoding_context.executable_instructions.get(self.instruction_index + 1);
 
                 if next_instruction.is_some() {
                     let next = next_instruction.unwrap();
 
-                    println!("0x{:08x}: {}", self.decoding_context.instruction_index_to_address[&((self.instruction_index + 1) as u64)], next.disassembly);
+                    let index = (self.instruction_index + 1) as u64;
+
+                    println!("0x{:08x}: {}", self.decoding_context.instruction_index_to_address[&index], next.disassembly);
                 }
             }
 
-            println!("\nFault: {}", execution_result.err().unwrap())
+            let fault = execution_result.err().unwrap();
+
+            println!("\nFault: {}", fault);
+
+            if fault != ProcessorFault::SoftFault {
+                //return;
+            }
         }
+
+        self.instruction_index += 1;
     }
 
     pub fn pause(&mut self) {

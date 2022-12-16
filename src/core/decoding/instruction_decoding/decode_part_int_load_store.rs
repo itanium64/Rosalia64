@@ -89,10 +89,6 @@ pub fn decode_integer_store(context: &mut DecodingContext, slot: u64, next_slot:
 
     let bit_length_table: [u64; 4] = [1, 2, 4, 8];
 
-    //TODO: worry about .spill later
-
-    //let ordered_store= if m.tab_y == 0xD { 1 } else { 0 };
-
     let locality_hint_table = [
         "",
         ".nt1",
@@ -100,20 +96,24 @@ pub fn decode_integer_store(context: &mut DecodingContext, slot: u64, next_slot:
         ".nta"
     ];
 
-    let disassembly = format!("{} st{}{} [r{}] = r{}", format_qualifying_predicate(m.qp), bit_length_table[m.tab_x as usize], locality_hint_table[m.hint as usize], m.r3, m.r2);
+    let rel_store_string = if m.tab_y == 0xD { ".rel" } else { "" };
+
+    let disassembly = format!("{} st{}{}{} [r{}] = r{}", format_qualifying_predicate(m.qp), bit_length_table[m.tab_x as usize], rel_store_string, locality_hint_table[m.hint as usize], m.r3, m.r2);
 
     let attributes: HashMap<InstructionAttribute, u64> = HashMap::from([
-        (InstructionAttribute::R1, m.r1),
         (InstructionAttribute::R2, m.r2),
+        (InstructionAttribute::R3, m.r3),
         (InstructionAttribute::Hint, m.hint),
         (InstructionAttribute::TableX, m.tab_x),
         (InstructionAttribute::TableY, m.tab_y),
         (InstructionAttribute::QualifyingPredicate, m.qp),
-    ]);
+    ]); 
 
     let executable_instruction = execution::ExecutableInstruction {
         execution_function: instruction_execution::execute_int_store_no_base_update_form,
         attributes: attributes,
         disassembly: disassembly,
     };
+
+    context.executable_instructions.push(executable_instruction);
 }

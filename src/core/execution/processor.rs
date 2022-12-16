@@ -2,11 +2,11 @@ use std::fmt::Display;
 
 use super::{register_stack_engine::RegisterStackEngine, GeneralRegister, register_types::{PredicateRegister, FloatingRegister}};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum ProcessorFault {
     IllegalOperation,
     NATConsumptionFault,
-    
+    SoftFault
 }
 
 impl Display for ProcessorFault {
