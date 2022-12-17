@@ -1,5 +1,7 @@
 use crate::decoding::DecodingContext;
 
+use super::decode_branch_indirect_return::decode_branch_indirect_return;
+
 
 pub fn decode_part_branch_indirect_misc(context: &mut DecodingContext, slot: u64, next_slot: u64) {
     let tabx = (slot & (0b00000000110000000000000000000000000000000)) >> 31;
@@ -29,10 +31,5 @@ pub fn decode_part_branch_indirect_return(context: &mut DecodingContext, slot: u
         println!("decode_part_branch_indirect_return: invalid branch type warning!\nbtype: {}", btype)
     }
 
-    {
-        let context: &mut DecodingContext = context;
-        let slot = slot;
-        let next_slot = next_slot;
-
-    };
+    decode_branch_indirect_return(context, slot, next_slot);
 }

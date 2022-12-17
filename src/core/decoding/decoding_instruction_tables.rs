@@ -21,6 +21,7 @@ pub static INSTRUCTION_TABLE_FLOAT: phf::Map<u32, fn(&mut DecodingContext, slot:
 };
 
 pub static INSTRUCTION_TABLE_BRANCH: phf::Map<u32, fn(&mut DecodingContext, slot: u64, next_slot: u64)> = phf_map! {
+    0u32 => instruction_decoding::decode_part_branch_indirect_misc,
     2u32 => instruction_decoding::decode_nop_branch,
 };
 
