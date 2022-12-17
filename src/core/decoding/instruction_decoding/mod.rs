@@ -16,5 +16,4 @@ pub use decode_nops::{decode_nop_branch,decode_nop_float,decode_nop_integer,deco
 pub use decode_part_int_load_store::{decode_part_int_load_store, decode_part_int_load_store_extensions};
 pub use decode_part_integer_misc::decode_part_integer_misc;
 pub use decode_part_memory_system_management::{decode_part_memory_system_management, decode_part_memory_system_management_4bit_2bit};
-pub use decode_branch_indirect_return::decode_branch_indirect_return;
 pub use decode_part_branch_indirect_misc::decode_part_branch_indirect_misc;

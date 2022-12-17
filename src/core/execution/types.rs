@@ -1,11 +1,11 @@
-use std::fmt::Display;
+use std::{fmt::Display, collections::HashMap};
 
 use crate::core::decoding;
 
-use super::{processor::{ProcessorFault}, machine::ItaniumMachine};
+use super::{processor::{ProcessorFault}, ItaniumMachine};
 
 pub struct ExecutableInstruction {
-    pub execution_function: fn(&mut ItaniumMachine, &decoding::InstructionAttributeMap) -> Result<(), ProcessorFault>,
+    pub execution_function: fn(&mut ItaniumMachine, &decoding::InstructionAttributeMap, &mut usize, &HashMap<u64, u64>, &HashMap<u64, u64>) -> Result<(), ProcessorFault>,
     pub attributes: decoding::InstructionAttributeMap,
     pub disassembly: String
 }

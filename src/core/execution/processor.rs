@@ -108,11 +108,11 @@ impl ItaniumProcessor {
         return self.floating_registers.get(fr as usize);
     }
 
-    pub fn retrieve_branch_register_mut(&mut self, fr: u64) -> Option<&mut u64> {
-        return self.branch_registers.get_mut(fr as usize);
+    pub fn retrieve_branch_register_mut(&mut self, br: u64) -> Option<&mut u64> {
+        return self.branch_registers.get_mut(br as usize);
     }
 
-    pub fn retrieve_branch_register(&self, fr: u64) -> Option<&u64> {
-        return self.branch_registers.get(fr as usize);
+    pub fn retrieve_branch_register(&self, br: u64) -> Option<&u64> {
+        return self.branch_registers.get(br as usize);
     }
 }
