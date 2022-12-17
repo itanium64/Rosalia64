@@ -37,5 +37,7 @@ impl ExecutionContext<'_, '_> {
         while self.machine.continue_running && !self.paused {
             self.step()
         }
+
+        println!("Return Code: {}", self.machine.processor.retrieve_general_register(8).unwrap().read())
     }
 }
