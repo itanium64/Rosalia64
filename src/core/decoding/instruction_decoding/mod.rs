@@ -4,9 +4,17 @@ mod disassembly_helpers;
 mod decode_part_integer_alu;
 mod decode_adds_imm14_form;
 mod decode_part_int_load_store;
+mod decode_part_integer_misc;
+mod decode_part_memory_system_management;
+mod decode_branch_indirect_return;
+mod decode_part_branch_indirect_misc;
 
 pub use decode_addl_imm22_form::decode_addl_imm22_form;
 pub use decode_part_integer_alu::decode_part_integer_alu;
 pub use decode_adds_imm14_form::decode_adds_imm14_form;
 pub use decode_nops::{decode_nop_branch,decode_nop_float,decode_nop_integer,decode_nop_memory};
 pub use decode_part_int_load_store::{decode_part_int_load_store, decode_part_int_load_store_extensions};
+pub use decode_part_integer_misc::decode_part_integer_misc;
+pub use decode_part_memory_system_management::{decode_part_memory_system_management, decode_part_memory_system_management_4bit_2bit};
+pub use decode_branch_indirect_return::decode_branch_indirect_return;
+pub use decode_part_branch_indirect_misc::decode_part_branch_indirect_misc;

@@ -27,6 +27,5 @@ pub fn execute_add_imm_form(machine: &mut ItaniumMachine, attributes: &Instructi
         }
     }
 
-    return Err(ProcessorFault::IllegalOperation);
     return Ok(())
 }
