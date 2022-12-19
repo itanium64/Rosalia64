@@ -5,32 +5,62 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch PetalVM",
-            "type": "go",
+            "type": "lldb",
             "request": "launch",
-            "mode": "auto",
-            "program": "${workspaceFolder}",
-            "cwd": "${workspaceFolder}/build",
-            "output": "build/petal-vm.exe",
-            "args": [
-                "-exe=TestCases/IfStatement.exe",
-                "-vmemsize=524288"
-            ],   
+            "name": "Debug unit tests in library 'rosalia_core'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=rosalia64"
+                ],
+                "filter": {
+                    "name": "rosalia_core",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}/build"
         },
         {
-            "name": "Launch Wiewiur Extractor",
-            "type": "go",
+            "type": "lldb",
             "request": "launch",
-            "mode": "auto",
-            "program": "${workspaceFolder}",
-            "cwd": "${workspaceFolder}/build",
-            "output": "build/petal-vm.exe",
+            "name": "Debug executable 'rosalia_petal'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=rosalia_petal",
+                    "--package=rosalia64"
+                ],
+                "filter": {
+                    "name": "rosalia_petal",
+                    "kind": "bin"
+                }
+            },
             "args": [
-                "-wiewiur",
-                "-wiewiur-extract",
-                "-wiewiur-sys=win2003",
-                "-wiewiur-iso=en_windows_server_2003_with_sp1_enterprise_ia64_dvd.iso"
-            ],   
+                "Rimukoro.exe"
+            ],
+            "cwd": "${workspaceFolder}/build"
         },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'rosalia_petal'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=rosalia_petal",
+                    "--package=rosalia64"
+                ],
+                "filter": {
+                    "name": "rosalia_petal",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}/build"
+        }
     ]
 }
