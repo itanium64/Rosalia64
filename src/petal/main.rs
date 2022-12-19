@@ -40,4 +40,6 @@ fn main() {
     let mut execution_context = ExecutionContext::new(decoding_context, &mut machine);
 
     execution_context.run();
+
+    //Rust journey comes to an end as there is no way for me to make registers work.
 }
