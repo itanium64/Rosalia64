@@ -1,0 +1,11 @@
+﻿// See https://aka.ms/new-console-template for more information
+
+using Rosalia.Core.Decoding;
+
+DecodingContext decodingContext = new DecodingContext(
+    new byte[] {
+        0x11, 0xF8, 0x24, 0x01, 0x24, 0x25, 0xE0, 0x01, 0x30, 0x00, 0x42, 0x00, 0x00, 0x00, 0x00, 0x20,
+    }
+);
+
+decodingContext.NextBundle();

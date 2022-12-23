@@ -35,14 +35,14 @@ def generateVariableDecoders(names, lengths, tab):
     if skipOpcode:
         zeroString = "0000"
 
-    requiredTotalBits = 41
+    requiredTotalBits = 46
 
     longestNameLength = 0
 
     stringTab = ""
 
     if tab:
-        stringTab = "        "
+        stringTab = "\t"
 
     for i in range(len(names)):
         length = len(names[i]) 
@@ -53,7 +53,7 @@ def generateVariableDecoders(names, lengths, tab):
     for i in range(len(names)):
 
         underscores = (longestNameLength - len(names[i])) * '_'
-        variableString = f"{stringTab}let {underscores}{names[i]} = (slot & (0b"
+        variableString = f"{stringTab}{underscores}{names[i]} := (instructionBits & (0b"
         bitString = zeroString
 
         underscoredNameDict[names[i]] = f"{underscores}{names[i]}"
@@ -63,12 +63,12 @@ def generateVariableDecoders(names, lengths, tab):
         bitString += '1' * length
         zeroString += '0' * length
 
-        remainingZeroes = 41 - len(bitString)
+        remainingZeroes = 46 - len(bitString)
         bitString += '0' * remainingZeroes
 
         variableString += bitString
 
-        variableString += f")) >> {remainingZeroes};"
+        variableString += f")) >> {remainingZeroes}"
 
         if names[i] != "_":
             print(variableString)
@@ -77,40 +77,38 @@ def generateVariableDecoders(names, lengths, tab):
 
 immediateCreated = False
 
-print(f"pub struct {formatName.upper()}" + " {")
+print(f"type {formatName.upper()} struct" + " {")
 
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == False:
-            print("    pub immediate: u64,")
+            print("\tImmediate uint64")
             immediateCreated = True
         
         continue
     
     if name != "_":
-        print(f"    pub {name}: u64,")
+        print(f"\t{name.capitalize()} uint64")
 
 print("}\n")
 
-print(f"impl {formatName.capitalize()} {{")
-print(f"    pub fn from_slots(slot: u64, _next_slot: u64) -> {formatName.upper()} " + "{")
+print(f"func Read{formatName.upper()}(instructionBits uint64, nextSlot uint64) {formatName.upper()} " + "{")
 
 generateVariableDecoders(names, lengths, True)
 
-print(f"\n        return {formatName.upper()}" + " {")
+print(f"\n\treturn {formatName.upper()}" + " {")
 
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == True:
-            print(f"            immediate: immediate as u64,")
+            print(f"\t\tImmediate: immediate,")
             immediateCreated = False
         
         continue
 
     if name != "_":
-        print(f"            {name}: {underscoredNameDict[name]},")
+        print(f"\t\t{name.capitalize()}: {underscoredNameDict[name]},")
 
-print("        }")
-print("    }")
+print("\t}")
 
 print("}")
