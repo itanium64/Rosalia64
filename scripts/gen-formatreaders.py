@@ -35,17 +35,17 @@ def generateVariableDecoders(names, lengths, tab):
     if skipOpcode:
         zeroString = "0000"
 
-    requiredTotalBits = 46
+    requiredTotalBits = 41
 
     longestNameLength = 0
 
     stringTab = ""
 
     if tab:
-        stringTab = "\t"
+        stringTab = "        "
 
     for i in range(len(names)):
-        length = len(names[i]) 
+        length = len(names[i])
 
         if length > longestNameLength:
             longestNameLength = length
@@ -53,7 +53,7 @@ def generateVariableDecoders(names, lengths, tab):
     for i in range(len(names)):
 
         underscores = (longestNameLength - len(names[i])) * '_'
-        variableString = f"{stringTab}{underscores}{names[i]} := (instructionBits & (0b"
+        variableString = f"{stringTab}ulong {underscores}{names[i]} = (slot & (0b"
         bitString = zeroString
 
         underscoredNameDict[names[i]] = f"{underscores}{names[i]}"
@@ -63,12 +63,12 @@ def generateVariableDecoders(names, lengths, tab):
         bitString += '1' * length
         zeroString += '0' * length
 
-        remainingZeroes = 46 - len(bitString)
+        remainingZeroes = 41 - len(bitString)
         bitString += '0' * remainingZeroes
 
         variableString += bitString
 
-        variableString += f")) >> {remainingZeroes}"
+        variableString += f")) >> {remainingZeroes};"
 
         if names[i] != "_":
             print(variableString)
@@ -77,38 +77,35 @@ def generateVariableDecoders(names, lengths, tab):
 
 immediateCreated = False
 
-print(f"type {formatName.upper()} struct" + " {")
+print("// ReSharper disable InconsistentNaming")
+print("namespace Rosalia.Core.Decoding.Decoders;\n")
+
+print(f"public struct {formatName.upper()}" + " {")
 
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == False:
-            print("\tImmediate uint64")
+            print("    public ulong Immediate;")
             immediateCreated = True
-        
+
         continue
-    
+
     if name != "_":
-        print(f"\t{name.capitalize()} uint64")
+        print(f"    public ulong {name.capitalize()};")
 
-print("}\n")
-
-print(f"func Read{formatName.upper()}(instructionBits uint64, nextSlot uint64) {formatName.upper()} " + "{")
-
+print(f"\n    public {formatName.upper()}(ulong slot, ulong nextSlot) " + "{")
 generateVariableDecoders(names, lengths, True)
-
-print(f"\n\treturn {formatName.upper()}" + " {")
-
+print(f"\n        return new {formatName.upper()}" + " {")
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == True:
-            print(f"\t\tImmediate: immediate,")
+            print(f"            Immediate = (ulong)immediate,")
             immediateCreated = False
-        
+
         continue
-
     if name != "_":
-        print(f"\t\t{name.capitalize()}: {underscoredNameDict[name]},")
-
-print("\t}")
+        print(f"            {name.capitalize()} = {underscoredNameDict[name]},")
+print("        };")
+print("    }")
 
 print("}")

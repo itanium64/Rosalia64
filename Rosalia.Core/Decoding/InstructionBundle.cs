@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Numerics;
-
 namespace Rosalia.Core.Decoding;
 
 public struct InstructionBundle {
@@ -12,7 +9,8 @@ public struct InstructionBundle {
     public InstructionBundle(ulong lo, ulong hi) {
         ulong templ = (lo & 0b11111);
         ulong slot0 = (lo & 0b000000000001111111111111111111111111111111111111111100000) >> 5;
-        ulong slot1 = (lo & 0b111111111110000000000000000000000000000000000000000000000) >> 46 | (hi & 0b000000000000000000000000000111111111111111111111111111111) << 18;
+        ulong slot1 = (lo & 0b111111111110000000000000000000000000000000000000000000000) >> 46 |
+                      (hi & 0b000000000000000000000000000111111111111111111111111111111) << 18;
         ulong slot2 = (hi & 0b1111111111111111111111111111111111111111100000000000000000000000) >> 23;
 
         this.Template = templ;
