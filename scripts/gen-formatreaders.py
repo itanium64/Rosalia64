@@ -95,17 +95,18 @@ for name in names:
 
 print(f"\n    public {formatName.upper()}(ulong slot, ulong nextSlot) " + "{")
 generateVariableDecoders(names, lengths, True)
-print(f"\n        return new {formatName.upper()}" + " {")
+
+print("")
+
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == True:
-            print(f"            Immediate = (ulong)immediate,")
+            print(f"        this.Immediate = (ulong)immediate;")
             immediateCreated = False
 
         continue
     if name != "_":
-        print(f"            {name.capitalize()} = {underscoredNameDict[name]},")
-print("        };")
+        print(f"        this.{name.capitalize()} = {underscoredNameDict[name]};")
 print("    }")
 
 print("}")

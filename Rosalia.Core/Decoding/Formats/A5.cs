@@ -1,5 +1,5 @@
 // ReSharper disable InconsistentNaming
-namespace Rosalia.Core.Decoding.Formats;
+namespace Rosalia.Core.Decoding.Decoders;
 
 public struct A5 {
     public ulong S;
@@ -17,12 +17,12 @@ public struct A5 {
         ulong ___r1 = (slot & (0b00000000000000000000000000001111111000000)) >> 6;
         ulong ___qp = (slot & (0b00000000000000000000000000000000000111111)) >> 0;
 
-        return new A5 {
-            S         = ____s,
-            Immediate = (ulong)immediate,
-            R3        = ___r3,
-            R1        = ___r1,
-            Qp        = ___qp,
-        };
+        long immediate = IAMath.Imm22(____s, imm5c, imm9d, imm7b);
+
+        this.S         = ____s;
+        this.Immediate = (ulong)immediate;
+        this.R3        = ___r3;
+        this.R1        = ___r1;
+        this.Qp        = ___qp;
     }
 }

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Rosalia.Core.Decoding.Decoders;
 
 namespace Rosalia.Core.Decoding;

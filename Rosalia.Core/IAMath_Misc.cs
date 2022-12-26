@@ -1,6 +1,3 @@
-using System.Numerics;
-using Microsoft.VisualBasic.CompilerServices;
-
 namespace Rosalia.Core;
 
 public partial class IAMath {
