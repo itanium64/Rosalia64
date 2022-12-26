@@ -1,3 +1,5 @@
+using Rosalia.Core.Execution;
+
 namespace Rosalia.Core.Decoding;
 
 public class DecodingContext : IDisposable {
@@ -9,6 +11,8 @@ public class DecodingContext : IDisposable {
     private Dictionary<ulong, ulong> _addressToInstructionIndex;
     private Dictionary<ulong, ulong> _instructionIndexToAddress;
 
+    public List<ExecutableInstruction> ExecutableInstructions;
+
     public DecodingContext(byte[] textSection, ulong addressBase) {
         this._textStream = new MemoryStream(textSection);
         this._textReader = new BinaryReader(this._textStream);
@@ -17,6 +21,8 @@ public class DecodingContext : IDisposable {
         this._instructionIndexToAddress = new Dictionary<ulong, ulong>();
 
         this._currentAddress = addressBase;
+
+        this.ExecutableInstructions = new List<ExecutableInstruction>();
     }
 
     public void NextBundle() {
