@@ -1,5 +1,5 @@
 // ReSharper disable InconsistentNaming
-namespace Rosalia.Core.Decoding.Decoders;
+namespace Rosalia.Core.Decoding.Formats;
 
 public struct A5 {
     public ulong S;

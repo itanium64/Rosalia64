@@ -78,7 +78,7 @@ def generateVariableDecoders(names, lengths, tab):
 immediateCreated = False
 
 print("// ReSharper disable InconsistentNaming")
-print("namespace Rosalia.Core.Decoding.Decoders;\n")
+print("namespace Rosalia.Core.Decoding.Formats;\n")
 
 print(f"public struct {formatName.upper()}" + " {")
 
