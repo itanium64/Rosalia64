@@ -76,9 +76,9 @@ public class DecodingContext : IDisposable {
             }
         }
 
-        DecodeInstructionSlot(bundle.Slot0, bundle.Slot1, unitSlot0);
-        DecodeInstructionSlot(bundle.Slot1, bundle.Slot2, unitSlot1);
-        DecodeInstructionSlot(bundle.Slot2, 0b0000000000, unitSlot2);
+        this.DecodeInstructionSlot(bundle.Slot0, bundle.Slot1, unitSlot0);
+        this.DecodeInstructionSlot(bundle.Slot1, bundle.Slot2, unitSlot1);
+        this.DecodeInstructionSlot(bundle.Slot2, 0b0000000000, unitSlot2);
     }
 
     private void DecodeInstructionSlot(ulong slot, ulong nextSlot, ExecutionSlotOrders.UnitOrStop unit) {

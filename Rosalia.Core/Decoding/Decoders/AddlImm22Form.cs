@@ -1,5 +1,6 @@
 using Rosalia.Core.Decoding.Formats;
 using Rosalia.Core.Execution;
+using Rosalia.Core.Execution.Instructions;
 
 namespace Rosalia.Core.Decoding.Decoders;
 
@@ -19,7 +20,7 @@ public class AddlImm22Form {
         };
 
         ExecutableInstruction instruction = new ExecutableInstruction {
-            ExecutionFunction = null,
+            ExecutionFunction = Add.AddlImm22Form,
             Attributes        = attributes,
             Disassembly       = disassembly
         };
