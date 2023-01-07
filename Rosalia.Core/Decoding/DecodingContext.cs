@@ -66,14 +66,17 @@ public class DecodingContext : IDisposable {
 
             if (unitSlot0 == ExecutionSlotOrders.UnitOrStop.None) {
                 unitSlot0 = currentItem;
+                continue;
             }
 
             if (unitSlot1 == ExecutionSlotOrders.UnitOrStop.None) {
                 unitSlot1 = currentItem;
+                continue;
             }
 
             if (unitSlot2 == ExecutionSlotOrders.UnitOrStop.None) {
                 unitSlot2 = currentItem;
+                continue;
             }
         }
 

@@ -1,6 +1,6 @@
 namespace Rosalia.Core.Decoding.Decoders;
 
-public static class IntegerAlu {
+public static class PartIntegerAlu {
     // Tags for easier searching
     // integer alu 2+1 2bit+1bit 2-bit+1-bit opcode extensions
     public static void DecodePartIntegerAlu(DecodingContext context, ulong slot, ulong nextSlot) {

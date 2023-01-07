@@ -6,10 +6,12 @@ public delegate void InstructionDecoder(DecodingContext context, ulong slot, ulo
 
 public static class InstructionTables {
     public static readonly Dictionary<ulong, InstructionDecoder> IntegerUnitInstructionTable = new() {
+        [8] = PartIntegerAlu.DecodePartIntegerAlu,
         [9] = AddlImm22Form.DecodeAddlImm22Form
     };
 
     public static readonly Dictionary<ulong, InstructionDecoder> MemoryUnitInstructionTable = new() {
+        [8] = PartIntegerAlu.DecodePartIntegerAlu,
         [9] = AddlImm22Form.DecodeAddlImm22Form
     };
 

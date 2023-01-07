@@ -2,6 +2,12 @@ using Rosalia.Core.Execution.Registers;
 
 namespace Rosalia.Core.Execution;
 
+public enum ProcessorFault {
+    None,
+    IllegalOperation,
+    NatConsumptionFault,
+}
+
 public class ItaniumProcessor {
     public readonly GeneralRegisterCollection     GeneralRegisters;
     public readonly PredicateRegisterCollection   PredicateRegisters;
