@@ -13,6 +13,8 @@ public abstract class PredicateRegisterBase {
 
         return ProcessorFault.None;
     }
+
+    public override string ToString() => $"pr{this.RegisterId} = {this.Value}";
 }
 
 public class PredicateRegister : PredicateRegisterBase {

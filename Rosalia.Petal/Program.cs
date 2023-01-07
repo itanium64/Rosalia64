@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Rosalia.Core.Decoding;
+using Rosalia.Core.Execution;
+using ExecutionContext=Rosalia.Core.Execution.ExecutionContext;
 
 DecodingContext decodingContext = new DecodingContext(
     new byte[] {
@@ -10,3 +12,10 @@ DecodingContext decodingContext = new DecodingContext(
 );
 
 decodingContext.NextBundle();
+
+ExecutionContext executionContext = new ExecutionContext(
+    decodingContext,
+    new ItaniumMachine()
+);
+
+executionContext.Run();

@@ -17,6 +17,8 @@ public class BranchRegister {
 
         return ProcessorFault.None;
     }
+
+    public override string ToString() => $"br{this.RegisterId} = {this.Value}";
 }
 
 public class BranchRegisterCollection {

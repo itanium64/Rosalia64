@@ -5,6 +5,7 @@ public class ItaniumMachine {
     public          bool             ContinueRunning;
 
     public ItaniumMachine() {
-        this.Processor = new ItaniumProcessor();
+        this.Processor       = new ItaniumProcessor();
+        this.ContinueRunning = true;
     }
 }

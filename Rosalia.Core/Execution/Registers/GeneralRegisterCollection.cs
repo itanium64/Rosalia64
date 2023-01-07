@@ -25,6 +25,8 @@ public abstract class GeneralRegisterBase {
 
         return ProcessorFault.None;
     }
+
+    public override string ToString() => $"gr{this.RegisterId} = {this.Value}, {this.NotAThing}";
 }
 
 public class GeneralRegister : GeneralRegisterBase {

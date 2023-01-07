@@ -25,6 +25,16 @@ public enum ApplicationRegisterDescription {
 }
 
 public abstract class ApplicationRegisterBase {
+    public static Dictionary<long, string> RegisterNames = new() {
+        [00] = "kr0",  [01] = "kr1",   [02] = "kr2",      [03] = "kr3",
+        [04] = "kr4",  [05] = "kr5",   [06] = "kr6",      [07] = "kr7",
+        [16] = "rsc",  [17] = "bsp",   [18] = "bspstore", [19] = "rnat",
+        [21] = "fcr",  [24] = "eflag", [25] = "csd",      [26] = "ssd",
+        [27] = "cflg", [28] = "fsr",   [29] = "fir",      [30] = "fdr",
+        [32] = "ccv",  [36] = "unat",  [40] = "fpsr",     [44] = "itc",
+        [45] = "ruc",  [64] = "pfs",   [65] = "lc",       [66] = "ec",
+    };
+
     public long RegisterId;
     public ulong Value;
 
@@ -37,6 +47,8 @@ public abstract class ApplicationRegisterBase {
 
         return ProcessorFault.None;
     }
+
+    public override string ToString() => $"ar.{RegisterNames.GetValueOrDefault(this.RegisterId, this.RegisterId.ToString())} = {this.Value}";
 }
 
 public class BackingStorePointer : ApplicationRegisterBase {

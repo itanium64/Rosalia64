@@ -8,4 +8,6 @@ public struct ExecutableInstruction {
     public ExecutionFunction                       ExecutionFunction;
     public Dictionary<InstructionAttribute, ulong> Attributes;
     public string                                  Disassembly;
+
+    public override string ToString() => this.Disassembly;
 }

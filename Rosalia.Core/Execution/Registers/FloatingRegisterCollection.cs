@@ -13,6 +13,8 @@ public abstract class FloatingRegisterBase {
 
         return ProcessorFault.None;
     }
+
+    public override string ToString() => $"fr{this.RegisterId} = {this.Value}";
 }
 
 public class FloatingRegister : FloatingRegisterBase {
