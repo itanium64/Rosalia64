@@ -6,12 +6,13 @@ public class DecodingContext : IDisposable {
     private MemoryStream _textStream;
     private BinaryReader _textReader;
 
-    private ulong                    _instructionIndex;
-    private ulong                    _currentAddress;
-    private Dictionary<ulong, ulong> _addressToInstructionIndex;
-    private Dictionary<ulong, ulong> _instructionIndexToAddress;
+    private ulong _instructionIndex;
+    private ulong _currentAddress;
 
-    public List<ExecutableInstruction> ExecutableInstructions;
+    private readonly Dictionary<ulong, ulong> _addressToInstructionIndex;
+    private readonly Dictionary<ulong, ulong> _instructionIndexToAddress;
+
+    public readonly List<ExecutableInstruction> ExecutableInstructions;
 
     public DecodingContext(byte[] textSection, ulong addressBase) {
         this._textStream = new MemoryStream(textSection);
@@ -105,5 +106,7 @@ public class DecodingContext : IDisposable {
     public void Dispose() {
         this._textStream.Dispose();
         this._textReader.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 }

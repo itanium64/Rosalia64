@@ -3,7 +3,7 @@ using Rosalia.Core.Execution.Registers;
 
 namespace Rosalia.Core.Execution.Instructions;
 
-public class Add {
+public static class Add {
     public static ProcessorFault AddImmForm(ExecutionContext context, Dictionary<InstructionAttribute, ulong> attributes) {
         ulong reg1 = attributes[InstructionAttribute.R1];
         ulong reg3 = attributes[InstructionAttribute.R3];
