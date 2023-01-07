@@ -1,5 +1,10 @@
 namespace Rosalia.Core.Execution;
-tlb
-public class ItaniumMachine {
 
+public class ItaniumMachine {
+    public readonly ItaniumProcessor Processor;
+    public          bool             ContinueRunning;
+
+    public ItaniumMachine() {
+        this.Processor = new ItaniumProcessor();
+    }
 }

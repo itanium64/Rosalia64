@@ -52,7 +52,7 @@ public class FloatingRegisterCollection {
         }
     }
 
-    public FloatingRegisterBase RetrieveRegister(long register) {
+    public FloatingRegisterBase RetrieveRegister(ulong register) {
         return this._registers[register];
     }
 }

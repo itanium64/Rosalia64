@@ -13,14 +13,14 @@ public class StackWindow {
 }
 
 public class RegisterStackEngine {
-    public ConcurrentStack<StackWindow> _stackWindows;
+    public readonly ConcurrentStack<StackWindow> StackWindows;
 
     public RegisterStackEngine() {
-        this._stackWindows = new ConcurrentStack<StackWindow>();
+        this.StackWindows = new ConcurrentStack<StackWindow>();
     }
 
     public StackWindow CurrentFrame() {
-        this._stackWindows.TryPeek(out StackWindow window);
+        this.StackWindows.TryPeek(out StackWindow window);
 
         return window;
     }
@@ -28,7 +28,7 @@ public class RegisterStackEngine {
     public void NewFrame(ulong inputRegisters) {
         StackWindow currentFrame = this.CurrentFrame();
 
-        this._stackWindows.Push(new StackWindow {
+        this.StackWindows.Push(new StackWindow {
             RegisterBase = (currentFrame.RegisterBase + currentFrame.SizeOfFrame) - inputRegisters,
             SizeOfFrame = inputRegisters,
             CountInputRegisters = inputRegisters,

@@ -2,8 +2,9 @@ namespace Rosalia.Core.Execution.Registers;
 
 public abstract class GeneralRegisterBase {
     public long RegisterId;
-    public long Value;
-    public bool NotAThing;
+
+    private long Value;
+    private bool NotAThing;
 
     public virtual long RetrieveValue() {
         return this.Value;
@@ -55,7 +56,7 @@ public class GeneralRegisterCollection {
         }
     }
 
-    public GeneralRegisterBase RetrieveRegister(long register) {
+    public GeneralRegisterBase RetrieveRegister(ulong register) {
         return this._registers[register];
     }
 }

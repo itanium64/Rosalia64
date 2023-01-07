@@ -85,7 +85,10 @@ public class DecodingContext : IDisposable {
         ulong mask = (ulong)0b1111 << 37;
         ulong majorOpcode = ((slot & mask) >> 37);
 
-        InstructionDecoder decoder = InstructionTables.GetInstructionTable(unit)!.GetValueOrDefault(majorOpcode, null);
+        InstructionDecoder decoder =
+            InstructionTables
+                .GetInstructionTable(unit)!
+                .GetValueOrDefault(majorOpcode, null);
 
         if (decoder == null) {
             Console.WriteLine($"Major Opcode {majorOpcode} not implemented for {unit} unit.");
@@ -93,6 +96,10 @@ public class DecodingContext : IDisposable {
         }
 
         decoder(this, slot, nextSlot);
+    }
+
+    public ulong ConvertInstructionPointer(ulong ip) {
+        return this._addressToInstructionIndex.GetValueOrDefault(ip, 0ul);
     }
 
     public void Dispose() {

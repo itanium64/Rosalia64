@@ -42,7 +42,7 @@ public class PredicateRegisterCollection {
         }
     }
 
-    public PredicateRegisterBase RetrieveRegister(long register) {
+    public PredicateRegisterBase RetrieveRegister(ulong register) {
         return this._registers[register];
     }
 }

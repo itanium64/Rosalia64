@@ -3,12 +3,12 @@ using Rosalia.Core.Execution.Registers;
 namespace Rosalia.Core.Execution;
 
 public class ItaniumProcessor {
-    public GeneralRegisterCollection   GeneralRegisters;
-    public PredicateRegisterCollection PredicateRegisters;
-    public BranchRegisterCollection    BranchRegisters;
-    public FloatingRegisterCollection  FloatingRegisters;
-    public RegisterStackEngine         RegisterStackEngine;
-    public ulong                       InstructionPointer;
+    public readonly GeneralRegisterCollection   GeneralRegisters;
+    public          PredicateRegisterCollection PredicateRegisters;
+    public          BranchRegisterCollection    BranchRegisters;
+    public          FloatingRegisterCollection  FloatingRegisters;
+    public          RegisterStackEngine         RegisterStackEngine;
+    public          ulong                       InstructionPointer;
 
     public ItaniumProcessor() {
         this.GeneralRegisters    = new GeneralRegisterCollection();

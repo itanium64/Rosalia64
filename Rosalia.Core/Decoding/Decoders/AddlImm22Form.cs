@@ -20,7 +20,7 @@ public class AddlImm22Form {
         };
 
         ExecutableInstruction instruction = new ExecutableInstruction {
-            ExecutionFunction = Add.AddlImm22Form,
+            ExecutionFunction = Add.AddImmForm,
             Attributes        = attributes,
             Disassembly       = disassembly
         };

@@ -30,7 +30,7 @@ public class BranchRegisterCollection {
         }
     }
 
-    public BranchRegister RetrieveRegister(long register) {
+    public BranchRegister RetrieveRegister(ulong register) {
         return this._registers[register];
     }
 }

@@ -3,9 +3,38 @@ using Rosalia.Core.Decoding;
 namespace Rosalia.Core.Execution;
 
 public class ExecutionContext {
-    private DecodingContext _decodingContext;
+    public readonly DecodingContext DecodingContext;
+    public readonly ItaniumMachine  Machine;
 
-    public ExecutionContext(DecodingContext decodingContext) {
+    private bool            _paused;
 
+    public ExecutionContext(DecodingContext decodingContext, ItaniumMachine machine) {
+        this.DecodingContext = decodingContext;
+        this.Machine         = machine;
+
+        this._paused          = false;
+    }
+
+    public void Step() {
+        ulong instructionIndex = this.DecodingContext.ConvertInstructionPointer(this.Machine.Processor.InstructionPointer);
+        ExecutableInstruction instruction = this.DecodingContext.ExecutableInstructions[(int)instructionIndex];
+
+        ProcessorFault fault = instruction.ExecutionFunction(this, instruction.Attributes);
+
+        if (fault != ProcessorFault.None) {
+            Console.WriteLine($"Fault thrown: {fault}; On: {instruction.Disassembly}");
+        }
+    }
+
+    public void Pause() {
+        this._paused = true;
+    }
+
+    public void Run() {
+        while (this.Machine.ContinueRunning && !this._paused) {
+            this.Step();
+        }
+
+        Console.WriteLine($"IA64 Return Code: {this.Machine.Processor.GeneralRegisters.RetrieveRegister(8).RetrieveValue()}");
     }
 }
