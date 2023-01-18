@@ -45,7 +45,7 @@ def generateVariableDecoders(names, lengths, tab):
         stringTab = "        "
 
     for i in range(len(names)):
-        length = len(names[i]) 
+        length = len(names[i])
 
         if length > longestNameLength:
             longestNameLength = length
@@ -53,7 +53,7 @@ def generateVariableDecoders(names, lengths, tab):
     for i in range(len(names)):
 
         underscores = (longestNameLength - len(names[i])) * '_'
-        variableString = f"{stringTab}let {underscores}{names[i]} = (slot & (0b"
+        variableString = f"{stringTab}ulong {underscores}{names[i]} = (slot & (0b"
         bitString = zeroString
 
         underscoredNameDict[names[i]] = f"{underscores}{names[i]}"
@@ -77,40 +77,36 @@ def generateVariableDecoders(names, lengths, tab):
 
 immediateCreated = False
 
-print(f"pub struct {formatName.upper()}" + " {")
+print("// ReSharper disable InconsistentNaming")
+print("namespace Rosalia.Core.Decoding.Formats;\n")
+
+print(f"public struct {formatName.upper()}" + " {")
 
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == False:
-            print("    pub immediate: u64,")
+            print("    public ulong Immediate;")
             immediateCreated = True
-        
+
         continue
-    
+
     if name != "_":
-        print(f"    pub {name}: u64,")
+        print(f"    public ulong {name.capitalize()};")
 
-print("}\n")
-
-print(f"impl {formatName.capitalize()} {{")
-print(f"    pub fn from_slots(slot: u64, _next_slot: u64) -> {formatName.upper()} " + "{")
-
+print(f"\n    public {formatName.upper()}(ulong slot, ulong nextSlot) " + "{")
 generateVariableDecoders(names, lengths, True)
 
-print(f"\n        return {formatName.upper()}" + " {")
+print("")
 
 for name in names:
     if name.lower().startswith("imm"):
         if immediateCreated == True:
-            print(f"            immediate: immediate as u64,")
+            print(f"        this.Immediate = (ulong)immediate;")
             immediateCreated = False
-        
+
         continue
-
     if name != "_":
-        print(f"            {name}: {underscoredNameDict[name]},")
-
-print("        }")
+        print(f"        this.{name.capitalize()} = {underscoredNameDict[name]};")
 print("    }")
 
 print("}")
